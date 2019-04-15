@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4657DB</color>
+    <!--<color name="colorPrimaryDark">#00574B</color>-->
+    <color name="colorPrimaryDark">#4657DB</color>
+    <color name="colorAccent">#684EC5</color>
+
+    <color name="black1">#252E39</color>
+    <color name="black2">#464F5C</color>
+    <color name="black3">#617181</color>
+    <color name="white1">#F9FAFB</color>
+    <color name="white2">#F3F5F8</color>
+    <color name="danger">#F54551</color>
+    <color name="success">#00C839</color>
+    <color name="warning">#EFCC00</color>
+</resources>
