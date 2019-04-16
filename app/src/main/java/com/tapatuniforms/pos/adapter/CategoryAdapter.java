@@ -6,12 +6,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.model.Category;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private static final String TAG = "CategoryAdapter";
+
+    private ArrayList<Category> categoryList;
+
+    public CategoryAdapter(ArrayList<Category> categoryList) {
+        this.categoryList = categoryList;
+    }
 
     @NonNull
     @Override
@@ -23,12 +32,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Category category = categoryList.get(position);
 
+        holder.categoryButton.setText(category.getName());
+        holder.categoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return categoryList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -37,6 +54,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryButton = itemView.findViewById(R.id.categoryButton);
+
         }
     }
 }

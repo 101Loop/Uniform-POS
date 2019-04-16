@@ -5,23 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.POSFragment"
-    android:background="@color/white2">
+    android:background="@color/white3">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryRecycler"
-        android:layout_width="600dp"
+        android:layout_width="0dp"
         android:layout_height="56dp"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/productRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:spanCount="1"
         tools:listitem="@layout/category_item_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productRecycler"
-        android:layout_width="600dp"
+        android:layout_width="603dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,132 +32,13 @@
         app:spanCount="4"
         tools:listitem="@layout/item_layout" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include
+        layout="@layout/cart_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/productRecycler"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/cart_item_layout" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/black3"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Sub Total"
-            android:textColor="@color/black2"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView2"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="(4 items)"
-            android:textColor="@color/black3"
-            android:textSize="15sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView"
-            app:layout_constraintStart_toEndOf="@+id/textView" />
-
-
-        <TextView
-            android:id="@+id/subTotalView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="$200.50"
-            android:textColor="@color/black2"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Tax Included"
-            android:textColor="@color/black2"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView3"
-            app:layout_constraintStart_toStartOf="@+id/textView" />
-
-        <TextView
-            android:id="@+id/taxView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="$29.50"
-            android:textColor="@color/black2"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-            app:layout_constraintEnd_toEndOf="@+id/subTotalView" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Order Discount"
-            android:textSize="16sp"
-            android:fontFamily="@font/roboto_medium"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/textView2" />
-
-        <TextView
-            android:id="@+id/discountView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="$29.50"
-            android:textColor="@color/black2"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-            app:layout_constraintEnd_toEndOf="@+id/taxView" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/rounded_button"
-            android:text="Charge  $0"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
