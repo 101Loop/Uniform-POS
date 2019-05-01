@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
 
 public class PosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,7 +46,7 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
                 fragment = new POSFragment();
                 break;
             case R.id.orderScreen:
-//                fragment = new OrderFragment();
+                fragment = new OrderFragment();
                 break;
             case R.id.settingsScreen:
                 break;
