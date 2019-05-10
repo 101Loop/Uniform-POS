@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">POS</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="discount">10% Discount</string>
     <string name="search">Search</string>
+    <string name="dashboard">Dashboard</string>
 </resources>

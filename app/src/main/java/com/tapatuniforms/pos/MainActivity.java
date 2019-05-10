@@ -1,12 +1,11 @@
 package com.tapatuniforms.pos;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.tapatuniforms.pos.activity.LoginActivity;
-import com.tapatuniforms.pos.activity.PosActivity;
 
 public class MainActivity extends AppCompatActivity {
 

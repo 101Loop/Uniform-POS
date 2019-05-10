@@ -11,8 +11,10 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.fragment.DashboardFragment;
 import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
+import com.tapatuniforms.pos.fragment.SaleReportFragment;
 
 public class PosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "PosActivity";
@@ -29,7 +31,7 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
 
         //set home fragment on create of the activity
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, new POSFragment()).commit();
+                .replace(R.id.fragmentContainer, new DashboardFragment()).commit();
 
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -42,11 +44,17 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (menuItem.getItemId()){
+            case R.id.dashboardScreen:
+                fragment = new DashboardFragment();
+                break;
             case R.id.posScreen:
                 fragment = new POSFragment();
                 break;
             case R.id.orderScreen:
                 fragment = new OrderFragment();
+                break;
+            case R.id.saleScreen:
+                fragment = new SaleReportFragment();
                 break;
             case R.id.settingsScreen:
                 break;
@@ -60,4 +68,5 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
         mDrawerLayout.closeDrawers();
         return true;
     }
+
 }

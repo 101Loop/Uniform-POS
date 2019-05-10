@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
+import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Category;
@@ -28,6 +30,7 @@ public class POSFragment extends Fragment {
     private static final String TAG = "POSFragment";
 
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView;
+    private Button paymentButton;
     private TextView subTotalView, discountView;
 
     private ArrayList<Category> categoryList;
@@ -68,6 +71,16 @@ public class POSFragment extends Fragment {
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         cartAdapter = new CartAdapter(getCartList());
         cartRecyclerView.setAdapter(cartAdapter);
+
+        paymentButton = view.findViewById(R.id.paymentButton);
+
+        paymentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaymentDialog dialog = new PaymentDialog(getContext());
+                dialog.show();
+            }
+        });
     }
 
     private ArrayList<Category> getPlaceholderCategory() {
