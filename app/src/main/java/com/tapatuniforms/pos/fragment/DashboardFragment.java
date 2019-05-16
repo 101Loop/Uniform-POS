@@ -48,9 +48,9 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
 
         itemList.add(new DashboardItem(R.drawable.ic_bill, "Billing Screen", R.id.posScreen));
         itemList.add(new DashboardItem(R.drawable.ic_box, "Order History", R.id.orderScreen));
-        itemList.add(new DashboardItem(R.drawable.ic_inventory, "Stock Input", 0));
-        itemList.add(new DashboardItem(R.drawable.ic_diagram, "Order History", R.id.saleScreen));
-        itemList.add(new DashboardItem(R.drawable.ic_storage, "Inventory Management",0));
+        itemList.add(new DashboardItem(R.drawable.ic_diagram, "Sale Report", R.id.saleScreen));
+        itemList.add(new DashboardItem(R.drawable.ic_inventory, "Stock Entry", R.id.stockScreen));
+        itemList.add(new DashboardItem(R.drawable.ic_storage, "Inventory Management",R.id.inventoryScreen));
 
         return itemList;
     }
@@ -60,7 +60,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
         Fragment fragment = null;
         FragmentManager fragmentManager = getFragmentManager();
 
-        switch (dashItem.getItemId()){
+        switch (dashItem.getItemId()) {
             case R.id.posScreen:
                 fragment = new POSFragment();
                 break;
@@ -69,6 +69,12 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
                 break;
             case R.id.saleScreen:
                 fragment = new SaleReportFragment();
+                break;
+            case R.id.stockScreen:
+                fragment = new StockEntryFragment();
+                break;
+            case R.id.inventoryScreen:
+                fragment = new InventoryFragment();
                 break;
             case R.id.settingsScreen:
                 break;

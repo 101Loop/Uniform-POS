@@ -11,6 +11,16 @@
     app:layout_constraintStart_toEndOf="@+id/productRecycler"
     app:layout_constraintTop_toTopOf="parent">
 
+    <include
+        android:id="@+id/emptyCartView"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        layout="@layout/empty_cart_layout"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cartRecyclerView"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
         android:layout_width="match_parent"

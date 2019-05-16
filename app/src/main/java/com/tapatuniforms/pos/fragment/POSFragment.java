@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
+import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.CartItem;
@@ -35,9 +37,12 @@ public class POSFragment extends Fragment {
 
     private ArrayList<Category> categoryList;
     private ArrayList<Product> productList;
+    private ArrayList<CartItem> cartList;
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
     private CartAdapter cartAdapter;
+
+    private View emptyCartView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -51,6 +56,7 @@ public class POSFragment extends Fragment {
     }
 
     private void initViews(View view) {
+        emptyCartView = view.findViewById(R.id.emptyCartView);
         // Category Views
         categoryRecycler = view.findViewById(R.id.categoryRecycler);
         categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
@@ -69,16 +75,46 @@ public class POSFragment extends Fragment {
         // cart Views
         cartRecyclerView = view.findViewById(R.id.cartRecyclerView);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        cartAdapter = new CartAdapter(getCartList());
+        cartList = getCartList();
+        cartAdapter = new CartAdapter(cartList);
         cartRecyclerView.setAdapter(cartAdapter);
+        cartAdapter.setOnClickListener(new CartAdapter.CartItemListener() {
+            @Override
+            public void onCartItemClicked(CartItem item) {
+                final CartItemDialog dialog = new CartItemDialog(getContext(), item);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                dialog.setOnButtonClickListener(new CartItemDialog.CartItemDialogListener() {
+                    @Override
+                    public void onDoneButtonClicked() {
+                        cartAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onRemoveButtonClicked(CartItem item) {
+                        cartList.remove(item);
+                        cartAdapter.loadNewData(cartList);
+
+                        if (cartList.size() < 1) {
+                            emptyCartView.setVisibility(View.VISIBLE);
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
 
         paymentButton = view.findViewById(R.id.paymentButton);
-
         paymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PaymentDialog dialog = new PaymentDialog(getContext());
                 dialog.show();
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             }
         });
     }
@@ -93,6 +129,7 @@ public class POSFragment extends Fragment {
         list.add(new Category(1, "Some Category"));
         list.add(new Category(1, "Category"));
 
+        emptyCartView.setVisibility(View.INVISIBLE);
         return list;
     }
 
@@ -120,15 +157,15 @@ public class POSFragment extends Fragment {
 
         Product product = new Product(1, "Blue and Yellow Shirt", R.drawable.model2, "Medium", 2453);
 
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
-        list.add(new CartItem(1, 3, product));
+        list.add(new CartItem(1, 4, product));
+        list.add(new CartItem(2, 3, product));
+        list.add(new CartItem(3, 6, product));
+        list.add(new CartItem(4, 1, product));
+        list.add(new CartItem(5, 3, product));
+        list.add(new CartItem(6, 3, product));
+        list.add(new CartItem(7, 2, product));
+        list.add(new CartItem(8, 5, product));
+        list.add(new CartItem(9, 1, product));
 
         return list;
     }

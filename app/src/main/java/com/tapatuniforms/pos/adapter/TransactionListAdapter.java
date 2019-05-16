@@ -15,8 +15,13 @@ import com.tapatuniforms.pos.model.Transaction;
 import java.util.ArrayList;
 
 public class TransactionListAdapter extends RecyclerView.Adapter<TransactionListAdapter.ViewHolder> {
-    Context context;
-    ArrayList<Transaction> transactionList;
+    private Context context;
+    private ArrayList<Transaction> transactionList;
+    private RemoveButtonListener listener;
+
+    public interface RemoveButtonListener {
+        void onRemoveButtonClicked(Transaction transaction);
+    }
 
     public TransactionListAdapter(Context context, ArrayList<Transaction> transactionList) {
         this.context = context;
@@ -33,10 +38,23 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Transaction transaction = transactionList.get(position);
+        final Transaction transaction = transactionList.get(position);
 
         holder.nameView.setText(transaction.getPaymentOptionName());
         holder.amountView.setText("₹" + transaction.getAmount());
+
+        holder.removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onRemoveButtonClicked(transaction);
+                }
+            }
+        });
+    }
+
+    public void setOnRemoveButtonListener(RemoveButtonListener listener) {
+        this.listener = listener;
     }
 
     @Override

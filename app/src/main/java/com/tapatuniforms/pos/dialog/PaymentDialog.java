@@ -18,11 +18,12 @@ import com.tapatuniforms.pos.model.Transaction;
 
 import java.util.ArrayList;
 
-public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.ButtonClickListener {
-    RecyclerView paymentButtonRecycler, transactionRecycler;
-    ArrayList<Transaction> transactionList;
-    EditText transAmountEditText;
-    TextView outstandingAmountView;
+public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.ButtonClickListener, TransactionListAdapter.RemoveButtonListener {
+    private RecyclerView paymentButtonRecycler, transactionRecycler;
+    private ArrayList<Transaction> transactionList;
+    private EditText transAmountEditText;
+    private TextView outstandingAmountView;
+    private TransactionListAdapter transactionAdapter;
 
     private double total;
     private double paid;
@@ -49,8 +50,9 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         transactionRecycler = findViewById(R.id.transactionRecycler);
         transactionRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         transactionList = new ArrayList<>();
-        TransactionListAdapter adapter1 = new TransactionListAdapter(getContext(), transactionList);
-        transactionRecycler.setAdapter(adapter1);
+        transactionAdapter = new TransactionListAdapter(getContext(), transactionList);
+        transactionAdapter.setOnRemoveButtonListener(this);
+        transactionRecycler.setAdapter(transactionAdapter);
 
         total = 5000;
         paid = 0;
@@ -86,5 +88,17 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         paid += amount;
         transAmountEditText.setText("" + (total - paid));
         outstandingAmountView.setText("₹" + (total - paid));
+        transactionAdapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onRemoveButtonClicked(Transaction transaction) {
+        transactionList.remove(transaction);
+
+        paid -= transaction.getAmount();
+        transAmountEditText.setText("" + (total - paid));
+        outstandingAmountView.setText("₹" + (total - paid));
+        transactionAdapter.notifyDataSetChanged();
     }
 }

@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.fragment.DashboardFragment;
+import com.tapatuniforms.pos.fragment.InventoryFragment;
 import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
 import com.tapatuniforms.pos.fragment.SaleReportFragment;
+import com.tapatuniforms.pos.fragment.StockEntryFragment;
 
 public class PosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "PosActivity";
@@ -55,6 +57,12 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.saleScreen:
                 fragment = new SaleReportFragment();
+                break;
+            case R.id.stockScreen:
+                fragment = new StockEntryFragment();
+                break;
+            case R.id.inventoryScreen:
+                fragment = new InventoryFragment();
                 break;
             case R.id.settingsScreen:
                 break;
