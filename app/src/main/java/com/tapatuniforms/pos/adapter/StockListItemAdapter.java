@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
 
-public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapter.ViewHolder> {
+public class StockListItemAdapter extends RecyclerView.Adapter<StockListItemAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_indent_item_layout,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_list_item_layout,
                 parent, false);
-        return new StockProductAdapter.ViewHolder(view);
+        return new StockListItemAdapter.ViewHolder(view);
     }
 
     @Override
@@ -25,10 +25,10 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 20;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
         }

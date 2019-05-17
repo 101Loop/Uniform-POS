@@ -10,6 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tapatuniforms.pos.R;
 
 public class StockRequestAdapter extends RecyclerView.Adapter<StockRequestAdapter.ViewHolder> {
+    private OnBoxClickListener listener;
+
+    public interface OnBoxClickListener {
+        void onBoxSelected();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -20,7 +26,14 @@ public class StockRequestAdapter extends RecyclerView.Adapter<StockRequestAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onBoxSelected();
+                }
+            }
+        });
     }
 
     @Override
@@ -28,10 +41,16 @@ public class StockRequestAdapter extends RecyclerView.Adapter<StockRequestAdapte
         return 10;
     }
 
+    public void setOnBoxClickListener(OnBoxClickListener listener) {
+        this.listener = listener;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
+        View rootView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            rootView = itemView;
         }
     }
 }
