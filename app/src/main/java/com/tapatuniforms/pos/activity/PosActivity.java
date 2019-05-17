@@ -2,12 +2,15 @@ package com.tapatuniforms.pos.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
@@ -18,10 +21,11 @@ import com.tapatuniforms.pos.fragment.POSFragment;
 import com.tapatuniforms.pos.fragment.SaleReportFragment;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
 
-public class PosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class PosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private static final String TAG = "PosActivity";
 
     private DrawerLayout mDrawerLayout;
+    private ImageView hamburgerMenuIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
 
         mDrawerLayout = findViewById(R.id.drawerLayout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        hamburgerMenuIcon = findViewById(R.id.hamburgerMenuIcon);
+        hamburgerMenuIcon.setOnClickListener(this);
 
         //set home fragment on create of the activity
         getSupportFragmentManager().beginTransaction()
@@ -77,4 +83,8 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+        mDrawerLayout.openDrawer(GravityCompat.START);
+    }
 }

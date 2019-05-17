@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tapatuniforms.pos.activity.LoginActivity;
+import com.tapatuniforms.pos.activity.SetupActivity;
 
 public class MainActivity extends AppCompatActivity {
 
