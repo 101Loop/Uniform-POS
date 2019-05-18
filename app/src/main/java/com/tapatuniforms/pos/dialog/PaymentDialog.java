@@ -19,7 +19,7 @@ import com.tapatuniforms.pos.model.Transaction;
 import java.util.ArrayList;
 
 public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.ButtonClickListener, TransactionListAdapter.RemoveButtonListener {
-    private RecyclerView paymentButtonRecycler, transactionRecycler;
+    private RecyclerView paymentButtonRecycler, transactionRecycler, discountRecyclerView;
     private ArrayList<Transaction> transactionList;
     private EditText transAmountEditText;
     private TextView outstandingAmountView;
@@ -54,6 +54,12 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         transactionAdapter.setOnRemoveButtonListener(this);
         transactionRecycler.setAdapter(transactionAdapter);
 
+        discountRecyclerView = findViewById(R.id.discountRecyclerView);
+        discountRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        discountRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
+        PaymentButtonAdapter discountAdapter = new PaymentButtonAdapter(getContext(), getDiscountList());
+        discountRecyclerView.setAdapter(discountAdapter);
+
         total = 5000;
         paid = 0;
         transAmountEditText.setText("" + total);
@@ -68,6 +74,16 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         list.add("Google Pay");
         list.add("Phone Pe");
         list.add("Paypal");
+        return list;
+    }
+
+    private ArrayList<String> getDiscountList() {
+        ArrayList<String> list = new ArrayList<>();
+
+        list.add("10%");
+        list.add("15%");
+        list.add("20%");
+        list.add("25%");
         return list;
     }
 

@@ -9,7 +9,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +16,6 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockProductAdapter;
 import com.tapatuniforms.pos.adapter.StockRequestAdapter;
 import com.tapatuniforms.pos.dialog.StockItemDialog;
-import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Product;
 

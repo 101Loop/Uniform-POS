@@ -67,9 +67,9 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
             case R.id.stockScreen:
                 fragment = new StockEntryFragment();
                 break;
-            case R.id.inventoryScreen:
-                fragment = new InventoryFragment();
-                break;
+//            case R.id.inventoryScreen:
+//                fragment = new InventoryFragment();
+//                break;
             case R.id.settingsScreen:
                 break;
         }

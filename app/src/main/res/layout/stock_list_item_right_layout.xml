@@ -49,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center"
-                    android:src="@drawable/ic_check_circle_black_24dp"/>
+                    android:src="@drawable/ic_check_circle_green_24dp"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -16,9 +16,9 @@
         <item
             android:id="@+id/stockScreen"
             android:title="Stock Entry"/>
-        <item
-            android:id="@+id/inventoryScreen"
-            android:title="Inventory Management"/>
+        <!--<item-->
+            <!--android:id="@+id/inventoryScreen"-->
+            <!--android:title="Inventory Management"/>-->
     </group>
     <group android:checkableBehavior="single">
         <item

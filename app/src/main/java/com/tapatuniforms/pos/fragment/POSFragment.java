@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class POSFragment extends Fragment {
+public class POSFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "POSFragment";
 
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView;
@@ -43,6 +44,7 @@ public class POSFragment extends Fragment {
     private CartAdapter cartAdapter;
 
     private View emptyCartView;
+    private ImageView emptyCartIcon;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -57,6 +59,8 @@ public class POSFragment extends Fragment {
 
     private void initViews(View view) {
         emptyCartView = view.findViewById(R.id.emptyCartView);
+        emptyCartIcon = view.findViewById(R.id.emptyCartIcon);
+        emptyCartIcon.setOnClickListener(this);
         // Category Views
         categoryRecycler = view.findViewById(R.id.categoryRecycler);
         categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
@@ -168,5 +172,13 @@ public class POSFragment extends Fragment {
         list.add(new CartItem(9, 1, product));
 
         return list;
+    }
+
+    @Override
+    public void onClick(View v) {
+        // Set to emptyCartIcon click listener
+        cartList.clear();
+        cartAdapter.loadNewData(cartList);
+        emptyCartView.setVisibility(View.VISIBLE);
     }
 }
