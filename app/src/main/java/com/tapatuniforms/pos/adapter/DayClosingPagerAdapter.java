@@ -6,14 +6,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.tapatuniforms.pos.fragment.InventoryTab1Fragment;
-import com.tapatuniforms.pos.fragment.SetupItemFragment;
+import com.tapatuniforms.pos.fragment.DayClosingStockFragment;
+import com.tapatuniforms.pos.fragment.DayCompleteFragment;
 import com.tapatuniforms.pos.fragment.SetupStockFragment;
 
-public class SetupPagerAdapter extends FragmentPagerAdapter {
+public class DayClosingPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
 
-    public SetupPagerAdapter(Context context, FragmentManager fm) {
+    public DayClosingPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -24,13 +24,15 @@ public class SetupPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new SetupStockFragment();
             case 1:
-                return new SetupItemFragment();
+                return new DayClosingStockFragment();
+            case 2:
+                return new DayCompleteFragment();
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }
