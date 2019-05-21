@@ -46,8 +46,21 @@
             android:textColor="@color/black2"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/closeDayView"
             app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+        <TextView
+            android:id="@+id/closeDayView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Close Day"
+            android:textColor="@color/black2"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView22" />
 
         <FrameLayout
             android:id="@+id/fragmentContainer"

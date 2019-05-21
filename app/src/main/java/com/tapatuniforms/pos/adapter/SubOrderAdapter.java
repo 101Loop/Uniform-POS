@@ -3,6 +3,8 @@ package com.tapatuniforms.pos.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,8 +31,18 @@ public class SubOrderAdapter extends RecyclerView.Adapter<SubOrderAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView itemImageView;
+        TextView itemNameView, itemSerialView, itemQuantityPriceView, itemDiscountView,
+                itemTotalPriceView;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemImageView = itemView.findViewById(R.id.itemImageView);
+            itemNameView = itemView.findViewById(R.id.itemNameView);
+            itemSerialView = itemView.findViewById(R.id.itemSerialView);
+            itemQuantityPriceView = itemView.findViewById(R.id.itemQuantityPriceView);
+            itemDiscountView = itemView.findViewById(R.id.itemDiscountView);
+            itemTotalPriceView = itemView.findViewById(R.id.itemTotalPriceView);
         }
     }
 }

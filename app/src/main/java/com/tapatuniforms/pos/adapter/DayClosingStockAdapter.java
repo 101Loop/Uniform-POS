@@ -3,6 +3,7 @@ package com.tapatuniforms.pos.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,8 +34,13 @@ public class DayClosingStockAdapter extends RecyclerView.Adapter<DayClosingStock
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView itemNameView, remainingItemView, requestedItemView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemNameView = itemView.findViewById(R.id.itemNameView);
+            remainingItemView = itemView.findViewById(R.id.remainingItemView);
+            requestedItemView = itemView.findViewById(R.id.requestedItemView);
         }
     }
 }

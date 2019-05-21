@@ -3,6 +3,8 @@ package com.tapatuniforms.pos.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,8 +31,14 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        TextView indentNameView, indentDateView;
+        ImageView indentStatusImage;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            indentNameView = itemView.findViewById(R.id.indentNameView);
+            indentDateView = itemView.findViewById(R.id.indentDateView);
+            indentStatusImage = itemView.findViewById(R.id.indentStatusImage);
         }
     }
 }

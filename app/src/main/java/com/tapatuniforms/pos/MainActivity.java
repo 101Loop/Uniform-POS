@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tapatuniforms.pos.activity.DayClosingActivity;
+import com.tapatuniforms.pos.activity.PosActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, DayClosingActivity.class));
+        startActivity(new Intent(this, PosActivity.class));
         finish();
     }
 }

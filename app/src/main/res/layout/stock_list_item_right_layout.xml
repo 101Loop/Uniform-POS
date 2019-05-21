@@ -20,7 +20,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="4">
+
                 <TextView
+                    android:id="@+id/boxNameView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Box 1"
@@ -29,12 +31,14 @@
                     android:textSize="18sp"/>
 
                 <TextView
+                    android:id="@+id/boxSerialView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="#1234567899"
                     android:layout_marginTop="8dp"/>
 
                 <TextView
+                    android:id="@+id/itemTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Item: 342/500"

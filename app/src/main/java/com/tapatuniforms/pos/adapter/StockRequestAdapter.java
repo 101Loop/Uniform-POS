@@ -3,6 +3,7 @@ package com.tapatuniforms.pos.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,10 +48,14 @@ public class StockRequestAdapter extends RecyclerView.Adapter<StockRequestAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View rootView;
+        TextView boxNameView, boxSerialView, itemTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
+            boxNameView = itemView.findViewById(R.id.boxNameView);
+            boxSerialView = itemView.findViewById(R.id.boxSerialView);
+            itemTextView = itemView.findViewById(R.id.itemTextView);
         }
     }
 }

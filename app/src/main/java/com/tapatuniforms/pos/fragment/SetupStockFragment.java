@@ -21,4 +21,6 @@ public class SetupStockFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_setup_stock, container, false);
     }
 
+
+
 }

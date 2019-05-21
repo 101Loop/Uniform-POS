@@ -14,13 +14,14 @@
             android:layout_margin="8dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:layout_marginStart="8dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/indentNameView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Indent 1"
@@ -28,6 +29,7 @@
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/indentDateView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20/Jul/2019"
@@ -37,6 +39,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/indentStatusImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

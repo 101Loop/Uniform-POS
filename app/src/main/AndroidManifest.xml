@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activity.DayClosingActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="landscape"/>
         <activity
             android:name=".activity.PosActivity"
