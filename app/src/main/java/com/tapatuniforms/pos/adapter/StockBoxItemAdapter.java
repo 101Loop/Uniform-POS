@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
 
-public class StockListItemAdapter extends RecyclerView.Adapter<StockListItemAdapter.ViewHolder> {
+public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_list_item_layout,
                 parent, false);
-        return new StockListItemAdapter.ViewHolder(view);
+        return new StockBoxItemAdapter.ViewHolder(view);
     }
 
     @Override

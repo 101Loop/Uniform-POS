@@ -38,6 +38,13 @@
                     android:layout_marginTop="8dp"/>
 
                 <TextView
+                    android:id="@+id/boxDateView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10/May/2019 06:55 PM"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
                     android:id="@+id/itemTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -21,11 +21,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Indent Boxes"
+        android:text="Indent 1"
         android:fontFamily="@font/roboto_light"
         android:textColor="@color/black1"
         android:textSize="25sp"
         app:layout_constraintStart_toEndOf="@+id/include4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/serialBox"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:hint="Enter Serial"
+        android:textColor="@color/black1"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/checkButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/checkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:text="Check"
+        android:textColor="@color/white1"
+        android:background="@drawable/rounded_button"
+        app:layout_constraintBottom_toTopOf="@+id/itemRequestRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cartSeparator"
+        app:layout_constraintTop_toBottomOf="@+id/cartSeparator"
         tools:listitem="@layout/cart_item_layout" />
 
     <View

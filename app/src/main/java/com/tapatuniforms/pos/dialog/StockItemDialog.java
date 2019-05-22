@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.adapter.StockListItemAdapter;
+import com.tapatuniforms.pos.adapter.StockBoxItemAdapter;
 
 public class StockItemDialog extends AlertDialog {
 
@@ -23,7 +23,7 @@ public class StockItemDialog extends AlertDialog {
 
         RecyclerView itemRecyclerView = findViewById(R.id.itemRecyclerView);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        StockListItemAdapter adapter = new StockListItemAdapter();
+        StockBoxItemAdapter adapter = new StockBoxItemAdapter();
         itemRecyclerView.setAdapter(adapter);
     }
 }

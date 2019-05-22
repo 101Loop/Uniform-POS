@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/itemNameView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Shirt Type 1"
+                    android:textColor="@color/black1"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/roboto"/>
+
+                <TextView
+                    android:id="@+id/itemSerialView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="#123456789"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black2"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/roboto"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/itemWarehouseCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black2"
+                android:layout_gravity="center"
+                android:text="50 In Warehouse"/>
+
+            <TextView
+                android:id="@+id/itemDisplayCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black2"
+                android:layout_gravity="center"
+                android:text="10 On Display"/>
+
+            <Button
+                android:id="@+id/transferButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:layout_gravity="center"
+                android:text="Transfer"
+                android:textColor="@color/white1"
+                android:background="@drawable/rounded_button"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

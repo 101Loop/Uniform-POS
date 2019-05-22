@@ -29,21 +29,56 @@
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/indentDispatchPersonName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vivek Kumar"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black3"
+                    android:textSize="16sp"/>
+
+                <TextView
                     android:id="@+id/indentDateView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20/Jul/2019"
+                    android:text="20/Jul/2019  06:44 AM"
                     android:layout_marginTop="8dp"
                     android:textColor="@color/black3"
                     android:textSize="16sp"/>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/indentStatusImage"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_pending_24"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/indentNumberBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5 Boxes"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black3"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/indentBoxValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹1000"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black3"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/indentNumberItems"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="450 Items"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black3"
+                    android:textSize="16sp"/>
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

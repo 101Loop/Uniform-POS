@@ -2,173 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:minWidth="950dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_person_outline_black_24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="User Details"
-        android:fontFamily="@font/roboto"
-        android:textColor="@color/black1"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="300dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/black3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-    <View
-        android:id="@+id/view8"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/black3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:fontFamily="@font/roboto"
-        android:textColor="@color/black2"
-        android:textColorHint="@color/black3"
-        app:layout_constraintEnd_toStartOf="@+id/view8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:fontFamily="@font/roboto"
-        android:textColor="@color/black2"
-        android:textColorHint="@color/black3"
-        app:layout_constraintEnd_toStartOf="@+id/view8"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
-
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/roboto"
-        android:hint="Mobile"
-        android:inputType="phone"
-        android:textColor="@color/black2"
-        android:textColorHint="@color/black3"
-        app:layout_constraintEnd_toStartOf="@+id/view8"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
-    <TextView
-        android:id="@+id/textView25"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/roboto"
-        android:text="Discount"
-        android:textColor="@color/black2"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/discountRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        tools:listitem="@layout/payment_button_layout"
-        app:layout_constraintBottom_toTopOf="@+id/textView26"
-        app:layout_constraintEnd_toStartOf="@+id/view8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView25"/>
-
-    <TextView
-        android:id="@+id/textView26"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/roboto"
-        android:text="Order Amount"
-        android:textColor="@color/black2"
-        app:layout_constraintBottom_toTopOf="@+id/dialogTotalAmountView"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/dialogTotalAmountView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/roboto_medium"
-        android:text="₹ 5,000"
-        android:textColor="@color/black2"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textView1"
-        tools:layout_editor_absoluteY="464dp" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/roboto"
-        android:text="Outstanding Amount"
-        android:textColor="@color/black2"
-        app:layout_constraintBottom_toTopOf="@+id/outstandingAmountView"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/outstandingAmountView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/roboto_medium"
-        android:text="₹ 5,000"
-        android:textColor="@color/black2"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+    android:layout_width="700dp"
+    android:layout_height="600dp">
 
     <LinearLayout
         android:id="@+id/fullNameLayout"
@@ -177,7 +12,7 @@
         android:layout_margin="8dp"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view8"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/stroke_around">
 
@@ -204,14 +39,38 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/paymentButtonRecycler"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view8"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fullNameLayout"
         app:spanCount="3"
+        tools:listitem="@layout/payment_button_layout" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto"
+        android:text="Discount"
+        android:textColor="@color/black2"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/paymentButtonRecycler" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/discountRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView25"
+        app:layout_constraintTop_toBottomOf="@+id/textView25"
         tools:listitem="@layout/payment_button_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -219,18 +78,16 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/orderCompleteButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/view8"
-        app:layout_constraintTop_toBottomOf="@+id/paymentButtonRecycler"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/discountRecyclerView"
         tools:listitem="@layout/transaction_item_layout" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/orderCompleteButton"
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -241,5 +98,5 @@
         android:textColor="@color/white1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view8" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

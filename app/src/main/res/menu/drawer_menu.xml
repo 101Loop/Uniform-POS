@@ -6,19 +6,19 @@
             android:title="Dashboard" />
         <item
             android:id="@+id/posScreen"
-            android:title="POS" />
+            android:title="Billing" />
         <item
             android:id="@+id/orderScreen"
-            android:title="Orders" />
+            android:title="Order History" />
         <item
             android:id="@+id/saleScreen"
-            android:title="Sale Report" />
+            android:title="Reports" />
         <item
             android:id="@+id/stockScreen"
             android:title="Stock Entry"/>
-        <!--<item-->
-            <!--android:id="@+id/inventoryScreen"-->
-            <!--android:title="Inventory Management"/>-->
+        <item
+            android:id="@+id/inventoryScreen"
+            android:title="Inventory"/>
     </group>
     <group android:checkableBehavior="single">
         <item

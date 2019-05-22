@@ -46,11 +46,11 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
     private ArrayList<DashboardItem> getDashboardItems() {
         ArrayList<DashboardItem> itemList = new ArrayList<>();
 
-        itemList.add(new DashboardItem(R.drawable.ic_bill, "Billing Screen", R.id.posScreen));
+        itemList.add(new DashboardItem(R.drawable.ic_bill, "Billing", R.id.posScreen));
         itemList.add(new DashboardItem(R.drawable.ic_box, "Order History", R.id.orderScreen));
-        itemList.add(new DashboardItem(R.drawable.ic_diagram, "Sale Report", R.id.saleScreen));
+        itemList.add(new DashboardItem(R.drawable.ic_diagram, "Reports", R.id.saleScreen));
         itemList.add(new DashboardItem(R.drawable.ic_inventory, "Stock Entry", R.id.stockScreen));
-//        itemList.add(new DashboardItem(R.drawable.ic_storage, "Inventory Management",R.id.inventoryScreen));
+        itemList.add(new DashboardItem(R.drawable.ic_storage, "Inventory",R.id.inventoryScreen));
 
         return itemList;
     }
@@ -73,9 +73,9 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
             case R.id.stockScreen:
                 fragment = new StockEntryFragment();
                 break;
-//            case R.id.inventoryScreen:
-//                fragment = new InventoryFragment();
-//                break;
+            case R.id.inventoryScreen:
+                fragment = new InventoryFragment();
+                break;
             case R.id.settingsScreen:
                 break;
         }

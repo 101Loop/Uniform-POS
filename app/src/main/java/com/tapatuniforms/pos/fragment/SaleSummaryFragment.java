@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.tapatuniforms.pos.R;
 
-public class SetupStockFragment extends Fragment {
+public class SaleSummaryFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

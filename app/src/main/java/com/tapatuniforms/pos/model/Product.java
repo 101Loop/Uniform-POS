@@ -4,13 +4,17 @@ public class Product {
     private int id;
     private String name;
     private int image;
+    private String type;
+    private String gender;
     private String size;
     private double price;
 
-    public Product(int id, String name, int image, String size, double price) {
+    public Product(int id, String name, int image, String type, String gender, String size, double price) {
         this.id = id;
         this.name = name;
         this.image = image;
+        this.type = type;
+        this.gender = gender;
         this.size = size;
         this.price = price;
     }
@@ -37,6 +41,22 @@ public class Product {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getSize() {

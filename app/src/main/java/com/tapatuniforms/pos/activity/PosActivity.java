@@ -1,18 +1,18 @@
 package com.tapatuniforms.pos.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
@@ -28,7 +28,7 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
 
     private DrawerLayout mDrawerLayout;
     private ImageView hamburgerMenuIcon;
-    private TextView closeDayView;
+    private TextView closeDayView, screenNameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,10 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
         NavigationView navigationView = findViewById(R.id.nav_view);
         hamburgerMenuIcon = findViewById(R.id.hamburgerMenuIcon);
         closeDayView = findViewById(R.id.closeDayView);
+        screenNameView = findViewById(R.id.screenNameView);
         hamburgerMenuIcon.setOnClickListener(this);
 
+        screenNameView.setText(getString(R.string.dashboard));
         //set home fragment on create of the activity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, new DashboardFragment()).commit();
@@ -64,22 +66,28 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
         switch (menuItem.getItemId()){
             case R.id.dashboardScreen:
                 fragment = new DashboardFragment();
+                screenNameView.setText(getString(R.string.dashboard));
                 break;
             case R.id.posScreen:
                 fragment = new POSFragment();
+                screenNameView.setText(getString(R.string.billingScreen));
                 break;
             case R.id.orderScreen:
                 fragment = new OrderFragment();
+                screenNameView.setText(getString(R.string.orderHistory));
                 break;
             case R.id.saleScreen:
                 fragment = new SaleReportFragment();
+                screenNameView.setText(getString(R.string.saleReport));
                 break;
             case R.id.stockScreen:
                 fragment = new StockEntryFragment();
+                screenNameView.setText(getString(R.string.stockScreen));
                 break;
-//            case R.id.inventoryScreen:
-//                fragment = new InventoryFragment();
-//                break;
+            case R.id.inventoryScreen:
+                fragment = new InventoryFragment();
+                screenNameView.setText(getString(R.string.inventory));
+                break;
             case R.id.settingsScreen:
                 break;
         }

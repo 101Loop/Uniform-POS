@@ -5,4 +5,9 @@
     <string name="discount">10% Discount</string>
     <string name="search">Search</string>
     <string name="dashboard">Dashboard</string>
+    <string name="billingScreen">Billing</string>
+    <string name="orderHistory">Order History</string>
+    <string name="saleReport">Reports</string>
+    <string name="stockScreen">Stock</string>
+    <string name="inventory">Inventory</string>
 </resources>

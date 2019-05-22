@@ -42,7 +42,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.itemCount.setText("" + cartItem.getQuantity());
         holder.itemName.setText(cartItem.getProduct().getName());
         holder.itemSize.setText(cartItem.getProduct().getSize());
-        holder.itemPrice.setText("" + cartItem.getProduct().getPrice());
+        holder.itemPrice.setText("₹" + cartItem.getProduct().getPrice());
 
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override

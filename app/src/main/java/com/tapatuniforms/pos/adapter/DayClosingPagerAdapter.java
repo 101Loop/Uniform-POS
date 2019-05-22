@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.tapatuniforms.pos.fragment.DayClosingStockFragment;
 import com.tapatuniforms.pos.fragment.DayCompleteFragment;
-import com.tapatuniforms.pos.fragment.SetupStockFragment;
+import com.tapatuniforms.pos.fragment.SaleSummaryFragment;
 
 public class DayClosingPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
@@ -22,7 +22,7 @@ public class DayClosingPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new SetupStockFragment();
+                return new SaleSummaryFragment();
             case 1:
                 return new DayClosingStockFragment();
             case 2:
