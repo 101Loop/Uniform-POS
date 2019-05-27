@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.model.CartItem;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     private ArrayList<CartItem> cartList;
     private CartItemListener listener;
-
-    public interface CartItemListener {
-        void onCartItemClicked(CartItem item);
-    }
 
     public CartAdapter(ArrayList<CartItem> cartList) {
         this.cartList = cartList;
@@ -39,17 +36,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final CartItem cartItem = cartList.get(position);
 
-        holder.itemCount.setText("" + cartItem.getQuantity());
+        DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
+
+        holder.itemCount.setText(String.valueOf(cartItem.getQuantity()));
         holder.itemName.setText(cartItem.getProduct().getName());
         holder.itemSize.setText(cartItem.getProduct().getSize());
-        holder.itemPrice.setText("₹" + cartItem.getProduct().getPrice());
+        holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPrice()));
 
-        holder.rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onCartItemClicked(cartItem);
-                }
+        holder.rootView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onCartItemClicked(cartItem);
             }
         });
     }
@@ -59,13 +55,32 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return cartList.size();
     }
 
+    /**
+     * This method will notify data set changed and will update the view
+     * @param cartList ArrayList of CartItem
+     */
     public void loadNewData(ArrayList<CartItem> cartList) {
         this.cartList = cartList;
         notifyDataSetChanged();
     }
 
+    /**
+     * Sets the item click listener on CartItems
+     * @param listener CartItemListener
+     */
     public void setOnClickListener(CartItemListener listener) {
         this.listener = listener;
+    }
+
+    /**
+     * Interface for Item Click Listener
+     */
+    public interface CartItemListener {
+        /**
+         * Callback method for item click listener for a cart item
+         * @param item CartItem that was clicked
+         */
+        void onCartItemClicked(CartItem item);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

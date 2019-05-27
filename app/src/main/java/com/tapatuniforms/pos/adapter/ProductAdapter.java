@@ -27,6 +27,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private ArrayList<Product> productList;
     private Context context;
 
+    private ProductClickListener listener;
+
     public ProductAdapter(Context context, ArrayList<Product> productList) {
         this.context = context;
         this.productList = productList;
@@ -50,6 +52,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 .load(product.getImage())
                 .centerCrop()
                 .into(holder.productImage);
+
+        holder.rootView.setOnClickListener((v) -> {
+            if (listener != null) {
+                listener.onProductClicked(product);
+            }
+        });
     }
 
     @Override
@@ -62,12 +70,33 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    /**
+     * Method to set the Product Click listener
+     * @param listener ProductClickListener
+     */
+    public void setOnProductClickListener(ProductClickListener listener) {
+        this.listener = listener;
+    }
+
+    /**
+     * Callback interface for ProductClickListener
+     */
+    public interface ProductClickListener {
+        /**
+         * callback method for product click
+         * @param product Product that was clicked
+         */
+        void onProductClicked(Product product);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+        View rootView;
         ImageView productImage;
         TextView productName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            rootView = itemView;
             productImage = itemView.findViewById(R.id.productImageView);
             productName = itemView.findViewById(R.id.productName);
         }
