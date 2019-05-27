@@ -11,9 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.DayClosingActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.PinLoginActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.DayClosingActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.PosActivity"
             android:screenOrientation="landscape"
