@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
 import com.tapatuniforms.pos.dialog.CartItemDialog;
+import com.tapatuniforms.pos.dialog.DiscountDialog;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.dialog.UserDetailDialog;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
@@ -49,7 +51,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private CartAdapter cartAdapter;
 
     private View emptyCartView;
-    private ImageView emptyCartIcon;
+    private ImageView emptyCartIcon, discountButton;
+
+    private double subTotal, discount, tax;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -77,6 +81,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         paymentButton = view.findViewById(R.id.paymentButton);
         subTotalView = view.findViewById(R.id.subTotalView);
         textNumberItems = view.findViewById(R.id.textNumberItems);
+        discountButton = view.findViewById(R.id.addDiscountButton);
+        discountView = view.findViewById(R.id.discountView);
 
         // Initialize Variables
         categoryList = getPlaceholderCategory();
@@ -115,6 +121,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
+
+        discountButton.setOnClickListener((v) -> showDiscountDialog());
     }
 
     private ArrayList<Category> getPlaceholderCategory() {
@@ -169,6 +177,28 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
                 LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    private void showDiscountDialog() {
+        DiscountDialog dialog = new DiscountDialog(getContext());
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
+                LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dialog.setOnDiscountChangeListener((type, amount) -> {
+            switch (type) {
+                case PERCENTAGE:
+                    discountView.setText("" + amount + "%");
+                    break;
+                case MONEY:
+                    discount = amount;
+                    DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
+                    discountView.setText(decimalFormatter.format(amount));
+                    break;
+            }
+        });
     }
 
     private void filterByCategory(String category) {

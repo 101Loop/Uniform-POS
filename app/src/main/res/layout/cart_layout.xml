@@ -21,7 +21,19 @@
         app:layout_constraintStart_toStartOf="@+id/cartRecyclerView"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/emptyCartIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_delete_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
+        android:id="@+id/textView36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
@@ -34,14 +46,16 @@
         app:layout_constraintTop_toTopOf="@+id/emptyCartIcon" />
 
     <ImageView
-        android:id="@+id/emptyCartIcon"
+        android:id="@+id/addDiscountButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="8dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_delete_black_24dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_add_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/cartSeparator"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View

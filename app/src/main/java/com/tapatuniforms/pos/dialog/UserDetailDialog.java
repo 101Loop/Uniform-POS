@@ -22,11 +22,6 @@ public class UserDetailDialog extends AlertDialog {
 
         billingButton = findViewById(R.id.billingButton);
 
-        billingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        billingButton.setOnClickListener(v -> dismiss());
     }
 }
