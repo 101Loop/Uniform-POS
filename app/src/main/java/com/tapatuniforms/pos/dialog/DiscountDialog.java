@@ -81,6 +81,6 @@ public class DiscountDialog extends AlertDialog {
     }
 
     public enum Discount {
-        PERCENTAGE, MONEY
+        PERCENTAGE, MONEY, OTHER
     }
 }

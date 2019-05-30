@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.tapatuniforms.pos"
@@ -42,4 +43,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
+    // Volley Django Rest Framework
+    implementation 'com.civilmachines.drfapi:drfapi:0.0.2'
+    implementation 'com.auth0.android:jwtdecode:1.2.0'
+    implementation 'com.android.volley:volley:1.1.1'
 }

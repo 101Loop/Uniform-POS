@@ -1,8 +1,6 @@
 package com.tapatuniforms.pos.fragment;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +9,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CartAdapter;
@@ -30,12 +34,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener {
     private static final String TAG = "POSFragment";
 
@@ -54,6 +52,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private ImageView emptyCartIcon, discountButton;
 
     private double subTotal, discount, tax;
+    private DiscountDialog.Discount discountType = DiscountDialog.Discount.OTHER;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -125,6 +124,10 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         discountButton.setOnClickListener((v) -> showDiscountDialog());
     }
 
+    /**
+     * Temporary method for getting placeholder
+     * @return An array list of category
+     */
     private ArrayList<Category> getPlaceholderCategory() {
         ArrayList<Category> list = new ArrayList<>();
 
@@ -138,6 +141,10 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         return list;
     }
 
+    /**
+     * Temporary method for getting ProductList
+     * @return An array list of product
+     */
     private ArrayList<Product> getProductList() {
         ArrayList<Product> list = new ArrayList<>();
 
@@ -157,6 +164,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         return list;
     }
 
+    /**
+     * This method will clear cart
+     */
     private void clearCartData() {
         // DeleteAll Clicked clear cart data
         cartList.clear();
@@ -170,6 +180,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         filterByCategory(category);
     }
 
+    /**
+     * This method will Show User Dialog
+     */
     private void showUserDialog() {
         UserDetailDialog dialog = new UserDetailDialog(getContext());
         dialog.setCanceledOnTouchOutside(false);
@@ -179,6 +192,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
+    /**
+     * This method will create a Discount Dialog
+     */
     private void showDiscountDialog() {
         DiscountDialog dialog = new DiscountDialog(getContext());
         dialog.show();
@@ -188,19 +204,26 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         dialog.setOnDiscountChangeListener((type, amount) -> {
-            switch (type) {
-                case PERCENTAGE:
-                    discountView.setText("" + amount + "%");
-                    break;
-                case MONEY:
-                    discount = amount;
-                    DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
-                    discountView.setText(decimalFormatter.format(amount));
-                    break;
-            }
+//            switch (type) {
+//                case PERCENTAGE:
+//                    discountView.setText("" + amount + "%");
+//                    break;
+//                case MONEY:
+//                    discount = amount;
+//                    DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
+//                    discountView.setText(decimalFormatter.format(amount));
+//                    break;
+//            }
+            discountType = type;
+            discount = amount;
+            updatePriceView();
         });
     }
 
+    /**
+     * This will filter Products by Category
+     * @param category category you want to filter by
+     */
     private void filterByCategory(String category) {
         productList.clear();
         if (category.equals("All Category")) {
@@ -218,6 +241,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         productAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Handle click for the payment button
+     */
     private void onPaymentButtonClicked() {
         final PaymentDialog dialog = new PaymentDialog(getContext());
         dialog.show();
@@ -230,9 +256,13 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
+    /**
+     * Helper method to calculate and update price on the UI
+     */
     private void updatePriceView() {
         double subTotal = 0;
         int cartQuantity = 0;
+        double calculatedDiscount = 0;
 
         DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
 
@@ -241,9 +271,19 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             subTotal += cartItem.getQuantity() * cartItem.getProduct().getPrice();
         }
 
+        switch (discountType) {
+            case MONEY:
+                calculatedDiscount = discount;
+                break;
+            case PERCENTAGE:
+                calculatedDiscount = (subTotal * discount)/100;
+                break;
+        }
+
         subTotalView.setText(decimalFormatter.format(subTotal));
         textNumberItems.setText("(" + cartQuantity + " items)");
-        paymentButton.setText(decimalFormatter.format(subTotal));
+        discountView.setText(decimalFormatter.format(calculatedDiscount));
+        paymentButton.setText(decimalFormatter.format(subTotal - calculatedDiscount));
     }
 
     /**
