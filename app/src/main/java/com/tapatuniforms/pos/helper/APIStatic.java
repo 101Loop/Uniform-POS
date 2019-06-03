@@ -1,7 +1,7 @@
 package com.tapatuniforms.pos.helper;
 
 public interface APIStatic {
-    String baseURL = "";
+    String baseURL = "http://banquet.civilmachines.com/api/";
 
     String keyID = "id";
     String keyName = "name";
@@ -20,7 +20,7 @@ public interface APIStatic {
     String onlyDateFormat = "yyyyMMdd";
 
     interface User {
-        String userEndPoint = "users/";
+        String userEndPoint = "user/";
         String loginOTPURL = APIStatic.baseURL + userEndPoint + "otp/";
         String accountURL = APIStatic.baseURL + userEndPoint + "account/";
         String otpRegLoginURL = APIStatic.baseURL + userEndPoint + "otpreglogin/";

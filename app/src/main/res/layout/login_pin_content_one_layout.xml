@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView35"
@@ -37,11 +37,11 @@
         android:id="@+id/addNewUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Another User"
-        android:textSize="20sp"
         android:layout_margin="8dp"
         android:fontFamily="@font/roboto"
+        android:text="Add Another User"
         android:textColor="@color/design_default_color_primary"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/loginRecyclerView" />
 
