@@ -99,6 +99,7 @@ public class PinLoginActivity extends AppCompatActivity {
             pinEditText.setError("Pin didn't match");
         } else {
             startActivity(new Intent(this, PosActivity.class));
+            finish();
         }
     }
 

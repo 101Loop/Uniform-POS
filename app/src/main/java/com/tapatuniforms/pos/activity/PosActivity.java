@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,12 +24,17 @@ import com.tapatuniforms.pos.fragment.POSFragment;
 import com.tapatuniforms.pos.fragment.SaleReportFragment;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class PosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private static final String TAG = "PosActivity";
 
     private DrawerLayout mDrawerLayout;
     private ImageView hamburgerMenuIcon;
     private TextView closeDayView, screenNameView;
+
+    long lastBackPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +105,22 @@ public class PosActivity extends AppCompatActivity implements NavigationView.OnN
         menuItem.setChecked(true);
         mDrawerLayout.closeDrawers();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Date cTime = Calendar.getInstance().getTime();
+        long currentTime = cTime.getTime();
+
+        if (currentTime - lastBackPress <= 2000) {
+            finish();
+            return;
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new DashboardFragment()).commit();
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+        }
+        lastBackPress = currentTime;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.tapatuniforms.pos.helper;
 
 public interface APIStatic {
-    String baseURL = "http://banquet.civilmachines.com/api/";
+    String baseURL = "http://192.168.1.107:8000/api/";
 
     String keyID = "id";
     String keyName = "name";
@@ -20,10 +20,11 @@ public interface APIStatic {
     String onlyDateFormat = "yyyyMMdd";
 
     interface User {
-        String userEndPoint = "user/";
-        String loginOTPURL = APIStatic.baseURL + userEndPoint + "otp/";
-        String accountURL = APIStatic.baseURL + userEndPoint + "account/";
-        String otpRegLoginURL = APIStatic.baseURL + userEndPoint + "otpreglogin/";
+        String endPoint = "user/";
+        String loginOTPURL = baseURL + endPoint + "otp/";
+        String accountURL = baseURL + endPoint + "account/";
+        String otpRegLoginURL = baseURL + endPoint + "otpreglogin/";
+
         String keyDestination = "destination";
         String keyUsername = "username";
         String keyMobile = "mobile";
@@ -31,5 +32,24 @@ public interface APIStatic {
         String keyIsLogin = "is_login";
         String keyVerifyOTP = "verify_otp";
         String keyToken = "token";
+    }
+
+    interface Outlet {
+        String endPoint = "outlets/";
+        String productUrl = baseURL + endPoint + "products/";
+
+        String keyProduct = "product";
+        String keyCategory = "category";
+        String keyPrice = "price";
+        String keyOutlet = "outlet";
+        String keyImage = "image";
+        String keySku = "sku";
+        String keySize = "size";
+    }
+
+    interface Category {
+        String endPoint = "categories/";
+        String categoryUrl = baseURL + endPoint;
+
     }
 }

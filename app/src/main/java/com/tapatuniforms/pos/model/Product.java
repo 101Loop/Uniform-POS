@@ -1,22 +1,53 @@
 package com.tapatuniforms.pos.model;
 
-public class Product {
-    private int id;
-    private String name;
-    private int image;
-    private String type;
-    private String gender;
-    private String size;
-    private double price;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
-    public Product(int id, String name, int image, String type, String gender, String size, double price) {
+import com.tapatuniforms.pos.helper.APIStatic;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+@Entity
+public class Product {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private int apiId;
+    private String name;
+    private String sku;
+    private String image;
+    private double price;
+    private String size;
+    private int category;
+    private int outlet;
+
+    public Product(int id, int apiId, String name, String sku, String image, double price,
+                   String size, int category, int outlet) {
         this.id = id;
+        this.apiId = apiId;
         this.name = name;
+        this.sku = sku;
         this.image = image;
-        this.type = type;
-        this.gender = gender;
-        this.size = size;
         this.price = price;
+        this.size = size;
+        this.category = category;
+        this.outlet = outlet;
+    }
+
+    @Ignore
+    public Product(JSONObject object) throws JSONException {
+        JSONObject productObject = object.getJSONObject(APIStatic.Outlet.keyProduct);
+
+        this.id = 0;
+        this.apiId = object.optInt(APIStatic.keyID);
+        this.name = productObject.optString(APIStatic.keyName);
+        this.sku = productObject.optString(APIStatic.Outlet.keySku);
+        this.image = object.optString(APIStatic.Outlet.keyImage);
+        this.price = object.optDouble(APIStatic.Outlet.keyPrice);
+        this.size = productObject.optString(APIStatic.Outlet.keySize);
+        this.category = productObject.optInt(APIStatic.Outlet.keyCategory);
+        this.outlet = object.optInt(APIStatic.Outlet.keyOutlet);
     }
 
     public int getId() {
@@ -27,6 +58,14 @@ public class Product {
         this.id = id;
     }
 
+    public int getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
+    }
+
     public String getName() {
         return name;
     }
@@ -35,28 +74,28 @@ public class Product {
         this.name = name;
     }
 
-    public int getImage() {
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
-    public String getType() {
-        return type;
+    public double getPrice() {
+        return price;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getSize() {
@@ -67,11 +106,19 @@ public class Product {
         this.size = size;
     }
 
-    public double getPrice() {
-        return price;
+    public int getCategory() {
+        return category;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getOutlet() {
+        return outlet;
+    }
+
+    public void setOutlet(int outlet) {
+        this.outlet = outlet;
     }
 }

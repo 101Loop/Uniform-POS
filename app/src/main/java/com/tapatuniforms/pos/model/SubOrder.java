@@ -1,24 +1,34 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class SubOrder {
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
     private String productCode;
     private double price;
     private int quantity;
+    private int orderId;
     private double gst;
     private double sgst;
     private double igst;
+    private boolean isSynced;
 
-    public SubOrder(int id, String name, String productCode, double price, int quantity, double gst, double sgst, double igst) {
+    public SubOrder(int id, String name, String productCode, double price, int quantity,
+                    int orderId, double gst, double sgst, double igst, boolean isSynced) {
         this.id = id;
         this.name = name;
         this.productCode = productCode;
         this.price = price;
         this.quantity = quantity;
+        this.orderId = orderId;
         this.gst = gst;
         this.sgst = sgst;
         this.igst = igst;
+        this.isSynced = isSynced;
     }
 
     public int getId() {
@@ -61,6 +71,14 @@ public class SubOrder {
         this.quantity = quantity;
     }
 
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
     public double getGst() {
         return gst;
     }
@@ -83,5 +101,13 @@ public class SubOrder {
 
     public void setIgst(double igst) {
         this.igst = igst;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
     }
 }

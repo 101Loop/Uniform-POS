@@ -9,20 +9,20 @@ import com.tapatuniforms.pos.helper.APIStatic;
 import org.json.JSONObject;
 
 @Entity
-public class Category {
+public class Outlet {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private int apiId;
     private String name;
 
-    public Category(int id, int apiId, String name) {
+    public Outlet(int id, int apiId, String name) {
         this.id = id;
         this.apiId = apiId;
         this.name = name;
     }
 
     @Ignore
-    public Category(JSONObject object) {
+    public Outlet(JSONObject object){
         this.id = 0;
         this.apiId = object.optInt(APIStatic.keyID);
         this.name = object.optString(APIStatic.keyName);

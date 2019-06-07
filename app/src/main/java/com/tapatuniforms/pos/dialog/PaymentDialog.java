@@ -16,12 +16,13 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.PaymentButtonAdapter;
 import com.tapatuniforms.pos.adapter.TransactionListAdapter;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
+import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Transaction;
 
 import java.util.ArrayList;
 
 public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.ButtonClickListener, TransactionListAdapter.RemoveButtonListener {
-    private RecyclerView paymentButtonRecycler, transactionRecycler, discountRecyclerView;
+    private RecyclerView paymentButtonRecycler, transactionRecycler;
     private ArrayList<Transaction> transactionList;
     private EditText transAmountEditText;
     private TransactionListAdapter transactionAdapter;
@@ -31,8 +32,9 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
     private double total;
     private double paid;
 
-    public PaymentDialog(Context context) {
+    public PaymentDialog(Context context, double total) {
         super(context);
+        this.total = total;
     }
 
     @Override
@@ -56,23 +58,13 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         transactionAdapter.setOnRemoveButtonListener(this);
         transactionRecycler.setAdapter(transactionAdapter);
 
-        discountRecyclerView = findViewById(R.id.discountRecyclerView);
-        discountRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
-        discountRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
-        PaymentButtonAdapter discountAdapter = new PaymentButtonAdapter(getContext(), getDiscountList());
-        discountRecyclerView.setAdapter(discountAdapter);
-
         orderCompleteButton = findViewById(R.id.orderCompleteButton);
-        orderCompleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onOrderCompleted();
-                }
+        orderCompleteButton.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onOrderCompleted();
             }
         });
 
-        total = 5000;
         paid = 0;
         transAmountEditText.setText("" + total);
 
@@ -87,29 +79,10 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         return list;
     }
 
-    private ArrayList<String> getDiscountList() {
-        ArrayList<String> list = new ArrayList<>();
-
-        list.add("10%");
-        list.add("15%");
-        list.add("20%");
-        list.add("25%");
-        return list;
-    }
-
-    private ArrayList<Transaction> getTransactionList() {
-        ArrayList<Transaction> list = new ArrayList<>();
-
-        list.add(new Transaction("Google Pay", "df", 500));
-        list.add(new Transaction("Card", "CD", 2500));
-        list.add(new Transaction("Phone Pe", "PP", 1500));
-        return list;
-    }
-
     @Override
     public void onPaymentButtonClicked(String name) {
         double amount = Double.valueOf(transAmountEditText.getText().toString().trim());
-        transactionList.add(new Transaction(name, "fs", amount));
+        transactionList.add(new Transaction(0, name, amount, -1, false));
 
         paid += amount;
         transAmountEditText.setText("" + (total - paid));

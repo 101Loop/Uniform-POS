@@ -40,15 +40,12 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Transaction transaction = transactionList.get(position);
 
-        holder.nameView.setText(transaction.getPaymentOptionName());
+        holder.nameView.setText(transaction.getPaymentOption());
         holder.amountView.setText("₹" + transaction.getAmount());
 
-        holder.removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onRemoveButtonClicked(transaction);
-                }
+        holder.removeButton.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onRemoveButtonClicked(transaction);
             }
         });
     }

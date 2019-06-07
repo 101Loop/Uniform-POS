@@ -1,27 +1,32 @@
 package com.tapatuniforms.pos.model;
 
-import java.util.ArrayList;
-import java.util.Date;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Order {
+    @PrimaryKey(autoGenerate = true)
     private int id;
+    private int apiId;
     private String custName;
     private String custMobile;
     private String custEmail;
     private String invoiceNo;
     private double orderTotal;
-    private Date date;
-    private ArrayList<SubOrder> subOrderList;
+    private double discount;
+    private boolean isSynced;
 
-    public Order(int id, String custName, String custMobile, String custEmail, String invoiceNo, double orderTotal, Date date, ArrayList<SubOrder> subOrderList) {
+    public Order(int id, int apiId, String custName, String custMobile, String custEmail,
+                 String invoiceNo, double orderTotal, double discount, boolean isSynced) {
         this.id = id;
+        this.apiId = apiId;
         this.custName = custName;
         this.custMobile = custMobile;
         this.custEmail = custEmail;
         this.invoiceNo = invoiceNo;
         this.orderTotal = orderTotal;
-        this.date = date;
-        this.subOrderList = subOrderList;
+        this.discount = discount;
+        this.isSynced = isSynced;
     }
 
     public int getId() {
@@ -30,6 +35,14 @@ public class Order {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
     }
 
     public String getCustName() {
@@ -72,19 +85,19 @@ public class Order {
         this.orderTotal = orderTotal;
     }
 
-    public Date getDate() {
-        return date;
+    public double getDiscount() {
+        return discount;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 
-    public ArrayList<SubOrder> getSubOrderList() {
-        return subOrderList;
+    public boolean isSynced() {
+        return isSynced;
     }
 
-    public void setSubOrderList(ArrayList<SubOrder> subOrderList) {
-        this.subOrderList = subOrderList;
+    public void setSynced(boolean synced) {
+        isSynced = synced;
     }
 }

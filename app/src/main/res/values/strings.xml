@@ -10,4 +10,5 @@
     <string name="saleReport">Reports</string>
     <string name="stockScreen">Stock</string>
     <string name="inventory">Inventory</string>
+    <string name="no_network">No connection to the internet</string>
 </resources>

@@ -1,19 +1,15 @@
 package com.tapatuniforms.pos.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.civilmachines.drfapi.DjangoErrorListener;
 import com.civilmachines.drfapi.DjangoJSONObjectRequest;
 import com.civilmachines.drfapi.UserSharedPreferenceAdapter;
 import com.tapatuniforms.pos.R;
@@ -34,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isOtpSent = false;
 
     private DatabaseSingleton db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(this, PinSetUpActivity.class);
                         intent.putExtra("id", id);
                         startActivity(intent);
+                        finish();
                     }
                 }, new APIErrorListener(this), this);
 

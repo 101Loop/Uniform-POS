@@ -50,6 +50,7 @@ public class PinSetUpActivity extends AppCompatActivity {
         } else {
             db.userDao().setPin(id, pin);
             startActivity(new Intent(this, PinLoginActivity.class));
+            finish();
         }
     }
 }
