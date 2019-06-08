@@ -69,9 +69,9 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 try {
                     JSONObject object = new JSONObject();
-                    object.put(APIStatic.keyName, name);
-                    object.put(APIStatic.User.keyEmail, email);
-                    object.put(APIStatic.User.keyMobile, mobileNumber);
+                    object.put(APIStatic.Key.name, name);
+                    object.put(APIStatic.Key.email, email);
+                    object.put(APIStatic.Key.mobile, mobileNumber);
                     sendRequest(object, RequestType.SEND);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -81,10 +81,10 @@ public class LoginActivity extends AppCompatActivity {
             if (!otp.isEmpty() && otp.length() > 4) {
                 try {
                     JSONObject object = new JSONObject();
-                    object.put(APIStatic.keyName, name);
-                    object.put(APIStatic.User.keyEmail, email);
-                    object.put(APIStatic.User.keyMobile, mobileNumber);
-                    object.put(APIStatic.User.keyVerifyOTP, otp);
+                    object.put(APIStatic.Key.name, name);
+                    object.put(APIStatic.Key.email, email);
+                    object.put(APIStatic.Key.mobile, mobileNumber);
+                    object.put(APIStatic.Key.verifyOtp, otp);
                     sendRequest(object, RequestType.VERIFY);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                         otpEditText.setEnabled(true);
                     } else {
                         UserSharedPreferenceAdapter usrAdap = new UserSharedPreferenceAdapter(this);
-                        String token = response.optString(APIStatic.User.keyToken);
+                        String token = response.optString(APIStatic.Key.token);
                         usrAdap.saveToken(token);
 
                         long id = db.userDao().insert(new User(token));

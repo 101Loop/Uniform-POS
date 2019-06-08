@@ -24,8 +24,8 @@ public class Category {
     @Ignore
     public Category(JSONObject object) {
         this.id = 0;
-        this.apiId = object.optInt(APIStatic.keyID);
-        this.name = object.optString(APIStatic.keyName);
+        this.apiId = object.optInt(APIStatic.Key.id);
+        this.name = object.optString(APIStatic.Key.name);
     }
 
     public int getId() {

@@ -6,21 +6,23 @@ import androidx.room.PrimaryKey;
 @Entity
 public class SubOrder {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     private String name;
+    private long productApiId;
     private String productCode;
     private double price;
     private int quantity;
-    private int orderId;
+    private long orderId;
     private double gst;
     private double sgst;
     private double igst;
     private boolean isSynced;
 
-    public SubOrder(int id, String name, String productCode, double price, int quantity,
-                    int orderId, double gst, double sgst, double igst, boolean isSynced) {
+    public SubOrder(long id, String name, long productApiId, String productCode, double price, int quantity,
+                    long orderId, double gst, double sgst, double igst, boolean isSynced) {
         this.id = id;
         this.name = name;
+        this.productApiId = productApiId;
         this.productCode = productCode;
         this.price = price;
         this.quantity = quantity;
@@ -31,11 +33,11 @@ public class SubOrder {
         this.isSynced = isSynced;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -45,6 +47,14 @@ public class SubOrder {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getProductApiId() {
+        return productApiId;
+    }
+
+    public void setProductApiId(long productApiId) {
+        this.productApiId = productApiId;
     }
 
     public String getProductCode() {
@@ -71,11 +81,11 @@ public class SubOrder {
         this.quantity = quantity;
     }
 
-    public int getOrderId() {
+    public long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(long orderId) {
         this.orderId = orderId;
     }
 

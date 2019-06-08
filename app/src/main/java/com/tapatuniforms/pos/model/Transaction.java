@@ -6,13 +6,13 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Transaction {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     private String paymentOption;
     private double amount;
-    private int orderId;
+    private long orderId;
     private boolean isSynced;
 
-    public Transaction(int id, String paymentOption, double amount, int orderId, boolean isSynced) {
+    public Transaction(long id, String paymentOption, double amount, long orderId, boolean isSynced) {
         this.id = id;
         this.paymentOption = paymentOption;
         this.amount = amount;
@@ -20,7 +20,7 @@ public class Transaction {
         this.isSynced = isSynced;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -44,11 +44,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public int getOrderId() {
+    public long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(long orderId) {
         this.orderId = orderId;
     }
 

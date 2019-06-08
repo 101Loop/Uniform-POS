@@ -61,7 +61,7 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         orderCompleteButton = findViewById(R.id.orderCompleteButton);
         orderCompleteButton.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onOrderCompleted();
+                listener.onOrderCompleted(transactionList);
             }
         });
 
@@ -81,6 +81,8 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
 
     @Override
     public void onPaymentButtonClicked(String name) {
+        if (paid == total) return;
+
         double amount = Double.valueOf(transAmountEditText.getText().toString().trim());
         transactionList.add(new Transaction(0, name, amount, -1, false));
 
@@ -104,6 +106,6 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
     }
 
     public interface OrderCompleteListener {
-        void onOrderCompleted();
+        void onOrderCompleted(ArrayList<Transaction> transactionList);
     }
 }

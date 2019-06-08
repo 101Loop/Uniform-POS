@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Order {
     @PrimaryKey(autoGenerate = true)
-    private int id;
-    private int apiId;
+    private long id;
+    private long apiId;
     private String custName;
     private String custMobile;
     private String custEmail;
@@ -16,7 +16,7 @@ public class Order {
     private double discount;
     private boolean isSynced;
 
-    public Order(int id, int apiId, String custName, String custMobile, String custEmail,
+    public Order(long id, long apiId, String custName, String custMobile, String custEmail,
                  String invoiceNo, double orderTotal, double discount, boolean isSynced) {
         this.id = id;
         this.apiId = apiId;
@@ -29,15 +29,15 @@ public class Order {
         this.isSynced = isSynced;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getApiId() {
+    public long getApiId() {
         return apiId;
     }
 

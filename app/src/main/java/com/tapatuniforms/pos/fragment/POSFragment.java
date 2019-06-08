@@ -24,12 +24,17 @@ import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.dialog.DiscountDialog;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.dialog.UserDetailDialog;
-import com.tapatuniforms.pos.helper.APIHelper;
+import com.tapatuniforms.pos.helper.DataHelper;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.helper.ViewHelper;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Category;
+import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.SubOrder;
+import com.tapatuniforms.pos.model.Transaction;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -48,6 +53,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
     private CartAdapter cartAdapter;
+    private DatabaseSingleton db;
 
     private View emptyCartView;
     private ImageView emptyCartIcon, discountButton;
@@ -93,6 +99,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         cartList = new ArrayList<>();
         cartAdapter = new CartAdapter(cartList);
 
+        db = DatabaseHelper.getDatabase(getContext());
+
         // Call setView()
         setView();
     }
@@ -126,8 +134,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         discountButton.setOnClickListener((v) -> showDiscountDialog());
 
         // Fetch Data
-        APIHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
-        APIHelper.fetchProducts(getContext(), allProducts, productList, productAdapter);
+        DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
+        DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter);
     }
 
     /**
@@ -144,16 +152,14 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     @Override
     public void onCategorySelected(Category category) {
         productList.clear();
-        if (category.equals("All Category")) {
-            productList = allProducts;
-            productAdapter.loadNewData(productList);
-            return;
-        }
 
         for(Product product: allProducts) {
             if (product.getCategory() == category.getApiId()) {
                 productList.add(product);
             }
+
+            if (category.getApiId() == -2)
+                productList.add(product);
         }
 
         productAdapter.notifyDataSetChanged();
@@ -205,13 +211,33 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private void onPaymentButtonClicked() {
         final PaymentDialog dialog = new PaymentDialog(getContext(), total);
         dialog.show();
-        dialog.setOnOrderCompleteListener(() -> {
+        dialog.setOnOrderCompleteListener(transactionList -> {
+            orderCompleted(transactionList);
             dialog.dismiss();
             showUserDialog();
         });
         Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
                 LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    /**
+     * This method will save order to database and call sync function
+     */
+    private void orderCompleted(ArrayList<Transaction> transactionList) {
+        Order order = new Order(0, -1, "Vivek", "8826317151",
+                "me@vivekkaushik.com", "",
+                total, discount, false);
+
+        ArrayList<SubOrder> subOrderList = new ArrayList<>();
+
+        for (CartItem cartItem: cartList) {
+            Product product = cartItem.getProduct();
+            subOrderList.add(new SubOrder(0, product.getName(), product.getSku(), product.getPrice(),
+                    cartItem.getQuantity(), 0, 0, 0, 0, false));
+        }
+
+        DataHelper.saveAndSyncOrder(getContext(), db, order, subOrderList, transactionList);
     }
 
     /**

@@ -37,17 +37,17 @@ public class Product {
 
     @Ignore
     public Product(JSONObject object) throws JSONException {
-        JSONObject productObject = object.getJSONObject(APIStatic.Outlet.keyProduct);
+        JSONObject productObject = object.getJSONObject(APIStatic.Key.product);
 
         this.id = 0;
-        this.apiId = object.optInt(APIStatic.keyID);
-        this.name = productObject.optString(APIStatic.keyName);
-        this.sku = productObject.optString(APIStatic.Outlet.keySku);
-        this.image = object.optString(APIStatic.Outlet.keyImage);
-        this.price = object.optDouble(APIStatic.Outlet.keyPrice);
-        this.size = productObject.optString(APIStatic.Outlet.keySize);
-        this.category = productObject.optInt(APIStatic.Outlet.keyCategory);
-        this.outlet = object.optInt(APIStatic.Outlet.keyOutlet);
+        this.apiId = object.optInt(APIStatic.Key.id);
+        this.name = productObject.optString(APIStatic.Key.name);
+        this.sku = productObject.optString(APIStatic.Key.sku);
+        this.image = object.optString(APIStatic.Key.image);
+        this.price = object.optDouble(APIStatic.Key.price);
+        this.size = productObject.optString(APIStatic.Key.size);
+        this.category = productObject.optInt(APIStatic.Key.category);
+        this.outlet = object.optInt(APIStatic.Key.outlet);
     }
 
     public int getId() {
