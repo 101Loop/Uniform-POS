@@ -19,6 +19,9 @@ public interface TransactionDao {
     @Query("SELECT * FROM `Transaction` WHERE isSynced = :isSynced")
     List<Transaction> getTransaction(boolean isSynced);
 
+    @Query("SELECT * FROM `Transaction` WHERE orderId = :orderId AND isSynced = 0")
+    List<Transaction> getTransactionByOrderId(long orderId);
+
     @Insert
     void insertAll(List<Transaction> transactionList);
 

@@ -14,7 +14,7 @@ import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.model.User;
 
-@Database(version = 2, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
+@Database(version = 3, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
         Transaction.class}, exportSchema = false)
 public abstract class DatabaseSingleton extends RoomDatabase {
     abstract public StockItemDao stockItemDao();

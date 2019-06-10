@@ -233,8 +233,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         for (CartItem cartItem: cartList) {
             Product product = cartItem.getProduct();
-            subOrderList.add(new SubOrder(0, product.getName(), product.getSku(), product.getPrice(),
-                    cartItem.getQuantity(), 0, 0, 0, 0, false));
+            subOrderList.add(new SubOrder(0, product.getName(), product.getApiId(),
+                    product.getSku(), product.getPrice(), cartItem.getQuantity(),
+                    0, 0, 0, 0, false));
         }
 
         DataHelper.saveAndSyncOrder(getContext(), db, order, subOrderList, transactionList);

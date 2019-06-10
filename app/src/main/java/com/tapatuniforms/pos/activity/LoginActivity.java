@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -97,7 +98,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendRequest(JSONObject requestObject, RequestType requestType) {
-        Log.d(TAG, "sendRequest: " + requestObject);
+        if (!Validator.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                 Request.Method.POST, APIStatic.User.otpRegLoginURL, requestObject,
                 response -> {

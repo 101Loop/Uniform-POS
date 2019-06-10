@@ -19,8 +19,8 @@ public interface SubOrderDao {
     @Query("SELECT * FROM SubOrder WHERE isSynced = :isSynced")
     List<SubOrder> getSubOrder(boolean isSynced);
 
-    @Query("SELECT * FROM SubOrder WHERE orderId = :orderApiId AND isSynced = 0")
-    List<SubOrder> getSubOrderByOrderId(long orderApiId);
+    @Query("SELECT * FROM SubOrder WHERE orderId = :orderId AND isSynced = 0")
+    List<SubOrder> getSubOrderByOrderId(long orderId);
 
     @Insert
     void insertAll(List<SubOrder> subOrderList);
