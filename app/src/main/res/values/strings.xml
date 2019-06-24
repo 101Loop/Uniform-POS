@@ -11,4 +11,6 @@
     <string name="stockScreen">Stock</string>
     <string name="inventory">Inventory</string>
     <string name="no_network">No connection to the internet</string>
+    <string name="login_substring">Lorem Ipsum dolor sit amet, consectour adipcing elit. Curabitur mollis purus et sem lobortis condimenturm</string>
+    <string name="login_heading">Welcome to Point of Sale App</string>
 </resources>

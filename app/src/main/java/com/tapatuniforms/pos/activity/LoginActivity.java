@@ -108,8 +108,12 @@ public class LoginActivity extends AppCompatActivity {
                 response -> {
                     // Response Received
                     if (requestType.equals(RequestType.SEND)) {
+                        Toast.makeText(getApplicationContext(), "OTP Sent", Toast.LENGTH_SHORT)
+                                .show();
+
                         isOtpSent = true;
                         otpEditText.setEnabled(true);
+                        otpEditText.requestFocus();
                     } else {
                         UserSharedPreferenceAdapter usrAdap = new UserSharedPreferenceAdapter(this);
                         String token = response.optString(APIStatic.Key.token);
@@ -122,7 +126,17 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
-                }, new APIErrorListener(this), this);
+                }, new APIErrorListener(this) {
+            @Override
+            public void onBadRequestError(JSONObject response) {
+                if (!response.optString("non_field_errors").equals("")) {
+                    Toast.makeText(getApplicationContext(), response.optString("non_field_errors"),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Bad Request", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, this);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

@@ -25,6 +25,10 @@ import java.util.ArrayList;
 public class DataHelper {
     private static final String TAG = "DataHelper";
 
+    public static ArrayList<Category> getCategories(Context context, DatabaseSingleton db) {
+        return null;
+    }
+
     public static void fetchCategories(Context context, ArrayList<Category> categoryList,
                                        CategoryAdapter adapter) {
         if (!Validator.isNetworkConnected(context)) {
