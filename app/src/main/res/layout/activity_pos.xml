@@ -12,99 +12,99 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/hamburgerMenuIcon"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_hamburger_black_24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/screenNameView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Billing Screen"
-            android:textColor="@color/black2"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
-            app:layout_constraintStart_toEndOf="@+id/hamburgerMenuIcon"
-            app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_light"
-            android:text="DPS Dwarka"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
-            app:layout_constraintEnd_toStartOf="@+id/closeDayView"
-            app:layout_constraintStart_toStartOf="@+id/hamburgerMenuIcon"
-            app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
-
-        <TextView
-            android:id="@+id/billerName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_light"
-            android:text="Sashi"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
-            app:layout_constraintStart_toEndOf="@+id/textView21"
-            app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
-
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Stock Remaining: 9%"
-            android:textColor="@color/black2"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
-            app:layout_constraintEnd_toStartOf="@+id/closeDayView"
-            app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
-
-        <TextView
-            android:id="@+id/closeDayView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Day Closing"
-            android:textColor="@color/black2"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView22"
+            android:padding="16dp"
+            android:background="@drawable/app_bar_gradient"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView22" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/fragmentContainer">
+
+            <ImageView
+                android:id="@+id/hamburgerMenuIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_hamburger_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="DPS Dwarka"
+                android:textColor="@color/white1"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintStart_toEndOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+            <TextView
+                android:id="@+id/stockRemainingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="10%"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:background="@drawable/rounded_white"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintEnd_toStartOf="@+id/textView22"
+                app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Stock Remaining"
+                android:textColor="@color/white1"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintEnd_toStartOf="@+id/closeDayView"
+                app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+            <TextView
+                android:id="@+id/closeDayView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Day Closing"
+                android:textColor="@color/white1"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView22"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView22" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_menu" />
+    android:id="@+id/nav_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

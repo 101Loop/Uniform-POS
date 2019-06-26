@@ -15,7 +15,7 @@ import com.tapatuniforms.pos.model.Indent;
 import java.util.ArrayList;
 
 public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.ViewHolder> {
-    ArrayList<Indent> indentList;
+    private ArrayList<Indent> indentList;
 
     public StockIndentAdapter(ArrayList<Indent> indentList) {
         this.indentList = indentList;
@@ -31,14 +31,14 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Indent indent = indentList.get(position);
-
-        holder.indentNameView.setText(indent.getName());
-        holder.indentDateView.setText(indent.getDateTime());
-        holder.dispatchPersoneNameView.setText(indent.getDispatchPerson());
-        holder.indentNumberBox.setText("" + indent.getNumberOfBoxes() + " Boxes");
-        holder.indentBoxValue.setText("₹" + indent.getBoxValue());
-        holder.indentNumberItems.setText("" + indent.getNumberOfItems() + " Items");
+//        Indent indent = indentList.get(position);
+//
+//        holder.indentNameView.setText(indent.getName());
+//        holder.indentDateView.setText(indent.getDateTime());
+//        holder.dispatchPersoneNameView.setText(indent.getDispatchPerson());
+//        holder.indentNumberBox.setText("" + indent.getNumberOfBoxes() + " Boxes");
+//        holder.indentBoxValue.setText("₹" + indent.getBoxValue());
+//        holder.indentNumberItems.setText("" + indent.getNumberOfItems() + " Items");
     }
 
     @Override
@@ -52,12 +52,12 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            indentNameView = itemView.findViewById(R.id.indentNameView);
-            indentDateView = itemView.findViewById(R.id.indentDateView);
-            dispatchPersoneNameView = itemView.findViewById(R.id.indentDispatchPersonName);
-            indentNumberBox = itemView.findViewById(R.id.indentNumberBox);
-            indentBoxValue = itemView.findViewById(R.id.indentBoxValue);
-            indentNumberItems = itemView.findViewById(R.id.indentNumberItems);
+//            indentNameView = itemView.findViewById(R.id.indentNameView);
+//            indentDateView = itemView.findViewById(R.id.indentDateView);
+//            dispatchPersoneNameView = itemView.findViewById(R.id.indentDispatchPersonName);
+//            indentNumberBox = itemView.findViewById(R.id.indentNumberBox);
+//            indentBoxValue = itemView.findViewById(R.id.indentBoxValue);
+//            indentNumberItems = itemView.findViewById(R.id.indentNumberItems);
         }
     }
 }

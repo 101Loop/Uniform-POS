@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,7 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockIndentAdapter;
 import com.tapatuniforms.pos.adapter.StockBoxAdapter;
 import com.tapatuniforms.pos.dialog.StockItemDialog;
+import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Indent;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBoxClickListener {
-    private RecyclerView itemRecyclerView, requestRecyclerView;
+    private RecyclerView indentRecyclerView, requestRecyclerView;
     private Button requestButton;
     private ArrayList<CartItem> requestList;
     private ArrayList<Product> productList;
@@ -44,18 +46,19 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
 
     private void init(View v) {
-        itemRecyclerView = v.findViewById(R.id.itemRecyclerView);
+        indentRecyclerView = v.findViewById(R.id.indentRecyclerView);
         requestRecyclerView = v.findViewById(R.id.itemRequestRecyclerView);
 //        requestButton = v.findViewById(R.id.raiseRequestButton);
 
-        itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        itemRecyclerView.setAdapter(new StockIndentAdapter(getIndentList()));
+        indentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        indentRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
+        indentRecyclerView.setAdapter(new StockIndentAdapter(getIndentList()));
 
-        requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        StockBoxAdapter stockAdapter = new StockBoxAdapter(getBoxList());
-        requestRecyclerView.setAdapter(stockAdapter);
-
-        stockAdapter.setOnBoxClickListener(this);
+//        requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        StockBoxAdapter stockAdapter = new StockBoxAdapter(getBoxList());
+//        requestRecyclerView.setAdapter(stockAdapter);
+//
+//        stockAdapter.setOnBoxClickListener(this);
     }
 
     @Override
@@ -72,6 +75,12 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
         list.add(new Indent(1, "Indent 1", "20/May/2019 06:44 PM", "Vivek Kumar",
                 5, 2000, 260));
+        list.add(new Indent(1, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
+                9, 5200, 350));
+        list.add(new Indent(1, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
+                8, 4700, 300));
+        list.add(new Indent(1, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
+                5, 2400, 400));
         list.add(new Indent(1, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
                 9, 5200, 350));
         list.add(new Indent(1, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",

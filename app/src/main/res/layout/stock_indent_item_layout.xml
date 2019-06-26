@@ -10,76 +10,108 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:layout_marginStart="8dp"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/indentNameView"
+                    android:id="@+id/indentName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Indent 1"
-                    android:textColor="@color/black1"
-                    android:textSize="16sp"/>
+                    android:layout_weight="2"
+                    android:textSize="17sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_medium"/>
 
                 <TextView
-                    android:id="@+id/indentDispatchPersonName"
+                    android:id="@+id/indentNumberBoxes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vivek Kumar"
-                    android:layout_marginTop="8dp"
+                    android:text="2 Boxes"
                     android:textColor="@color/black3"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/indentDateView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20/Jul/2019  06:44 AM"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/black3"
-                    android:textSize="16sp"/>
+                    android:fontFamily="@font/roboto"/>
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/priceItemView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="₹2000   270 Items"
+                android:textColor="@color/colorPrimary"/>
 
-                <TextView
-                    android:id="@+id/indentNumberBox"
+            <TextView
+                android:id="@+id/senderNameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vivek Kaushik"
+                android:fontFamily="@font/roboto"/>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shipping on"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01/June/2019, 05:00PM"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5 Boxes"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/black3"
-                    android:textSize="16sp"/>
+                    android:orientation="vertical"
+                    android:layout_weight="2">
 
-                <TextView
-                    android:id="@+id/indentBoxValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="₹1000"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/black3"
-                    android:textSize="16sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Received on"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_medium"/>
 
-                <TextView
-                    android:id="@+id/indentNumberItems"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10/June/2019, 06:44PM"/>
+
+                </LinearLayout>
+
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="450 Items"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/black3"
-                    android:textSize="16sp"/>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_location_black"/>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shipping From"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Boriwali, Mumbai"/>
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>
