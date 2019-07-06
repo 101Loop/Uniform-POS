@@ -58,7 +58,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         StockBoxAdapter stockAdapter = new StockBoxAdapter(getBoxList());
         requestRecyclerView.setAdapter(stockAdapter);
 //
-//        stockAdapter.setOnBoxClickListener(this);
+        stockAdapter.setOnBoxClickListener(this);
     }
 
     @Override

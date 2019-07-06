@@ -36,6 +36,11 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.rootView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onBoxSelected();
+            }
+        });
     }
 
     @Override

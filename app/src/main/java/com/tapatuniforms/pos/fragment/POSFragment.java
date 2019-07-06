@@ -113,7 +113,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         emptyCartIcon.setOnClickListener((v) -> clearCartData());
 
         // Category Views
-        categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
+        categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         categoryAdapter.setOnCategorySelectedListener(this);
         categoryRecycler.setAdapter(categoryAdapter);
 

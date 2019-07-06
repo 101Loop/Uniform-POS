@@ -7,28 +7,74 @@
     tools:context=".fragment.POSFragment"
     android:background="@color/white3">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoryRecycler"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/productRecycler"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sideBar"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="@+id/productRecycler"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:spanCount="1"
-        tools:listitem="@layout/category_item_layout" />
+        app:layout_constraintTop_toTopOf="@+id/productRecycler">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/percentageButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:text="M"
+                    android:padding="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:background="@color/colorPrimary"
+                    android:textSize="17dp"
+                    android:textColor="@color/white1"/>
+
+                <TextView
+                    android:id="@+id/rupeeButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:text="F"
+                    android:padding="10dp"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="18dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/black1"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categoryRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/productRecycler"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:spanCount="1"
+                tools:listitem="@layout/category_item_layout" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productRecycler"
-        android:layout_width="603dp"
+        android:layout_width="520dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryRecycler"
+        app:layout_constraintStart_toEndOf="@+id/sideBar"
+        app:layout_constraintTop_toTopOf="parent"
         app:spanCount="4"
         tools:listitem="@layout/item_layout" />
 
@@ -36,6 +82,7 @@
         layout="@layout/cart_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/productRecycler"

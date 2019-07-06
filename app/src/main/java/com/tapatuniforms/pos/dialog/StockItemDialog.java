@@ -11,7 +11,6 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockBoxItemAdapter;
 
 public class StockItemDialog extends AlertDialog {
-
     public StockItemDialog(Context context) {
         super(context);
     }
