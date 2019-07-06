@@ -6,6 +6,48 @@
     android:background="#FAFAFA"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stock Details"
+        android:textColor="@color/white1"
+        android:background="@color/denim"
+        android:padding="8dp"
+        android:textSize="17dp"/>
+
+    <LinearLayout
+        android:id="@+id/fullNameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/stroke_around_rect"
+        android:padding="8dp"
+        android:weightSum="3" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/transAmountEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="start"
+            android:hint="Add Barcode"
+            android:inputType="numberDecimal"
+            android:padding="8dp"
+            android:textColor="@color/black1"
+            android:theme="@style/EditTextTheme" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Search"
+            android:textColor="@color/white1" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:textSize="17sp"
-            android:text="Item Name"/>
+            android:text="Item Name" />
 
         <TextView
             android:layout_width="80dp"
@@ -25,7 +67,7 @@
             android:textSize="17sp"
             android:layout_marginRight="8dp"
             android:gravity="center"
-            android:text="Quantity"/>
+            android:text="Quantity" />
 
         <TextView
             android:layout_width="120dp"

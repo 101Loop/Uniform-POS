@@ -36,26 +36,11 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Box box = boxList.get(position);
-
-        holder.boxNameView.setText(box.getName());
-        holder.boxSerialView.setText("#" + box.getSerialNumber());
-        holder.boxDateView.setText(box.getDateTime());
-        holder.itemTextView.setText(box.getItemsVerified() + "/" + box.getNumberOfItems());
-
-        holder.rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onBoxSelected();
-                }
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return boxList.size();
+        return 13;
     }
 
     public void setOnBoxClickListener(OnBoxClickListener listener) {
@@ -70,9 +55,7 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
             super(itemView);
             rootView = itemView;
             boxNameView = itemView.findViewById(R.id.boxNameView);
-            boxSerialView = itemView.findViewById(R.id.boxSerialView);
             itemTextView = itemView.findViewById(R.id.itemTextView);
-            boxDateView = itemView.findViewById(R.id.boxDateView);
         }
     }
 }

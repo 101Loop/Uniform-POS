@@ -54,9 +54,9 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         indentRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
         indentRecyclerView.setAdapter(new StockIndentAdapter(getIndentList()));
 
-//        requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        StockBoxAdapter stockAdapter = new StockBoxAdapter(getBoxList());
-//        requestRecyclerView.setAdapter(stockAdapter);
+        requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        StockBoxAdapter stockAdapter = new StockBoxAdapter(getBoxList());
+        requestRecyclerView.setAdapter(stockAdapter);
 //
 //        stockAdapter.setOnBoxClickListener(this);
     }
