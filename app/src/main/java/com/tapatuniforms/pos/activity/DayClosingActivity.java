@@ -32,7 +32,6 @@ public class DayClosingActivity extends AppCompatActivity implements ViewPager.O
         saleText = findViewById(R.id.saleText);
         stockReportText = findViewById(R.id.stockReport);
         closeDayText = findViewById(R.id.closeDay);
-
     }
 
     @Override

@@ -11,39 +11,51 @@
     app:layout_constraintStart_toEndOf="@+id/productRecycler"
     app:layout_constraintTop_toTopOf="parent">
 
+    <LinearLayout
+        android:id="@+id/studentIdLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/stroke_around_rect"
+        android:weightSum="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/transAmountEditText"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:layout_weight="2"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="Student ID"
+            android:inputType="numberDecimal"
+            android:textColor="@color/black1"
+            android:theme="@style/EditTextTheme" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Submit"
+            android:textColor="@color/white1" />
+    </LinearLayout>
+
     <include
         android:id="@+id/emptyCartView"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
         layout="@layout/empty_cart_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/cartRecyclerView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/emptyCartIcon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_delete_black_24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView36"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto"
-        android:text="Cart"
-        android:textColor="@color/black1"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/emptyCartIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/emptyCartIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/studentIdLayout" />
 
     <ImageView
         android:id="@+id/addDiscountButton"
@@ -56,40 +68,27 @@
         android:src="@drawable/ic_add_black_24dp"
         app:layout_constraintBottom_toTopOf="@+id/cartSeparator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/studentIdLayout" />
 
     <View
         android:id="@+id/cartSeparator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/black3"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emptyCartIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/addDiscountButton"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cartSeparator"
         tools:listitem="@layout/cart_item_layout" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/black3"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -157,9 +156,9 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/roboto_medium"
         android:text="Order Discount"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/black2"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/paymentButton"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/textView2" />
 
     <TextView
@@ -168,9 +167,43 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
         android:text="₹0"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/black2"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="@+id/taxView" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/black3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Total"
+        android:textColor="@color/black2"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/paymentButton"/>
+
+    <TextView
+        android:id="@+id/totalView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="₹0"
+        android:textColor="@color/black2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="@+id/view" />
 
     <Button
         android:id="@+id/paymentButton"
@@ -180,7 +213,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_button"
-        android:text="Charge  ₹0"
+        android:text="Place Order"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

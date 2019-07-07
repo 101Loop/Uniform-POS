@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.OtpActivity">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -68,47 +68,18 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/nameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="64dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/black3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:textColorHint="@color/black3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
-
-
-            <EditText
                 android:id="@+id/mobileEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Mobile"
                 android:inputType="phone"
                 android:textColorHint="@color/black3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:layout_width="match_parent"
@@ -119,7 +90,6 @@
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_pink_button"
                 android:fontFamily="@font/roboto"
-                android:onClick="loginClicked"
                 android:text="Login"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
@@ -127,25 +97,24 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mobileEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/mobileEditText"
+                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="2dp"
-        android:src="@drawable/ic_shirt"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView3"
-        app:layout_constraintEnd_toEndOf="@+id/cardView3"
-        app:layout_constraintStart_toStartOf="@+id/cardView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.13" />
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView5"-->
+        <!--android:layout_width="90dp"-->
+        <!--android:layout_height="90dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:elevation="2dp"-->
+        <!--android:src="@drawable/ic_shirt"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/cardView3"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/cardView3"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/cardView3" />-->
 
     <TextView
         android:id="@+id/textView37"

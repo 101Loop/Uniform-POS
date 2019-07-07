@@ -38,7 +38,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
 
-        holder.itemCount.setText(String.valueOf(cartItem.getQuantity()));
         holder.itemName.setText(cartItem.getProduct().getName());
         holder.itemSize.setText(cartItem.getProduct().getSize());
         holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPrice()));
@@ -90,7 +89,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
-            itemCount = itemView.findViewById(R.id.cartItemCount);
             itemName = itemView.findViewById(R.id.cartItemName);
             itemSize = itemView.findViewById(R.id.cartItemSize);
             itemPrice = itemView.findViewById(R.id.cartItemPrice);

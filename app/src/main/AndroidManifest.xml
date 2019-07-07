@@ -16,7 +16,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.PinSetUpActivity"/>
+        <activity android:name=".activity.OtpActivity"></activity>
+        <activity android:name=".activity.SignUpActivity" />
+        <activity android:name=".activity.PinSetUpActivity" />
         <activity
             android:name=".activity.PinLoginActivity"
             android:screenOrientation="landscape"
@@ -32,7 +34,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/FullScreen"/>
+            android:theme="@style/FullScreen" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape">

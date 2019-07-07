@@ -25,12 +25,14 @@ public class MainActivity extends AppCompatActivity {
         db = DatabaseHelper.getDatabase(this);
         ArrayList<User> userList = (ArrayList<User>) db.userDao().getAll();
 
-        if (userList.size() > 0) {
-            startActivity(new Intent(this, PinLoginActivity.class));
-            finish();
-        } else {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
+//        if (userList.size() > 0) {
+//            startActivity(new Intent(this, PinLoginActivity.class));
+//            finish();
+//        } else {
+//            startActivity(new Intent(this, LoginActivity.class));
+//            finish();
+//        }
+
+        startActivity(new Intent(this, PosActivity.class));
     }
 }

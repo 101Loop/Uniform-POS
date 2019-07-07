@@ -45,7 +45,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView;
     private Button paymentButton;
-    private TextView subTotalView, discountView, textNumberItems;
+    private TextView subTotalView, discountView, textNumberItems, totalView;
 
     private ArrayList<Category> categoryList;
     private ArrayList<Product> allProducts, productList;
@@ -56,7 +56,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private DatabaseSingleton db;
 
     private View emptyCartView;
-    private ImageView emptyCartIcon, discountButton;
+    private ImageView discountButton;
 
     private double subTotal, discount, tax, total;
     private DiscountDialog.Discount discountType = DiscountDialog.Discount.OTHER;
@@ -80,7 +80,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private void initViews(View view) {
         // Initialize Views
         emptyCartView = view.findViewById(R.id.emptyCartView);
-        emptyCartIcon = view.findViewById(R.id.emptyCartIcon);
         categoryRecycler = view.findViewById(R.id.categoryRecycler);
         productRecycler = view.findViewById(R.id.productRecycler);
         cartRecyclerView = view.findViewById(R.id.cartRecyclerView);
@@ -89,6 +88,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         textNumberItems = view.findViewById(R.id.textNumberItems);
         discountButton = view.findViewById(R.id.addDiscountButton);
         discountView = view.findViewById(R.id.discountView);
+        totalView = view.findViewById(R.id.totalView);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -110,7 +110,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      */
     private void setView() {
         // Empty Cart Icon
-        emptyCartIcon.setOnClickListener((v) -> clearCartData());
+//        emptyCartIcon.setOnClickListener((v) -> clearCartData());
 
         // Category Views
         categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -269,7 +269,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         textNumberItems.setText("(" + cartQuantity + " items)");
         discountView.setText(decimalFormatter.format(calculatedDiscount));
         total = subTotal - calculatedDiscount;
-        paymentButton.setText(decimalFormatter.format(total));
+        totalView.setText(decimalFormatter.format(total));
     }
 
     /**

@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.POSFragment"
-    android:background="@color/white3">
+    android:background="@color/white3"
+    tools:context=".fragment.POSFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/sideBar"
-        android:layout_width="70dp"
+        android:layout_width="90dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="@+id/productRecycler"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,31 +23,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp">
 
                 <TextView
                     android:id="@+id/percentageButton"
-                    android:layout_width="30dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:text="M"
-                    android:padding="10dp"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:background="@color/colorPrimary"
-                    android:textSize="17dp"
+                    android:background="@color/denim"
                     android:textColor="@color/white1"/>
 
                 <TextView
                     android:id="@+id/rupeeButton"
-                    android:layout_width="30dp"
+                    android:layout_width="0dp"
                     android:layout_height="30dp"
+                    android:layout_weight="1"
                     android:text="F"
-                    android:padding="10dp"
-                    android:paddingStart="18dp"
-                    android:paddingEnd="18dp"
-                    android:textSize="17sp"
-                    android:textColor="@color/black1"/>
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/black1"
+                    android:textSize="17sp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -66,7 +65,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productRecycler"
-        android:layout_width="520dp"
+        android:layout_width="580dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -75,7 +74,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sideBar"
         app:layout_constraintTop_toTopOf="parent"
-        app:spanCount="4"
+        app:spanCount="3"
         tools:listitem="@layout/item_layout" />
 
     <include

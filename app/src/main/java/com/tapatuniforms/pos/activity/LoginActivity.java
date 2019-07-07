@@ -27,7 +27,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private EditText nameEditText, emailEditText, mobileEditText, otpEditText;
+    private EditText nameEditText, emailEditText, mobileEditText;
     private boolean isOtpSent = false;
 
     private DatabaseSingleton db;
@@ -46,16 +46,13 @@ public class LoginActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.nameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         mobileEditText = findViewById(R.id.mobileEditText);
-        otpEditText = findViewById(R.id.otpEditText);
-
-        otpEditText.setEnabled(false);
+//        otpEditText = findViewById(R.id.otpEditText);
     }
 
     public void loginClicked(View view) {
         String name = nameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String mobileNumber = mobileEditText.getText().toString().trim();
-        String otp = otpEditText.getText().toString().trim();
 
         if (!isOtpSent) {
             if (name.length() < 3) {
@@ -78,22 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        } else {
-            if (!otp.isEmpty() && otp.length() > 4) {
-                try {
-                    JSONObject object = new JSONObject();
-                    object.put(APIStatic.Key.name, name);
-                    object.put(APIStatic.Key.email, email);
-                    object.put(APIStatic.Key.mobile, mobileNumber);
-                    object.put(APIStatic.Key.verifyOtp, otp);
-                    sendRequest(object, RequestType.VERIFY);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                otpEditText.requestFocus();
-                otpEditText.setError("Enter a Valid OTP");
-            }
         }
     }
 
@@ -112,8 +93,6 @@ public class LoginActivity extends AppCompatActivity {
                                 .show();
 
                         isOtpSent = true;
-                        otpEditText.setEnabled(true);
-                        otpEditText.requestFocus();
                     } else {
                         UserSharedPreferenceAdapter usrAdap = new UserSharedPreferenceAdapter(this);
                         String token = response.optString(APIStatic.Key.token);
