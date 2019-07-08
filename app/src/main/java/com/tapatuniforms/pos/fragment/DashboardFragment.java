@@ -76,8 +76,6 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
             case R.id.inventoryScreen:
                 fragment = new InventoryFragment();
                 break;
-            case R.id.settingsScreen:
-                break;
         }
 
         if (fragment != null) {

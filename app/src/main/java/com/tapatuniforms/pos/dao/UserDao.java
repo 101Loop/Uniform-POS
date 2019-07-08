@@ -25,6 +25,9 @@ public interface UserDao {
     @Insert
     long insert(User user);
 
+    @Query("UPDATE user SET token=:token WHERE mobile = :mobile")
+    void updateToken(String mobile, String token);
+
     @Query("UPDATE user SET pin=:pin WHERE id = :id")
     void setPin(long id, String pin);
 

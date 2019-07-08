@@ -12,117 +12,81 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.civilmachines.drfapi.DjangoJSONObjectRequest;
-import com.civilmachines.drfapi.UserSharedPreferenceAdapter;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
-import com.tapatuniforms.pos.helper.DatabaseHelper;
-import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.AppStatic;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
-import com.tapatuniforms.pos.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private EditText nameEditText, emailEditText, mobileEditText;
+    private EditText destinationView;
     private boolean isOtpSent = false;
-
-    private DatabaseSingleton db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        db = DatabaseHelper.getDatabase(this);
-
         init();
     }
 
     private void init() {
-        nameEditText = findViewById(R.id.nameEditText);
-        emailEditText = findViewById(R.id.emailEditText);
-        mobileEditText = findViewById(R.id.mobileEditText);
-//        otpEditText = findViewById(R.id.otpEditText);
+        destinationView = findViewById(R.id.destinationView);
     }
 
     public void loginClicked(View view) {
-        String name = nameEditText.getText().toString().trim();
-        String email = emailEditText.getText().toString().trim();
-        String mobileNumber = mobileEditText.getText().toString().trim();
+        String destination = destinationView.getText().toString().trim();
 
-        if (!isOtpSent) {
-            if (name.length() < 3) {
-                nameEditText.requestFocus();
-                nameEditText.setError("Name not valid");
-            } else if (!Validator.isValidEmail(email) || email.isEmpty()) {
-                emailEditText.requestFocus();
-                emailEditText.setError("Email not valid");
-            } else if (!Validator.isValidMobile(mobileNumber) || mobileNumber.isEmpty()) {
-                mobileEditText.requestFocus();
-                mobileEditText.setError("Mobile Number not valid");
-            } else {
-                try {
-                    JSONObject object = new JSONObject();
-                    object.put(APIStatic.Key.name, name);
-                    object.put(APIStatic.Key.email, email);
-                    object.put(APIStatic.Key.mobile, mobileNumber);
-                    sendRequest(object, RequestType.SEND);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        if (destination.length() < 5) {
+            destinationView.requestFocus();
+            destinationView.setError("Invalid value");
+        } else {
+            try {
+                sendRequest(destination);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private void sendRequest(JSONObject requestObject, RequestType requestType) {
+    private void sendRequest(String destination) throws JSONException {
         if (!Validator.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             return;
         }
 
+        JSONObject requestObject = new JSONObject();
+        requestObject.put(APIStatic.Key.isLogin, true);
+        requestObject.put(APIStatic.Key.destination, destination);
+
+        Log.d(TAG, "sendRequest: " + requestObject);
+
         DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
-                Request.Method.POST, APIStatic.User.otpRegLoginURL, requestObject,
+                Request.Method.POST, APIStatic.User.loginOTPURL, requestObject,
                 response -> {
                     // Response Received
-                    if (requestType.equals(RequestType.SEND)) {
-                        Toast.makeText(getApplicationContext(), "OTP Sent", Toast.LENGTH_SHORT)
-                                .show();
 
-                        isOtpSent = true;
-                    } else {
-                        UserSharedPreferenceAdapter usrAdap = new UserSharedPreferenceAdapter(this);
-                        String token = response.optString(APIStatic.Key.token);
-                        usrAdap.saveToken(token);
+                    Toast.makeText(getApplicationContext(), "OTP Sent", Toast.LENGTH_SHORT)
+                            .show();
 
-                        long id = db.userDao().insert(new User(token));
-
-                        Intent intent = new Intent(this, PinSetUpActivity.class);
-                        intent.putExtra("id", id);
-                        startActivity(intent);
-                        finish();
-                    }
-                }, new APIErrorListener(this) {
-            @Override
-            public void onBadRequestError(JSONObject response) {
-                if (!response.optString("non_field_errors").equals("")) {
-                    Toast.makeText(getApplicationContext(), response.optString("non_field_errors"),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Bad Request", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, this);
+                    Intent intent = new Intent(this, OtpActivity.class);
+                    intent.putExtra(AppStatic.mobile, destination);
+                    intent.putExtra(AppStatic.isLogin, true);
+                    startActivity(intent);
+                }, new APIErrorListener(this), this);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(this).getRequestQueue().add(request);
     }
 
-    private enum RequestType {
-        SEND, VERIFY
+    public void signUpClicked(View view) {
+        startActivity(new Intent(this, SignUpActivity.class));
+        finish();
     }
 }

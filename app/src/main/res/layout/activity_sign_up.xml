@@ -18,6 +18,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:background="@drawable/rounded_login_background"
+        android:text="Sign Up"
+        android:textColor="@color/white1"
+        app:layout_constraintEnd_toStartOf="@+id/textView36"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView36"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="Login"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="loginClicked"
+        android:textColor="@color/white1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <LinearLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
@@ -119,8 +147,10 @@
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_pink_button"
                 android:fontFamily="@font/roboto"
-                android:onClick="loginClicked"
-                android:text="Login"
+                android:onClick="SignUpClicked"
+                android:text="Sign Up"
+                android:clickable="true"
+                android:focusable="true"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"

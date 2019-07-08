@@ -18,6 +18,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="Sign Up"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="signUpClicked"
+        android:textColor="@color/white1"
+        app:layout_constraintEnd_toStartOf="@+id/textView36"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView36"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_login_background"
+        android:gravity="center"
+        android:text="Login"
+        android:textColor="@color/white1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    
     <LinearLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
@@ -68,54 +95,27 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/nameEditText"
+                android:id="@+id/destinationView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="64dp"
                 android:layout_marginEnd="16dp"
-                android:hint="Name"
-                android:inputType="textPersonName"
+                android:hint="Email or mobile number"
+                android:inputType="text"
                 android:textColorHint="@color/black3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:textColorHint="@color/black3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
-
-
-            <EditText
-                android:id="@+id/mobileEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Mobile"
-                android:inputType="phone"
-                android:textColorHint="@color/black3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
             <Button
+                android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_pink_button"
                 android:fontFamily="@font/roboto"
@@ -128,7 +128,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mobileEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/destinationView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
@@ -139,13 +139,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:elevation="2dp"
         android:src="@drawable/ic_shirt"
         app:layout_constraintBottom_toBottomOf="@+id/cardView3"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintStart_toStartOf="@+id/cardView3"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/textView37"

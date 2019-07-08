@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -111,5 +112,11 @@ public class User {
 
     public void setLastLogin(String lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name;
     }
 }

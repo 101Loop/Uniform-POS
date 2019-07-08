@@ -16,17 +16,18 @@ import android.view.ViewGroup;
 
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.InventoryAdapter;
+import com.tapatuniforms.pos.adapter.InventoryOrderAdapter;
 import com.tapatuniforms.pos.dialog.InventoryDialog;
 import com.tapatuniforms.pos.model.InventoryItem;
 
 import java.util.ArrayList;
 
 public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener {
-    RecyclerView inventoryRecyclerView;
-    InventoryAdapter adapter;
+    private RecyclerView inventoryRecyclerView, recommendedRecyclerView;
+    private InventoryAdapter adapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
         init(view);
@@ -38,6 +39,11 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         inventoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new InventoryAdapter(getItemList());
         inventoryRecyclerView.setAdapter(adapter);
+
+        recommendedRecyclerView = view.findViewById(R.id.recommendedRecyclerView);
+        recommendedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        recommendedRecyclerView.setAdapter(new InventoryOrderAdapter());
 
         adapter.setOnClickListener(this);
     }

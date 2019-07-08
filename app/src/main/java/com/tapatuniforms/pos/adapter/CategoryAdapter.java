@@ -3,7 +3,7 @@ package com.tapatuniforms.pos.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Category category = categoryList.get(position);
 
-        holder.categoryButton.setText(category.getName());
+
         holder.categoryButton.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onCategorySelected(category);
@@ -57,13 +57,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView categoryButton;
         View rootView;
+        ImageView categoryButton;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
-            categoryButton = itemView.findViewById(R.id.categoryButton);
 
+            categoryButton = itemView.findViewById(R.id.categoryImage);
         }
     }
 }

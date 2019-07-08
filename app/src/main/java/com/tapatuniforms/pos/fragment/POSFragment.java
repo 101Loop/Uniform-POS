@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +22,6 @@ import com.tapatuniforms.pos.adapter.ProductAdapter;
 import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.dialog.DiscountDialog;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
-import com.tapatuniforms.pos.dialog.UserDetailDialog;
 import com.tapatuniforms.pos.helper.DataHelper;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
@@ -68,7 +66,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         View view = inflater.inflate(R.layout.fragment_product, container, false);
 
         initViews(view);
-        showUserDialog();
 
         return view;
     }
@@ -166,18 +163,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     }
 
     /**
-     * This method will Show User Dialog
-     */
-    private void showUserDialog() {
-        UserDetailDialog dialog = new UserDetailDialog(getContext());
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
-                LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    }
-
-    /**
      * This method will create a Discount Dialog
      */
     private void showDiscountDialog() {
@@ -214,7 +199,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         dialog.setOnOrderCompleteListener(transactionList -> {
             orderCompleted(transactionList);
             dialog.dismiss();
-            showUserDialog();
         });
         Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
                 LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);

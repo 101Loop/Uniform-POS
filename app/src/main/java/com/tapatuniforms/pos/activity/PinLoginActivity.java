@@ -1,33 +1,24 @@
 package com.tapatuniforms.pos.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.civilmachines.drfapi.UserSharedPreferenceAdapter;
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.adapter.UserListAdapter;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
-import com.tapatuniforms.pos.helper.ViewHelper;
 import com.tapatuniforms.pos.model.User;
 
 import java.util.ArrayList;
 
 public class PinLoginActivity extends AppCompatActivity {
-    private View listView, loginView;
-    private RecyclerView userListView;
-    private EditText pinEditText;
-    private ImageView backButton;
-    private Button loginButton;
-    private TextView addNewUser;
+    private static final String TAG = "PinLoginActivity";
+    private Spinner userSpinner;
 
     private ArrayList<User> userList;
     private User user;
@@ -45,62 +36,37 @@ public class PinLoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        listView = findViewById(R.id.listView);
-        loginView = findViewById(R.id.loginView);
-        userListView = findViewById(R.id.loginRecyclerView);
-        pinEditText = findViewById(R.id.pinEditText);
-        backButton = findViewById(R.id.backButton);
-        loginButton = findViewById(R.id.loginButton);
-        addNewUser = findViewById(R.id.addNewUser);
+        userSpinner = findViewById(R.id.userSpinner);
 
         setUp();
     }
 
     private void setUp() {
-        // Hide Login View initially
-        ViewHelper.hideView(loginView);
-
-        userListView.setLayoutManager(new LinearLayoutManager(this));
         userList = (ArrayList<User>) db.userDao().getAll();
-        UserListAdapter adapter = new UserListAdapter(userList);
-        userListView.setAdapter(adapter);
-        adapter.setOnUserSelectedListener((user) -> {
-            ViewHelper.hideView(listView);
-            ViewHelper.showView(loginView);
-            this.user = user;
-
-            if (user.getPin().isEmpty()) {
-                Intent intent = new Intent(this, PinSetUpActivity.class);
-                intent.putExtra("id", user.getId());
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        backButton.setOnClickListener((v) -> {
-            ViewHelper.hideView(loginView);
-            ViewHelper.showView(listView);
-            user = null;
-        });
-
-        loginButton.setOnClickListener((v) -> handleLoginClick());
-
-        addNewUser.setOnClickListener((v) -> {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        });
+        ArrayAdapter<User> spinnerAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, userList);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userSpinner.setAdapter(spinnerAdapter);
     }
 
-    private void handleLoginClick() {
-        String pin = pinEditText.getText().toString().trim();
+    public void loginButtonClicked(View view) {
+        User user = (User) userSpinner.getSelectedItem();
 
-        if (!pin.equals(user.getPin())) {
-            pinEditText.requestFocus();
-            pinEditText.setError("Pin didn't match");
-        } else {
+        if (user != null) {
+            UserSharedPreferenceAdapter usrAdap = new UserSharedPreferenceAdapter(this);
+            usrAdap.saveToken(user.getToken());
             startActivity(new Intent(this, PosActivity.class));
             finish();
         }
     }
 
+    public void loginClicked(View view) {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    public void signUpClicked(View view) {
+        startActivity(new Intent(this, SignUpActivity.class));
+        finish();
+    }
 }

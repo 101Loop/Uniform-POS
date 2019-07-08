@@ -83,8 +83,6 @@ public class PosActivity extends AppCompatActivity implements
             case R.id.inventoryScreen:
                 fragment = new InventoryFragment();
                 break;
-            case R.id.settingsScreen:
-                break;
         }
 
         if (fragment != null) fragmentManager.beginTransaction()
