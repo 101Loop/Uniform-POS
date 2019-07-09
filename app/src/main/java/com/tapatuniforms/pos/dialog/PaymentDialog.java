@@ -67,7 +67,6 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
 
         paid = 0;
         transAmountEditText.setText("" + total);
-
     }
 
     private ArrayList<String> getPaymentList() {

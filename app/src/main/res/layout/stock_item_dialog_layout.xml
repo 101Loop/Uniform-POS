@@ -18,7 +18,7 @@
         android:id="@+id/fullNameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         android:background="@drawable/stroke_around_rect"
         android:padding="2dp"
         android:weightSum="3" >
@@ -46,56 +46,71 @@
             android:textColor="@color/white1" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="800dp"
+
+    <TableLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:padding="8dp"
-        android:background="@color/denim">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
-        <TextView
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textSize="17sp"
-            android:textColor="@color/white1"
-            android:text="Items" />
+        <TableRow
+            android:background="@color/denim"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="50dp"/>
 
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="17sp"
-            android:textColor="@color/white1"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:text="Items No." />
+            <TextView
+                android:layout_width="200dp"
+                android:text="Items"
+                android:textColor="@color/white1"/>
 
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="17sp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/white1"
-            android:text="Items Scanned"/>
+            <TextView
+                android:layout_width="80dp"
+                android:text="Items No."
+                android:textColor="@color/white1"/>
 
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="end"
-            android:textColor="@color/white1"
-            android:textSize="17sp"
-            android:text="Move to Shelf"/>
+            <TextView
+                android:layout_width="120dp"
+                android:text="Items Scanned"
+                android:textColor="@color/white1"/>
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="120dp"
+                android:text="Items in Shelf"
+                android:textColor="@color/white1"/>
+
+            <TextView
+                android:layout_width="150dp"
+                android:text="Move to Shelf"
+                android:textColor="@color/white1"/>
+
+            <TextView
+                android:layout_width="200dp"/>
+        </TableRow>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            tools:listitem="@layout/stock_list_item_layout"/>
+    </TableLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/stock_list_item_layout"/>
+        android:layout_margin="16dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+        
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="Close"
+            android:layout_gravity="end"
+            android:textColor="@color/white1"
+            android:background="@drawable/rounded_button_grey"
+            android:textAllCaps="false"/>
+    </LinearLayout>
 </LinearLayout>

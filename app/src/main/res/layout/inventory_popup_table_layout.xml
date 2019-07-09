@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/sizeView"
+        android:layout_width="120dp"
+        android:background="@drawable/stroke_rectangle"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="22"
+        android:textColor="@color/black1"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/stockNumberView"
+        android:layout_width="120dp"
+        android:background="@drawable/stroke_rectangle"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="00"
+        android:textColor="@color/black1"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_height="38dp"
+        android:background="@drawable/stroke_rectangle"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/minusButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/darker_gray"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/itemQuantityView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="02" />
+
+            <TextView
+                android:id="@+id/plusButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@android:color/darker_gray"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/itemQuantityEditText"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/stroke_around_rect"
+            android:inputType="number"
+            android:gravity="center"
+            android:text="03" />
+    </LinearLayout>
+
+</TableRow>

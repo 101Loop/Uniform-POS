@@ -1,95 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:background="#FFFFFF"
-    android:padding="8dp"
-    android:layout_margin="8dp">
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+
+    <ImageView
+        android:id="@+id/itemCheckedStatus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:src="@drawable/ic_check_grey_24" />
+
+    <TextView
+        android:id="@+id/itemNameView"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Item Name"
+        android:textColor="@color/black2" />
+
+
+    <TextView
+        android:id="@+id/itemSentView"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="start"
+        android:text="120"
+        android:textColor="@color/black1" />
+
+    <TextView
+        android:id="@+id/itemScannedView"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="start"
+        android:text="100"
+        android:textColor="@color/black1" />
+
+    <TextView
+        android:id="@+id/itemShelfView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="start"
+        android:text="10"
+        android:textColor="@color/black1" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_margin="8dp">
-
-        <ImageView
-            android:id="@+id/itemCheckedStatus"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_check_grey_24"/>
-
-        <TextView
-            android:id="@+id/itemNameView"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textSize="17sp"
-            android:textColor="@color/black2"
-            android:text="Item Name"
-            android:layout_gravity="center"/>
-
-
-        <TextView
-            android:id="@+id/itemSentView"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="17sp"
-            android:layout_gravity="center"
-            android:gravity="start"
-            android:textColor="@color/black1"
-            android:text="100"/>
-
-        <TextView
-            android:id="@+id/itemScannedView"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="17sp"
-            android:layout_gravity="center"
-            android:gravity="start"
-            android:textColor="@color/black1"
-            android:text="100"/>
-
-        <TextView
-            android:id="@+id/itemShelfView"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="17sp"
-            android:layout_gravity="center"
-            android:gravity="start"
-            android:textColor="@color/black1"
-            android:text="10"/>
+        android:layout_width="150dp"
+        android:layout_gravity="center">
 
         <EditText
             android:id="@+id/itemReceivedView"
-            android:layout_width="120dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
-            android:background="@android:color/transparent"
+            android:layout_weight="1"
+            android:background="@drawable/stroke_around_rect"
             android:gravity="center"
-            android:textSize="17sp"
+            android:text="54"
             android:textColor="@color/black1"
-            android:text="54"/>
-        
+            android:textSize="17sp" />
+
         <Button
             android:layout_width="70dp"
             android:layout_height="30dp"
-            android:text="Move"
-            android:textColor="@color/white1"
+            android:layout_margin="8dp"
             android:background="@color/denim"
-            android:layout_margin="8dp"/>
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="All Items are matched"
-            android:layout_gravity="center"
-            android:textColor="@color/green"/>
+            android:text="Move"
+            android:textColor="@color/white1" />
+
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="All Items are matched"
+        android:textColor="@color/green" />
+</TableRow>
