@@ -4,6 +4,7 @@
     <!--<color name="colorPrimaryDark">#00574B</color>-->
     <color name="colorPrimaryDark">#4657DB</color>
     <color name="colorAccent">#684EC5</color>
+    <color name="lightBlue">#D3DAF5</color>
 
     <color name="black">#000000</color>
     <color name="black1">#252E39</color>
@@ -24,4 +25,5 @@
     <color name="denim">#005EB8</color>
     <color name="green">#289417</color>
     <color name="red">#F22F2F</color>
+    <color name="blueButton">#5068C2</color>
 </resources>

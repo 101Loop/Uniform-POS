@@ -1,9 +1,11 @@
 package com.tapatuniforms.pos.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tapatuniforms.pos.R;
@@ -12,6 +14,9 @@ import com.tapatuniforms.pos.adapter.DayClosingPagerAdapter;
 public class DayClosingActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private TextView saleText, stockReportText, closeDayText;
     private ViewPager viewPager;
+    private LinearLayout saleSummaryLayout;
+    private LinearLayout stockReportLayout;
+    private LinearLayout closeDayLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,9 @@ public class DayClosingActivity extends AppCompatActivity implements ViewPager.O
         saleText = findViewById(R.id.saleText);
         stockReportText = findViewById(R.id.stockReport);
         closeDayText = findViewById(R.id.closeDay);
+        saleSummaryLayout = findViewById(R.id.saleSummaryLayout);
+        stockReportLayout = findViewById(R.id.stockReportLayout);
+        closeDayLayout = findViewById(R.id.closeDayLayout);
     }
 
     @Override
@@ -45,15 +53,22 @@ public class DayClosingActivity extends AppCompatActivity implements ViewPager.O
         stockReportText.setTextColor(getResources().getColor(R.color.black3));
         closeDayText.setTextColor(getResources().getColor(R.color.black3));
 
+        saleSummaryLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        stockReportLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        closeDayLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
         switch (position) {
             case 0:
-                saleText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                saleSummaryLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow));
+                saleText.setTextColor(getResources().getColor(R.color.white1));
                 break;
             case 1:
-                stockReportText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                stockReportLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow));
+                stockReportText.setTextColor(getResources().getColor(R.color.white1));
                 break;
             case 2:
-                closeDayText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                closeDayLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow));
+                closeDayText.setTextColor(getResources().getColor(R.color.white1));
                 break;
         }
     }

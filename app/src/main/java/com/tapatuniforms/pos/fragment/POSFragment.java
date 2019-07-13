@@ -1,20 +1,30 @@
 package com.tapatuniforms.pos.fragment;
 
+import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
@@ -43,6 +53,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView;
     private Button paymentButton;
+    private Button addDetailsButton;
     private TextView subTotalView, discountView, textNumberItems, totalView;
 
     private ArrayList<Category> categoryList;
@@ -72,6 +83,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     /**
      * This method will initialize Views and variables
+     *
      * @param view inflated Root View
      */
     private void initViews(View view) {
@@ -86,6 +98,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         discountButton = view.findViewById(R.id.addDiscountButton);
         discountView = view.findViewById(R.id.discountView);
         totalView = view.findViewById(R.id.totalView);
+        addDetailsButton = view.findViewById(R.id.addDetailsButton);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -130,9 +143,80 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         discountButton.setOnClickListener((v) -> showDiscountDialog());
 
+        //add details button
+        addDetailsButton.setOnClickListener(view -> {
+            showAddDetailsDialog();
+        });
+
         // Fetch Data
         DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
         DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter);
+    }
+
+    private void showAddDetailsDialog() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog dialog = alertDialog.create();
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_student_details_layout, null);
+        dialog.setView(view);
+
+        final EditText studentIDText = view.findViewById(R.id.studentIDText);
+        final EditText studentNameText = view.findViewById(R.id.studentNameText);
+        final EditText classText = view.findViewById(R.id.classText);
+        final EditText sectionText = view.findViewById(R.id.sectionText);
+        final EditText fatherNameText = view.findViewById(R.id.fatherNameText);
+        final EditText phoneText = view.findViewById(R.id.phoneText);
+        final EditText emailText = view.findViewById(R.id.emailText);
+
+        //just in case,, error is to be generated
+        final TextInputLayout studentIDLayout = view.findViewById(R.id.studentIDInputLayout);
+        final TextInputLayout studentNameLayout = view.findViewById(R.id.studentNameInputLayout);
+        final TextInputLayout classLayout = view.findViewById(R.id.classInputLayout);
+        final TextInputLayout sectionLayout = view.findViewById(R.id.sectionInputLayout);
+        final TextInputLayout fatherNameLayout = view.findViewById(R.id.fatherNameInputLayout);
+        final TextInputLayout phoneLayout = view.findViewById(R.id.phoneInputLayout);
+        final TextInputLayout emailLayout = view.findViewById(R.id.emailInputLayout);
+
+        final RadioButton maleRadio = view.findViewById(R.id.maleRadio);
+        final RadioButton femaleRadio = view.findViewById(R.id.femaleRadio);
+
+        final CardView addDetailsCard = view.findViewById(R.id.addDetailsButton);
+        final CardView closeCard = view.findViewById(R.id.closeButton);
+
+        if (addDetailsCard != null) {
+            addDetailsCard.setOnClickListener(view1 -> {
+                String studentID = studentIDText.getText().toString();
+                String studentName = studentNameText.getText().toString();
+                String classStr = classText.getText().toString();
+                String section = sectionText.getText().toString();
+                String fatherName = fatherNameText.getText().toString();
+                String phone = phoneText.getText().toString();
+                String email = emailText.getText().toString();
+                String gender;
+
+                if (maleRadio != null && femaleRadio != null) {
+                    if (maleRadio.isChecked()) {
+                        gender = "male";
+                    }else{
+                        gender = "female";
+                    }
+                }
+            });
+        }
+
+        if (closeCard != null) {
+            Log.d(TAG, "close card!!");
+            closeCard.setOnClickListener(view1 -> {
+                Log.d(TAG, "card closed");
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     /**
@@ -150,7 +234,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     public void onCategorySelected(Category category) {
         productList.clear();
 
-        for(Product product: allProducts) {
+        for (Product product : allProducts) {
             if (product.getCategory() == category.getApiId()) {
                 productList.add(product);
             }
@@ -170,7 +254,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
         Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
-                LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         dialog.setOnDiscountChangeListener((type, amount) -> {
@@ -201,7 +285,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             dialog.dismiss();
         });
         Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
-                LayoutParams.FLAG_NOT_FOCUSABLE  | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
@@ -215,7 +299,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         ArrayList<SubOrder> subOrderList = new ArrayList<>();
 
-        for (CartItem cartItem: cartList) {
+        for (CartItem cartItem : cartList) {
             Product product = cartItem.getProduct();
             subOrderList.add(new SubOrder(0, product.getName(), product.getApiId(),
                     product.getSku(), product.getPrice(), cartItem.getQuantity(),
@@ -245,7 +329,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 calculatedDiscount = discount;
                 break;
             case PERCENTAGE:
-                calculatedDiscount = (subTotal * discount)/100;
+                calculatedDiscount = (subTotal * discount) / 100;
                 break;
         }
 
@@ -265,7 +349,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         public void onProductClicked(Product product) {
             ViewHelper.hideView(emptyCartView);
 
-            for (CartItem cartItem: cartList) {
+            for (CartItem cartItem : cartList) {
                 if (cartItem.getId() == product.getApiId()) {
                     cartItem.setQuantity(cartItem.getQuantity() + 1);
                     cartAdapter.notifyDataSetChanged();

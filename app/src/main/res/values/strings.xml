@@ -13,4 +13,22 @@
     <string name="no_network">No connection to the internet</string>
     <string name="login_substring">Lorem Ipsum dolor sit amet, consectour adipcing elit. Curabitur mollis purus et sem lobortis condimenturm</string>
     <string name="login_heading">Welcome to\nPoint of Sale App</string>
+    <string name="size">Size</string>
+    <string name="display">Display</string>
+    <string name="add_to_order">Add to Order</string>
+    <string name="share">Share</string>
+    <string name="next">Next</string>
+    <string name="add_student_details">Add Student Details</string>
+    <string name="student_id">Student ID</string>
+    <string name="student_name">Student Name</string>
+    <string name="class_str">Class</string>
+    <string name="section">Section</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="father_s_name">Father\'s Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email">Email ID</string>
+    <string name="add_details">Add Details</string>
+    <string name="close">Close</string>
 </resources>
