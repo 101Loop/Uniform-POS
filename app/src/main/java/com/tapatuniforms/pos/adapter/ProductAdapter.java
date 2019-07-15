@@ -1,13 +1,12 @@
 package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static com.tapatuniforms.pos.helper.ImageHelper.decodeSampledBitmapFromResource;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private static final String TAG = "ProductAdapter";
@@ -58,6 +55,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 listener.onProductClicked(product);
             }
         });
+
+        holder.closeButton.setOnClickListener(view -> {
+            holder.sizeLayout.setVisibility(View.GONE);
+        });
+
+        holder.addToCartButton.setOnClickListener(view -> {
+            holder.sizeLayout.setVisibility(View.VISIBLE);
+        });
     }
 
     @Override
@@ -93,12 +98,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         View rootView;
         ImageView productImage;
         TextView productName;
+        TextView closeButton;
+        RelativeLayout sizeLayout;
+        Button addToCartButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
             productImage = itemView.findViewById(R.id.productImageView);
             productName = itemView.findViewById(R.id.productName);
+            closeButton = itemView.findViewById(R.id.closeButton);
+            sizeLayout = itemView.findViewById(R.id.sizeLayout);
+            addToCartButton = itemView.findViewById(R.id.addToCartButton);
         }
     }
 }

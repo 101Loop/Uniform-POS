@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.model.CartItem;
 
 import java.text.DecimalFormat;
@@ -18,7 +19,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private static final String TAG = "CartAdapter";
 
     private ArrayList<CartItem> cartList;
-    private CartItemListener listener;
+    private CartItemDialog.CartItemDialogListener listener;
 
     public CartAdapter(ArrayList<CartItem> cartList) {
         this.cartList = cartList;
@@ -42,9 +43,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.itemSize.setText(cartItem.getProduct().getSize());
         holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPrice()));
 
-        holder.rootView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onCartItemClicked(cartItem);
+        holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
+
+        holder.addButton.setOnClickListener(v -> {
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
+            listener.onDoneButtonClicked();
+        });
+
+        holder.minusButton.setOnClickListener(v -> {
+            if (cartItem.getQuantity() > 1) {
+                cartItem.setQuantity(cartItem.getQuantity() - 1);
+                holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
+                listener.onDoneButtonClicked();
             }
         });
     }
@@ -67,24 +78,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
      * Sets the item click listener on CartItems
      * @param listener CartItemListener
      */
-    public void setOnClickListener(CartItemListener listener) {
+    public void setOnClickListener(CartItemDialog.CartItemDialogListener listener) {
         this.listener = listener;
-    }
-
-    /**
-     * Interface for Item Click Listener
-     */
-    public interface CartItemListener {
-        /**
-         * Callback method for item click listener for a cart item
-         * @param item CartItem that was clicked
-         */
-        void onCartItemClicked(CartItem item);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View rootView;
-        TextView itemName, itemCount, itemSize, itemPrice, itemDiscount;
+        TextView itemName, itemSize, itemPrice, itemDiscount, minusButton, addButton, quantityText;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +93,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             itemSize = itemView.findViewById(R.id.cartItemSize);
             itemPrice = itemView.findViewById(R.id.cartItemPrice);
             itemDiscount = itemView.findViewById(R.id.cartItemDiscount);
+            minusButton = itemView.findViewById(R.id.minusButton);
+            addButton = itemView.findViewById(R.id.addButton);
+            quantityText = itemView.findViewById(R.id.quantity);
         }
     }
 }

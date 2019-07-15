@@ -21,13 +21,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/stroke_around_rect"
             android:weightSum="3"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonLayout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
@@ -58,7 +58,7 @@
             android:id="@+id/buttonLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_margin="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -67,6 +67,7 @@
                 android:id="@+id/addDetailsButton"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/success"
                 android:text="@string/add_details"
                 android:textColor="@color/white1" />
@@ -85,31 +86,58 @@
         app:layout_constraintStart_toStartOf="@+id/cartRecyclerView"
         app:layout_constraintTop_toBottomOf="@+id/studentIdLayout" />
 
-    <ImageView
-        android:id="@+id/addDiscountButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_discount"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/cartSeparator"
-        app:layout_constraintEnd_toStartOf="@+id/addCartButton"
-        app:layout_constraintTop_toBottomOf="@+id/studentIdLayout" />
+        app:layout_constraintEnd_toStartOf="@+id/cardButtonLayout"
+        app:layout_constraintTop_toBottomOf="@+id/studentIdLayout">
 
-    <ImageView
-        android:id="@+id/addCartButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_cart"
+        <ImageView
+            android:id="@+id/addDiscountButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_discount" />
+
+        <TextView
+            android:id="@+id/discountNotification"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/cart_notification"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white1"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cardButtonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/cartSeparator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/studentIdLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/studentIdLayout">
+
+        <ImageView
+            android:id="@+id/addCartButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_cart" />
+
+        <TextView
+            android:id="@+id/cartNotification"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/cart_notification"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white1"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
     <View
         android:id="@+id/cartSeparator"
@@ -118,7 +146,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addCartButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/cardButtonLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"

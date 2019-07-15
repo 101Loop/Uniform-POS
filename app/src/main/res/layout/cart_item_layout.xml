@@ -89,6 +89,7 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/minusButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:background="@color/greyLight"
@@ -98,14 +99,16 @@
                     android:textColor="@color/black" />
 
                 <TextView
+                    android:id="@+id/quantity"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:fontFamily="@font/roboto"
                     android:gravity="center"
-                    android:text="3"
+                    android:text="1"
                     android:textColor="@color/black" />
 
                 <TextView
+                    android:id="@+id/addButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:background="@color/greyLight"

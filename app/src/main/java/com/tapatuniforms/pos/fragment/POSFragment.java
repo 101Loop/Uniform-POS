@@ -54,7 +54,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView;
     private Button paymentButton;
     private Button addDetailsButton;
-    private TextView subTotalView, discountView, textNumberItems, totalView;
+    private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView;
 
     private ArrayList<Category> categoryList;
     private ArrayList<Product> allProducts, productList;
@@ -99,6 +99,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         discountView = view.findViewById(R.id.discountView);
         totalView = view.findViewById(R.id.totalView);
         addDetailsButton = view.findViewById(R.id.addDetailsButton);
+        maleView = view.findViewById(R.id.maleButton);
+        femaleView = view.findViewById(R.id.femaleButton);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -136,7 +138,18 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         // Cart Views
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         cartRecyclerView.setAdapter(cartAdapter);
-        cartAdapter.setOnClickListener(new CartItemsListener());
+        cartAdapter.setOnClickListener(new CartItemDialog.CartItemDialogListener() {
+            @Override
+            public void onDoneButtonClicked() {
+                cartAdapter.notifyDataSetChanged();
+                updatePriceView();
+            }
+
+            @Override
+            public void onRemoveButtonClicked(CartItem item) {
+
+            }
+        });
 
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
@@ -146,6 +159,23 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         //add details button
         addDetailsButton.setOnClickListener(view -> {
             showAddDetailsDialog();
+        });
+
+        //gender button
+        maleView.setOnClickListener(view -> {
+            maleView.setBackgroundColor(getResources().getColor(R.color.denim));
+            maleView.setTextColor(getResources().getColor(R.color.white1));
+
+            femaleView.setBackgroundColor(getResources().getColor(R.color.white1));
+            femaleView.setTextColor(getResources().getColor(R.color.black1));
+        });
+
+        femaleView.setOnClickListener(view -> {
+            femaleView.setBackgroundColor(getResources().getColor(R.color.denim));
+            femaleView.setTextColor(getResources().getColor(R.color.white1));
+
+            maleView.setBackgroundColor(getResources().getColor(R.color.white1));
+            maleView.setTextColor(getResources().getColor(R.color.black1));
         });
 
         // Fetch Data
@@ -361,42 +391,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             cartList.add(new CartItem(product.getApiId(), 1, product));
             cartAdapter.notifyDataSetChanged();
             updatePriceView();
-        }
-    }
-
-    /**
-     * This class extends the CartItemListener interface and will handle the item click inside
-     * the cart.
-     */
-    class CartItemsListener implements CartAdapter.CartItemListener {
-
-        @Override
-        public void onCartItemClicked(CartItem item) {
-            final CartItemDialog dialog = new CartItemDialog(getContext(), item);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-
-            dialog.setOnButtonClickListener(new CartItemDialog.CartItemDialogListener() {
-                @Override
-                public void onDoneButtonClicked() {
-                    cartAdapter.notifyDataSetChanged();
-                    updatePriceView();
-                    dialog.dismiss();
-                }
-
-                @Override
-                public void onRemoveButtonClicked(CartItem item) {
-                    cartList.remove(item);
-                    cartAdapter.loadNewData(cartList);
-
-                    if (cartList.size() < 1) {
-                        emptyCartView.setVisibility(View.VISIBLE);
-                    }
-
-                    updatePriceView();
-                    dialog.dismiss();
-                }
-            });
         }
     }
 }
