@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -10,71 +11,110 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="7"
-                android:layout_margin="8dp">
-
-                <TextView
-                    android:id="@+id/cartItemName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:text="Shirt Type 1 (Size: 22)"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/black1"/>
-
-                <TextView
-                    android:id="@+id/cartItemSize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Small"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/denim"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="3"
-                android:layout_margin="8dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="7"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/cartItemPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Blue"
-                        android:gravity="end"
-                        android:textSize="16sp"
+                        android:id="@+id/cartItemName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="@color/denim"/>
+                        android:text="Shirt Type 1 (Size: 22)"
+                        android:textColor="@color/black1"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/cartItemSize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:text="Small"
+                        android:textColor="@color/denim" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/cartItemDiscount"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="540"
-                    android:textSize="16sp"
-                    android:gravity="end"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/black2"/>
+                    android:layout_margin="8dp"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp" />
+
+                        <TextView
+                            android:id="@+id/cartItemPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="end"
+                            android:text="Blue"
+                            android:textColor="@color/denim"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/cartItemDiscount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:gravity="end"
+                        android:text="540"
+                        android:textColor="@color/black2"
+                        android:textSize="16sp" />
+                </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@color/greyLight"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="-"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@color/greyLight"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="+"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
