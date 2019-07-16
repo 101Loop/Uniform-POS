@@ -50,9 +50,10 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         requestRecyclerView = v.findViewById(R.id.itemRequestRecyclerView);
 //        requestButton = v.findViewById(R.id.raiseRequestButton);
 
+        StockIndentAdapter adapter = new StockIndentAdapter(getContext(), getIndentList());
         indentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         indentRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
-        indentRecyclerView.setAdapter(new StockIndentAdapter(getIndentList()));
+        indentRecyclerView.setAdapter(adapter);
 
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         StockBoxAdapter stockAdapter = new StockBoxAdapter(getBoxList());
@@ -75,19 +76,44 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
         list.add(new Indent(1, "Indent 1", "20/May/2019 06:44 PM", "Vivek Kumar",
                 5, 2000, 260));
-        list.add(new Indent(1, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
+        list.add(new Indent(2, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
                 9, 5200, 350));
-        list.add(new Indent(1, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
+        list.add(new Indent(3, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
                 8, 4700, 300));
-        list.add(new Indent(1, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
+        list.add(new Indent(4, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
                 5, 2400, 400));
-        list.add(new Indent(1, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
+        list.add(new Indent(5, "Indent 5", "20/May/2019 06:44 PM", "Vivek Kumar",
                 9, 5200, 350));
-        list.add(new Indent(1, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
+        list.add(new Indent(6, "Indent 6", "20/May/2019 06:44 PM", "Vivek Kumar",
                 8, 4700, 300));
-        list.add(new Indent(1, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
+        list.add(new Indent(7, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
                 5, 2400, 400));
-
+        list.add(new Indent(8, "Indent 1", "20/May/2019 06:44 PM", "Vivek Kumar",
+                5, 2000, 260));
+        list.add(new Indent(9, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
+                9, 5200, 350));
+        list.add(new Indent(10, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
+                8, 4700, 300));
+        list.add(new Indent(11, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
+                5, 2400, 400));
+        list.add(new Indent(12, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
+                9, 5200, 350));
+        list.add(new Indent(13, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
+                8, 4700, 300));
+        list.add(new Indent(14, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
+                5, 2400, 400));
+        list.add(new Indent(15, "Indent 1", "20/May/2019 06:44 PM", "Vivek Kumar",
+                5, 2000, 260));
+        list.add(new Indent(16, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
+                9, 5200, 350));
+        list.add(new Indent(17, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
+                8, 4700, 300));
+        list.add(new Indent(18, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
+                5, 2400, 400));
+        list.add(new Indent(19, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
+                9, 5200, 350));
+        list.add(new Indent(20, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
+                8, 4700, 300));
         return list;
     }
 

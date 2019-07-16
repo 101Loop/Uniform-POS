@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Product;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Size;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
@@ -25,6 +29,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private Context context;
 
     private ProductClickListener listener;
+
+    private SizeAdapter adapter;
 
     public ProductAdapter(Context context, ArrayList<Product> productList) {
         this.context = context;
@@ -56,13 +62,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             }
         });
 
-        holder.closeButton.setOnClickListener(view -> {
-            holder.sizeLayout.setVisibility(View.GONE);
-        });
+        holder.closeButton.setOnClickListener(view -> holder.sizeLayout.setVisibility(View.GONE));
 
-        holder.addToCartButton.setOnClickListener(view -> {
-            holder.sizeLayout.setVisibility(View.VISIBLE);
-        });
+        holder.addToCartButton.setOnClickListener(view -> holder.sizeLayout.setVisibility(View.VISIBLE));
+
+        //get a list of sizes
+        ArrayList<Integer> sizes = getSizes();
+        adapter = new SizeAdapter(this.context, sizes);
+        holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
+        holder.sizeRecyclerView.addItemDecoration(new GridItemDecoration(5, 5));
+        holder.sizeRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private ArrayList<Integer> getSizes() {
+        ArrayList<Integer> sizes = new ArrayList<>();
+
+        int size = 22;
+        for (int i = 0; i < 9; i++) {
+            sizes.add(size);
+            size += 2;
+        }
+
+        return sizes;
     }
 
     @Override
@@ -77,6 +99,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     /**
      * Method to set the Product Click listener
+     *
      * @param listener ProductClickListener
      */
     public void setOnProductClickListener(ProductClickListener listener) {
@@ -89,6 +112,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public interface ProductClickListener {
         /**
          * callback method for product click
+         *
          * @param product Product that was clicked
          */
         void onProductClicked(Product product);
@@ -101,6 +125,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView closeButton;
         RelativeLayout sizeLayout;
         Button addToCartButton;
+        RecyclerView sizeRecyclerView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,6 +135,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             closeButton = itemView.findViewById(R.id.closeButton);
             sizeLayout = itemView.findViewById(R.id.sizeLayout);
             addToCartButton = itemView.findViewById(R.id.addToCartButton);
+            sizeRecyclerView = itemView.findViewById(R.id.sizeRecyclerView);
         }
     }
 }

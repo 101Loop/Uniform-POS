@@ -8,6 +8,7 @@ public class Indent {
     private int numberOfBoxes;
     private double boxValue;
     private int numberOfItems;
+    private boolean isSelected;
 
     public Indent(long id, String name, String dateTime, String dispatchPerson, int numberOfBoxes, double boxValue, int numberOfItems) {
         this.id = id;
@@ -17,6 +18,7 @@ public class Indent {
         this.numberOfBoxes = numberOfBoxes;
         this.boxValue = boxValue;
         this.numberOfItems = numberOfItems;
+        this.isSelected = false;
     }
 
     public long getId() {
@@ -73,5 +75,13 @@ public class Indent {
 
     public void setNumberOfItems(int numberOfItems) {
         this.numberOfItems = numberOfItems;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }
