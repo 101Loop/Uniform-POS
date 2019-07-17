@@ -36,6 +36,10 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.boxNameView.setText(boxList.get(position).getName());
+        holder.itemCount.setText(String.valueOf(boxList.get(position).getNumberOfItems()));
+        holder.itemTextView.setText(boxList.get(position).getDateTime());
+
         holder.rootView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onBoxSelected();
@@ -45,7 +49,7 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return 13;
+        return boxList.size();
     }
 
     public void setOnBoxClickListener(OnBoxClickListener listener) {
@@ -54,13 +58,16 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View rootView;
-        TextView boxNameView, boxSerialView, itemTextView, boxDateView;
+        TextView boxNameView, boxSerialView, itemTextView, boxDateView, itemCount, femaleCountItem, maleCountItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
             boxNameView = itemView.findViewById(R.id.boxNameView);
             itemTextView = itemView.findViewById(R.id.itemTextView);
+            itemCount = itemView.findViewById(R.id.itemCount);
+            femaleCountItem = itemView.findViewById(R.id.femaleCountItem);
+            maleCountItem = itemView.findViewById(R.id.maleCountItem);
         }
     }
 }

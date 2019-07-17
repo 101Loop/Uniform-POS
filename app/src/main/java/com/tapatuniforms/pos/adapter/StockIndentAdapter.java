@@ -1,12 +1,9 @@
 package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +24,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
     private Indent selectedIndent;
     private Indent lastIndent;
     private ViewHolder lastViewHolder;
+    private OnIndentClickListener listener;
 
     public StockIndentAdapter(Context context, ArrayList<Indent> indentList) {
         this.context = context;
@@ -63,11 +61,15 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
 
         holder.rootLayout.setOnClickListener(view -> {
 
+            if (listener != null) {
+                listener.onClickListener(position);
+            }
+
             selectedIndent = indentList.get(position);
 
             if (selectedIndent != lastIndent) {
                 setBackgroundBlue(holder);
-            }else{
+            } else {
                 selectedIndent = null;
                 setBackgroundWhite(holder);
             }
@@ -132,5 +134,13 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
             shippingFrom = itemView.findViewById(R.id.shippingFromTextView);
             shippingLocation = itemView.findViewById(R.id.shippingLocationTextView);
         }
+    }
+
+    public interface OnIndentClickListener {
+        void onClickListener(int position);
+    }
+
+    public void setOnIndentClickListener(OnIndentClickListener listener) {
+        this.listener = listener;
     }
 }
