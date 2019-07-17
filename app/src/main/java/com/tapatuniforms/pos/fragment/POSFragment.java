@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
+import com.tapatuniforms.pos.adapter.DiscountAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
 import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.dialog.DiscountDialog;
@@ -51,7 +52,7 @@ import java.util.Objects;
 public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener {
     private static final String TAG = "POSFragment";
 
-    private RecyclerView categoryRecycler, productRecycler, cartRecyclerView;
+    private RecyclerView categoryRecycler, productRecycler, cartRecyclerView, discountRecyclerView;
     private Button paymentButton;
     private Button addDetailsButton;
     private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView;
@@ -92,6 +93,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         categoryRecycler = view.findViewById(R.id.categoryRecycler);
         productRecycler = view.findViewById(R.id.productRecycler);
         cartRecyclerView = view.findViewById(R.id.cartRecyclerView);
+        discountRecyclerView = view.findViewById(R.id.discountRecyclerView);
         paymentButton = view.findViewById(R.id.paymentButton);
         subTotalView = view.findViewById(R.id.subTotalView);
         textNumberItems = view.findViewById(R.id.textNumberItems);
@@ -104,7 +106,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         // Initialize Variables
         categoryList = new ArrayList<>();
-        categoryAdapter = new CategoryAdapter(categoryList);
+        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
         productList = new ArrayList<>();
         allProducts = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(), productList);
@@ -151,10 +153,20 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             }
         });
 
+        //discount
+        DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), cartList);
+        discountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        discountRecyclerView.setAdapter(discountAdapter);
+
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
 
-        discountButton.setOnClickListener((v) -> showDiscountDialog());
+        discountButton.setOnClickListener((v) -> {
+            /*showDiscountDialog()*/
+//            discountRecyclerView.setVisibility(View.VISIBLE);
+//            cartRecyclerView.setVisibility(View.GONE);
+//            emptyCartView.setVisibility(View.GONE);
+        });
 
         //add details button
         addDetailsButton.setOnClickListener(view -> {
@@ -268,9 +280,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             if (product.getCategory() == category.getApiId()) {
                 productList.add(product);
             }
-
-            if (category.getApiId() == -2)
-                productList.add(product);
         }
 
         productAdapter.notifyDataSetChanged();

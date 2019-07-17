@@ -14,11 +14,13 @@ public class Category {
     private int id;
     private int apiId;
     private String name;
+    private String image;
 
-    public Category(int id, int apiId, String name) {
+    public Category(int id, int apiId, String name, String image) {
         this.id = id;
         this.apiId = apiId;
         this.name = name;
+        this.image = image;
     }
 
     @Ignore
@@ -26,6 +28,7 @@ public class Category {
         this.id = 0;
         this.apiId = object.optInt(APIStatic.Key.id);
         this.name = object.optString(APIStatic.Key.name);
+        this.image = object.optString(APIStatic.Key.image);
     }
 
     public int getId() {
@@ -50,5 +53,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

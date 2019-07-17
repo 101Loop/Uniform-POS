@@ -36,8 +36,6 @@ public class DataHelper {
             return;
         }
 
-        categoryList.add(new Category(-2, -2, "All Category"));
-
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET, APIStatic.Category.categoryUrl, null,
                 response -> {
