@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Integer> sizes;
+    private ArrayList<String> sizes;
 
 
-    public SizeAdapter(Context context, ArrayList<Integer> sizes) {
+    public SizeAdapter(Context context, ArrayList<String> sizes) {
         this.context = context;
         this.sizes = sizes;
     }

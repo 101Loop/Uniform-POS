@@ -25,6 +25,7 @@
                 android:src="@drawable/ic_tag" />
 
             <TextView
+                android:id="@+id/offerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

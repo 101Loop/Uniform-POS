@@ -30,6 +30,11 @@ public interface APIStatic {
         String transactionUrl = baseURL + endPoint + "transaction/";
     }
 
+    interface School {
+        String endPoint = "school/";
+        String addDetailsUrl = baseURL + endPoint + "student/";
+    }
+
     interface Key {
         String id = "id";
         String name = "name";
@@ -51,6 +56,7 @@ public interface APIStatic {
         String verifyOtp= "verify_otp";
         String token = "token";
         String product = "product";
+        String productType = "product_type";
         String category = "category";
         String price = "price";
         String outlet = "outlet";
@@ -63,5 +69,19 @@ public interface APIStatic {
         String mode = "mode";
         String total = "total";
         String discount = "discount";
+        String color = "color";
+        String colorCode = "color_code";
+        String gender_type = "gender_type";
+        String studentId = "student_id";
+        String school = "school";
+        String standard = "standard";
+        String section = "section";
+        String fatherName = "father_name";
+        String gender = "gender";
+    }
+
+    interface Constants {
+        String MALE = "M";
+        String FEMALE = "F";
     }
 }

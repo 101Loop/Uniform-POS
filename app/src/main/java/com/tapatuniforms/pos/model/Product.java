@@ -21,9 +21,13 @@ public class Product {
     private String size;
     private int category;
     private int outlet;
+    private String color;
+    private String gender;
+    private String colorCode;
+    private String productType;
 
     public Product(int id, int apiId, String name, String sku, String image, double price,
-                   String size, int category, int outlet) {
+                   String size, int category, int outlet, String color) {
         this.id = id;
         this.apiId = apiId;
         this.name = name;
@@ -33,6 +37,7 @@ public class Product {
         this.size = size;
         this.category = category;
         this.outlet = outlet;
+        this.color = color;
     }
 
     @Ignore
@@ -45,9 +50,13 @@ public class Product {
         this.sku = productObject.optString(APIStatic.Key.sku);
         this.image = object.optString(APIStatic.Key.image);
         this.price = object.optDouble(APIStatic.Key.price);
-        this.size = productObject.optString(APIStatic.Key.size);
+        this.size = object.optString(APIStatic.Key.size);
         this.category = productObject.optInt(APIStatic.Key.category);
         this.outlet = object.optInt(APIStatic.Key.outlet);
+        this.color = object.optString(APIStatic.Key.color);
+        this.gender = productObject.optString(APIStatic.Key.gender_type);
+        this.colorCode = object.optString(APIStatic.Key.colorCode);
+        this.productType = productObject.optString(APIStatic.Key.productType);
     }
 
     public int getId() {
@@ -120,5 +129,37 @@ public class Product {
 
     public void setOutlet(int outlet) {
         this.outlet = outlet;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 }

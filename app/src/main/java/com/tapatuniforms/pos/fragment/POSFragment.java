@@ -33,6 +33,7 @@ import com.tapatuniforms.pos.adapter.ProductAdapter;
 import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.dialog.DiscountDialog;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
+import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DataHelper;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
@@ -44,6 +45,9 @@ import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Product;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
+import com.tapatuniforms.pos.network.Billing;
+
+import org.json.JSONException;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -60,10 +64,13 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private ArrayList<Category> categoryList;
     private ArrayList<Product> allProducts, productList;
     private ArrayList<CartItem> cartList;
+    private ArrayList<String> sizeList;
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
     private CartAdapter cartAdapter;
     private DatabaseSingleton db;
+
+    private ArrayList<Product> tempProductList;
 
     private View emptyCartView;
     private ImageView discountButton;
@@ -108,8 +115,10 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         categoryList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
         productList = new ArrayList<>();
+        tempProductList = new ArrayList<>();
         allProducts = new ArrayList<>();
-        productAdapter = new ProductAdapter(getContext(), productList);
+        sizeList = new ArrayList<>();
+        productAdapter = new ProductAdapter(getContext(), productList, sizeList);
         cartList = new ArrayList<>();
         cartAdapter = new CartAdapter(cartList);
 
@@ -154,9 +163,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         });
 
         //discount
-        DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), cartList);
-        discountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        discountRecyclerView.setAdapter(discountAdapter);
+//        DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), cartList);
+//        discountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        discountRecyclerView.setAdapter(discountAdapter);
 
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
@@ -166,6 +175,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 //            discountRecyclerView.setVisibility(View.VISIBLE);
 //            cartRecyclerView.setVisibility(View.GONE);
 //            emptyCartView.setVisibility(View.GONE);
+//            discountAdapter.notifyDataSetChanged();
         });
 
         //add details button
@@ -173,13 +183,28 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             showAddDetailsDialog();
         });
 
-        //gender button
+        //gender_type button
         maleView.setOnClickListener(view -> {
+            //change button views
             maleView.setBackgroundColor(getResources().getColor(R.color.denim));
             maleView.setTextColor(getResources().getColor(R.color.white1));
 
             femaleView.setBackgroundColor(getResources().getColor(R.color.white1));
             femaleView.setTextColor(getResources().getColor(R.color.black1));
+
+            //apply changes to products
+            if (productList != null && productList.size() > 0) {
+
+                productList.clear();
+
+                for (Product currentProduct : allProducts) {
+                    if (currentProduct.getGender().equals(APIStatic.Constants.MALE)) {
+                        productList.add(currentProduct);
+                    }
+                }
+
+                productAdapter.notifyDataSetChanged();
+            }
         });
 
         femaleView.setOnClickListener(view -> {
@@ -188,6 +213,20 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
             maleView.setBackgroundColor(getResources().getColor(R.color.white1));
             maleView.setTextColor(getResources().getColor(R.color.black1));
+
+            //apply changes to products
+            if (productList != null && productList.size() > 0) {
+
+                productList.clear();
+
+                for (Product currentProduct : allProducts) {
+                    if (currentProduct.getGender().equals(APIStatic.Constants.FEMALE)) {
+                        productList.add(currentProduct);
+                    }
+                }
+
+                productAdapter.notifyDataSetChanged();
+            }
         });
 
         // Fetch Data
@@ -228,6 +267,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         final CardView addDetailsCard = view.findViewById(R.id.addDetailsButton);
         final CardView closeCard = view.findViewById(R.id.closeButton);
 
+        //TODO: fetch school from API
         if (addDetailsCard != null) {
             addDetailsCard.setOnClickListener(view1 -> {
                 String studentID = studentIDText.getText().toString();
@@ -236,15 +276,22 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 String section = sectionText.getText().toString();
                 String fatherName = fatherNameText.getText().toString();
                 String phone = phoneText.getText().toString();
+                int school = 1;
                 String email = emailText.getText().toString();
-                String gender;
+                String gender = "";
 
                 if (maleRadio != null && femaleRadio != null) {
                     if (maleRadio.isChecked()) {
-                        gender = "male";
-                    }else{
-                        gender = "female";
+                        gender = "M";
+                    } else {
+                        gender = "F";
                     }
+                }
+
+                try {
+                    Billing.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, classStr, section, gender, fatherName, dialog);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             });
         }
