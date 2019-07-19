@@ -58,7 +58,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.productName.setText(product.getName());
         holder.colorText.setText(product.getColor());
-        holder.productType.setText(product.getProductType());
+
+        String productType = product.getProductType();
+
+        if (productType != null && !productType.equalsIgnoreCase("null")) {
+            holder.productType.setText(productType);
+        }else{
+            holder.productType.setText("");
+        }
 
         String hexColor = product.getColorCode();
 

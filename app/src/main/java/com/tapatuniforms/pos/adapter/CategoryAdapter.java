@@ -1,6 +1,7 @@
 package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private CategoryClickListener listener;
     private Context context;
     private ViewHolder lastViewHolder;
+    private ViewHolder holder;
 
     public interface CategoryClickListener {
         void onCategorySelected(Category category);
@@ -46,7 +48,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Category category = categoryList.get(position);
+        Category category = categoryList.get(position);
+
+        this.holder = holder;
 
         if (selectedCategory != null && selectedCategory.getName().equals(category.getName())) {
             lastViewHolder = holder;
@@ -56,22 +60,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
 
         holder.categoryImage.setOnClickListener(v -> {
+
             if (listener != null) {
                 listener.onCategorySelected(category);
-
-                /*selectedCategory = categoryList.get(position);
-
-                if (selectedCategory != lastCategory) {
-                    holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
-                }
-
-                if (lastViewHolder != null) {
-                    holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
-                }
-
-                lastViewHolder = holder;
-                lastCategory = this.selectedCategory;*/
             }
+
+            selectedCategory = categoryList.get(position);
+            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
+
+            if (lastViewHolder != null) {
+                holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
+            }
+
+            lastViewHolder = holder;
+            lastCategory = selectedCategory;
+            //TODO: this is just a work around.... change if a better work around is found
+            notifyDataSetChanged();
         });
 
         Glide.with(context)
@@ -103,5 +107,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             categoryImage = itemView.findViewById(R.id.categoryImage);
             rootLayout = itemView.findViewById(R.id.rootLayout);
         }
+    }
+
+    public void clearBackground(){
+        selectedCategory = null;
+        notifyDataSetChanged();
     }
 }

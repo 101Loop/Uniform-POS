@@ -31,4 +31,7 @@
     <string name="email">Email ID</string>
     <string name="add_details">Add Details</string>
     <string name="close">Close</string>
+    <string name="sale_summary">Sale Summary</string>
+    <string name="stock_report">Stock Report</string>
+    <string name="close_day">Close Day</string>
 </resources>

@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.model.CartItem;
 
 import java.text.DecimalFormat;
@@ -19,7 +18,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private static final String TAG = "CartAdapter";
 
     private ArrayList<CartItem> cartList;
-    private CartItemDialog.CartItemDialogListener listener;
 
     public CartAdapter(ArrayList<CartItem> cartList) {
         this.cartList = cartList;
@@ -48,14 +46,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.addButton.setOnClickListener(v -> {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
             holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-            listener.onDoneButtonClicked();
         });
 
         holder.minusButton.setOnClickListener(v -> {
             if (cartItem.getQuantity() > 1) {
                 cartItem.setQuantity(cartItem.getQuantity() - 1);
                 holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-                listener.onDoneButtonClicked();
             }
         });
     }
@@ -72,14 +68,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void loadNewData(ArrayList<CartItem> cartList) {
         this.cartList = cartList;
         notifyDataSetChanged();
-    }
-
-    /**
-     * Sets the item click listener on CartItems
-     * @param listener CartItemListener
-     */
-    public void setOnClickListener(CartItemDialog.CartItemDialogListener listener) {
-        this.listener = listener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -11,6 +11,7 @@
     <color name="black2">#464F5C</color>
     <color name="black3">#617181</color>
     <color name="grey">#666667</color>
+    <color name="lighterGrey">#d4d4d4</color>
     <color name="greyLight">#AFAFAF</color>
     <color name="white1">#F9FAFB</color>
     <color name="white2">#F3F5F8</color>
@@ -27,4 +28,7 @@
     <color name="green">#289417</color>
     <color name="red">#F22F2F</color>
     <color name="blueButton">#5068C2</color>
+    <color name="darkerBlueButton">#3B65C2</color>
+    <color name="appBG">#EEF1F6</color>
+    <color name="lightText">#848D98</color>
 </resources>

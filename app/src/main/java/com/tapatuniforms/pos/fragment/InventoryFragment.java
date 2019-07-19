@@ -36,8 +36,8 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
 
     private void init(View view) {
         inventoryRecyclerView = view.findViewById(R.id.inventoryRecyclerView);
-        inventoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new InventoryAdapter(getItemList());
+        inventoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        adapter = new InventoryAdapter(getContext(), getItemList());
         inventoryRecyclerView.setAdapter(adapter);
 
         recommendedRecyclerView = view.findViewById(R.id.recommendedRecyclerView);

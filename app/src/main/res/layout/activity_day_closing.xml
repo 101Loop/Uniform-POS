@@ -22,23 +22,25 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
 
             <LinearLayout
                 android:id="@+id/saleSummaryLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:background="@drawable/ic_arrow"
                 android:gravity="center"
-                android:padding="8dp"
-                android:background="@drawable/ic_arrow">
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/saleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sale Summary"
                     android:layout_marginStart="15dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/sale_summary"
                     android:textColor="@color/white1"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -57,17 +59,19 @@
             <LinearLayout
                 android:id="@+id/stockReportLayout"
                 android:layout_width="wrap_content"
-                android:padding="8dp"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_height="match_parent">
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/stockReport"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stock Report"
-                    android:textColor="@color/black3"
                     android:layout_marginStart="15dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/stock_report"
+                    android:textColor="@color/black3"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -85,18 +89,20 @@
             <LinearLayout
                 android:id="@+id/closeDayLayout"
                 android:layout_width="wrap_content"
-                android:gravity="center"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:padding="10dp">
 
                 <TextView
                     android:id="@+id/closeDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Close Day"
+                    android:layout_marginStart="10dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/close_day"
                     android:textColor="@color/black3"
                     android:textSize="18sp"
-                    android:layout_marginStart="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
@@ -108,10 +114,10 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

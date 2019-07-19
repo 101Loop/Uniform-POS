@@ -3,13 +3,11 @@ package com.tapatuniforms.pos.fragment;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +28,6 @@ import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.DiscountAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
-import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.dialog.DiscountDialog;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.helper.APIStatic;
@@ -62,7 +59,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView;
 
     private ArrayList<Category> categoryList;
-    private ArrayList<Product> allProducts, productList;
+    private ArrayList<Product> allProducts, productList, maleList, femaleList;
     private ArrayList<CartItem> cartList;
     private ArrayList<String> sizeList;
     private CategoryAdapter categoryAdapter;
@@ -70,13 +67,14 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private CartAdapter cartAdapter;
     private DatabaseSingleton db;
 
-    private ArrayList<Product> tempProductList;
-
     private View emptyCartView;
     private ImageView discountButton;
+    private ImageView cartButton;
 
     private double subTotal, discount, tax, total;
     private DiscountDialog.Discount discountType = DiscountDialog.Discount.OTHER;
+    private boolean isMaleSelected;
+    private boolean notSelectedYet = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -105,6 +103,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         subTotalView = view.findViewById(R.id.subTotalView);
         textNumberItems = view.findViewById(R.id.textNumberItems);
         discountButton = view.findViewById(R.id.addDiscountButton);
+        cartButton = view.findViewById(R.id.addCartButton);
         discountView = view.findViewById(R.id.discountView);
         totalView = view.findViewById(R.id.totalView);
         addDetailsButton = view.findViewById(R.id.addDetailsButton);
@@ -115,8 +114,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         categoryList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
         productList = new ArrayList<>();
-        tempProductList = new ArrayList<>();
         allProducts = new ArrayList<>();
+        maleList = new ArrayList<>();
+        femaleList = new ArrayList<>();
         sizeList = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(), productList, sizeList);
         cartList = new ArrayList<>();
@@ -137,6 +137,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         // Category Views
         categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        cartRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
         categoryAdapter.setOnCategorySelectedListener(this);
         categoryRecycler.setAdapter(categoryAdapter);
 
@@ -149,33 +150,32 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         // Cart Views
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         cartRecyclerView.setAdapter(cartAdapter);
-        cartAdapter.setOnClickListener(new CartItemDialog.CartItemDialogListener() {
-            @Override
-            public void onDoneButtonClicked() {
-                cartAdapter.notifyDataSetChanged();
-                updatePriceView();
-            }
-
-            @Override
-            public void onRemoveButtonClicked(CartItem item) {
-
-            }
-        });
 
         //discount
-//        DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), cartList);
-//        discountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        discountRecyclerView.setAdapter(discountAdapter);
+        DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), cartList);
+        discountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        discountRecyclerView.setAdapter(discountAdapter);
 
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
 
         discountButton.setOnClickListener((v) -> {
             /*showDiscountDialog()*/
-//            discountRecyclerView.setVisibility(View.VISIBLE);
-//            cartRecyclerView.setVisibility(View.GONE);
-//            emptyCartView.setVisibility(View.GONE);
-//            discountAdapter.notifyDataSetChanged();
+            discountRecyclerView.setVisibility(View.VISIBLE);
+            cartRecyclerView.setVisibility(View.GONE);
+            emptyCartView.setVisibility(View.GONE);
+        });
+
+        cartButton.setOnClickListener(view -> {
+            discountRecyclerView.setVisibility(View.GONE);
+
+            if (cartList.size() > 0) {
+                cartRecyclerView.setVisibility(View.VISIBLE);
+                emptyCartView.setVisibility(View.GONE);
+            }else {
+                cartRecyclerView.setVisibility(View.GONE);
+                emptyCartView.setVisibility(View.VISIBLE);
+            }
         });
 
         //add details button
@@ -185,43 +185,57 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         //gender_type button
         maleView.setOnClickListener(view -> {
-            //change button views
-            maleView.setBackgroundColor(getResources().getColor(R.color.denim));
-            maleView.setTextColor(getResources().getColor(R.color.white1));
 
-            femaleView.setBackgroundColor(getResources().getColor(R.color.white1));
-            femaleView.setTextColor(getResources().getColor(R.color.black1));
+            if (!isMaleSelected || notSelectedYet) {
+                isMaleSelected = true;
+                notSelectedYet = false;
 
-            //apply changes to products
-            if (productList != null && productList.size() > 0) {
+                categoryAdapter.clearBackground();
+                //change button views
+                maleView.setBackgroundColor(getResources().getColor(R.color.denim));
+                maleView.setTextColor(getResources().getColor(R.color.white1));
 
-                productList.clear();
+                femaleView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                femaleView.setTextColor(getResources().getColor(R.color.black1));
+
+                //apply changes to products
+                if (productList != null && productList.size() > 0) {
+                    productList.clear();
+                }
+                maleList.clear();
 
                 for (Product currentProduct : allProducts) {
                     if (currentProduct.getGender().equals(APIStatic.Constants.MALE)) {
                         productList.add(currentProduct);
+                        maleList.add(currentProduct);
                     }
                 }
-
                 productAdapter.notifyDataSetChanged();
             }
         });
 
         femaleView.setOnClickListener(view -> {
-            femaleView.setBackgroundColor(getResources().getColor(R.color.denim));
-            femaleView.setTextColor(getResources().getColor(R.color.white1));
 
-            maleView.setBackgroundColor(getResources().getColor(R.color.white1));
-            maleView.setTextColor(getResources().getColor(R.color.black1));
+            if (isMaleSelected || notSelectedYet) {
+                isMaleSelected = false;
+                notSelectedYet = false;
+                categoryAdapter.clearBackground();
+                femaleView.setBackgroundColor(getResources().getColor(R.color.denim));
+                femaleView.setTextColor(getResources().getColor(R.color.white1));
 
-            //apply changes to products
-            if (productList != null && productList.size() > 0) {
+                maleView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                maleView.setTextColor(getResources().getColor(R.color.black1));
 
-                productList.clear();
+                //apply changes to products
+                if (productList != null && productList.size() > 0) {
+                    productList.clear();
+                }
+                femaleList.clear();
 
                 for (Product currentProduct : allProducts) {
                     if (currentProduct.getGender().equals(APIStatic.Constants.FEMALE)) {
                         productList.add(currentProduct);
+                        femaleList.add(currentProduct);
                     }
                 }
 
@@ -230,8 +244,12 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         });
 
         // Fetch Data
-        DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
-        DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter);
+        DataHelper.fetchCategories(
+
+                getContext(), categoryList, categoryAdapter);
+        DataHelper.fetchProducts(
+
+                getContext(), allProducts, productList, productAdapter);
     }
 
     private void showAddDetailsDialog() {
@@ -323,7 +341,16 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     public void onCategorySelected(Category category) {
         productList.clear();
 
-        for (Product product : allProducts) {
+        ArrayList<Product> tempList;
+        if (notSelectedYet) {
+            tempList = allProducts;
+        } else if (isMaleSelected) {
+            tempList = maleList;
+        } else {
+            tempList = femaleList;
+        }
+
+        for (Product product : tempList) {
             if (product.getCategory() == category.getApiId()) {
                 productList.add(product);
             }
@@ -434,6 +461,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         @Override
         public void onProductClicked(Product product) {
             ViewHelper.hideView(emptyCartView);
+            ViewHelper.showView(cartRecyclerView);
+            ViewHelper.hideView(discountRecyclerView);
 
             for (CartItem cartItem : cartList) {
                 if (cartItem.getId() == product.getApiId()) {
