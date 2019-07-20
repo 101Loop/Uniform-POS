@@ -151,7 +151,7 @@
 
             </LinearLayout>
 
-            <!--size layout-->
+            <!--sizeList layout-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/size"
+                    android:text="@string/sizeList"
                     android:textColor="@android:color/black"
                     android:textSize="17sp" />
 

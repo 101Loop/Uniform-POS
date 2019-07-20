@@ -31,6 +31,12 @@ public class DayClosingActivity extends AppCompatActivity implements ViewPager.O
         viewPager.setAdapter(dayClosingPagerAdapter);
 
         viewPager.addOnPageChangeListener(this);
+
+        saleSummaryLayout.setOnClickListener(view -> viewPager.setCurrentItem(0));
+
+        stockReportLayout.setOnClickListener(view -> viewPager.setCurrentItem(1));
+
+        closeDayLayout.setOnClickListener(view -> viewPager.setCurrentItem(2));
     }
 
     private void initViews() {

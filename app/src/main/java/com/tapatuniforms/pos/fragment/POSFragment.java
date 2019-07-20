@@ -50,13 +50,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener {
+public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener, CartAdapter.UpdateItemListener {
     private static final String TAG = "POSFragment";
 
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView, discountRecyclerView;
     private Button paymentButton;
     private Button addDetailsButton;
-    private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView;
+    private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView, noProductText;
 
     private ArrayList<Category> categoryList;
     private ArrayList<Product> allProducts, productList, maleList, femaleList;
@@ -75,6 +75,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private DiscountDialog.Discount discountType = DiscountDialog.Discount.OTHER;
     private boolean isMaleSelected;
     private boolean notSelectedYet = true;
+
+    private int position;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -109,6 +111,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         addDetailsButton = view.findViewById(R.id.addDetailsButton);
         maleView = view.findViewById(R.id.maleButton);
         femaleView = view.findViewById(R.id.femaleButton);
+        noProductText = view.findViewById(R.id.noProductText);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -150,6 +153,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         // Cart Views
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         cartRecyclerView.setAdapter(cartAdapter);
+        cartAdapter.setOnItemUpdateListener(this);
 
         //discount
         DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), cartList);
@@ -172,7 +176,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             if (cartList.size() > 0) {
                 cartRecyclerView.setVisibility(View.VISIBLE);
                 emptyCartView.setVisibility(View.GONE);
-            }else {
+            } else {
                 cartRecyclerView.setVisibility(View.GONE);
                 emptyCartView.setVisibility(View.VISIBLE);
             }
@@ -210,6 +214,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                         maleList.add(currentProduct);
                     }
                 }
+
+                checkAvailability();
                 productAdapter.notifyDataSetChanged();
             }
         });
@@ -239,17 +245,15 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                     }
                 }
 
+                checkAvailability();
                 productAdapter.notifyDataSetChanged();
             }
         });
 
         // Fetch Data
-        DataHelper.fetchCategories(
-
-                getContext(), categoryList, categoryAdapter);
-        DataHelper.fetchProducts(
-
-                getContext(), allProducts, productList, productAdapter);
+        DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
+        DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter);
+        checkAvailability();
     }
 
     private void showAddDetailsDialog() {
@@ -356,6 +360,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             }
         }
 
+        checkAvailability();
         productAdapter.notifyDataSetChanged();
     }
 
@@ -414,8 +419,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         for (CartItem cartItem : cartList) {
             Product product = cartItem.getProduct();
+            //TODO: uncomment the following code and apply logic
             subOrderList.add(new SubOrder(0, product.getName(), product.getApiId(),
-                    product.getSku(), product.getPrice(), cartItem.getQuantity(),
+                    product.getSku(), Double.parseDouble(product.getPriceList().get(position)), cartItem.getQuantity(),
                     0, 0, 0, 0, false));
         }
 
@@ -434,7 +440,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         for (CartItem cartItem : cartList) {
             cartQuantity += cartItem.getQuantity();
-            subTotal += cartItem.getQuantity() * cartItem.getProduct().getPrice();
+            //TODO: check if it works or not
+            subTotal += cartItem.getQuantity() * Integer.parseInt(cartItem.getProduct().getPriceList().get(position));
         }
 
         switch (discountType) {
@@ -453,19 +460,31 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         totalView.setText(decimalFormatter.format(total));
     }
 
+    @Override
+    public void onItemUpdateListener() {
+        updatePriceView();
+
+        if (cartList != null && cartList.size() == 0) {
+            emptyCartView.setVisibility(View.VISIBLE);
+            cartRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
     /**
      * This class extends the ProductClickListener interface and will handle the item click inside
      * the productRecycler.
      */
     class ProductItemListener implements ProductAdapter.ProductClickListener {
         @Override
-        public void onProductClicked(Product product) {
+        public void onProductClicked(Product product, int pos) {
+
+            position = pos;
             ViewHelper.hideView(emptyCartView);
             ViewHelper.showView(cartRecyclerView);
             ViewHelper.hideView(discountRecyclerView);
 
             for (CartItem cartItem : cartList) {
-                if (cartItem.getId() == product.getApiId()) {
+                if (cartItem.getProduct().getSizeList().get(pos).equals(product.getSizeList().get(pos))) {
                     cartItem.setQuantity(cartItem.getQuantity() + 1);
                     cartAdapter.notifyDataSetChanged();
                     updatePriceView();
@@ -473,9 +492,19 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
             }
 
-            cartList.add(new CartItem(product.getApiId(), 1, product));
+            cartList.add(new CartItem(product.getApiId(), 1, product, pos));
             cartAdapter.notifyDataSetChanged();
             updatePriceView();
+        }
+    }
+
+    private void checkAvailability() {
+        if (productList != null) {
+            if (productList.size() == 0) {
+                noProductText.setVisibility(View.VISIBLE);
+            } else {
+                noProductText.setVisibility(View.GONE);
+            }
         }
     }
 }

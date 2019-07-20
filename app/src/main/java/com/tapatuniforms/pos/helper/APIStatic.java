@@ -56,6 +56,7 @@ public interface APIStatic {
         String verifyOtp= "verify_otp";
         String token = "token";
         String product = "product";
+        String outletSubproductSet = "outlet_sub_product_set";
         String productType = "product_type";
         String category = "category";
         String price = "price";

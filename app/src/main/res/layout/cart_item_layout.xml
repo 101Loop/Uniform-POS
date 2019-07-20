@@ -117,6 +117,19 @@
                     android:text="+"
                     android:textColor="@color/black" />
 
+                <TextView
+                    android:id="@+id/removeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remove"
+                    android:textColor="@color/white1"
+                    android:background="@color/danger"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginStart="10dp"/>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -2,7 +2,6 @@ package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
@@ -18,13 +21,6 @@ import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.Product;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Size;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private static final String TAG = "ProductAdapter";
@@ -35,7 +31,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private ProductClickListener listener;
 
-    private SizeAdapter adapter;
+    private SizeAdapter sizeAdapter;
     private Product oldProduct;
 
     public ProductAdapter(Context context, ArrayList<Product> productList, ArrayList<String> sizeList) {
@@ -56,6 +52,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = productList.get(position);
 
+        holder.sizeLayout.setVisibility(View.GONE);
         holder.productName.setText(product.getName());
         holder.colorText.setText(product.getColor());
 
@@ -63,68 +60,51 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         if (productType != null && !productType.equalsIgnoreCase("null")) {
             holder.productType.setText(productType);
-        }else{
+        } else {
             holder.productType.setText("");
         }
 
         String hexColor = product.getColorCode();
 
-        if (hexColor.length() == 7) {
-            holder.colorImage.setBackgroundColor(Color.parseColor(hexColor));
-
-        } else if (hexColor.length() == 4) {
-
+        if (hexColor.length() == 4) {
             String[] arrHexColor = hexColor.split("#");
             hexColor = "#" + arrHexColor[1] + arrHexColor[1];
-            holder.colorImage.setBackgroundColor(Color.parseColor(hexColor));
         }
+        holder.colorImage.setBackgroundColor(Color.parseColor(hexColor));
 
         Glide.with(context)
                 .load(product.getImage())
                 .centerCrop()
                 .into(holder.productImage);
 
-        holder.rootView.setOnClickListener((v) -> {
-            if (listener != null) {
-                listener.onProductClicked(product);
-            }
-        });
-
         holder.closeButton.setOnClickListener(view -> {
             holder.sizeLayout.setVisibility(View.GONE);
-            adapter = null;
+            sizeAdapter = null;
         });
 
         holder.addToCartButton.setOnClickListener(view -> {
             holder.sizeLayout.setVisibility(View.VISIBLE);
 
-            if (oldProduct == null) {
+            if (oldProduct == null || oldProduct != product) {
                 oldProduct = product;
                 sizeList = getSizes(product);
-                adapter = new SizeAdapter(this.context, sizeList);
+                sizeAdapter = new SizeAdapter(this.context, sizeList);
                 holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
                 holder.sizeRecyclerView.addItemDecoration(new GridItemDecoration(3, 3));
-                holder.sizeRecyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-
-            } else if (product != oldProduct) {
-                oldProduct = product;
-                sizeList = getSizes(product);
-                adapter = new SizeAdapter(this.context, sizeList);
-                holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
-                holder.sizeRecyclerView.addItemDecoration(new GridItemDecoration(3, 3));
-                holder.sizeRecyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                holder.sizeRecyclerView.setAdapter(sizeAdapter);
             }
+
+            sizeAdapter.setOnSizeClickListener(pos -> {
+                if (listener != null) {
+                    listener.onProductClicked(product, pos);
+                }
+            });
         });
     }
 
     private ArrayList<String> getSizes(Product product) {
-        ArrayList<String> sizes = new ArrayList<>();
 
-        sizes.add(product.getSize());
-
-        return sizes;
+        return product.getSizeList();
     }
 
     @Override
@@ -155,7 +135,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
          *
          * @param product Product that was clicked
          */
-        void onProductClicked(Product product);
+        void onProductClicked(Product product, int size);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
