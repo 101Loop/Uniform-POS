@@ -5,14 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.model.CartItem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private static final String TAG = "CartAdapter";
@@ -41,7 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.itemName.setText(cartItem.getProduct().getName());
 
         //TODO: check if it works or not(product)
-        holder.itemSize.setText(cartItem.getProduct().getSizeList().get(cartItem.getPosition()));
+        holder.itemSize.setText(String.valueOf(cartItem.getProduct().getSizeList().get(cartItem.getPosition())));
         holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPriceList().get(cartItem.getPosition())));
 
         holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
@@ -85,12 +85,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         void onItemUpdateListener();
     }
 
-    public void setOnItemUpdateListener(UpdateItemListener listener){
+    public void setOnItemUpdateListener(UpdateItemListener listener) {
         this.listener = listener;
     }
 
     /**
      * This method will notify data set changed and will update the view
+     *
      * @param cartList ArrayList of CartItem
      */
     public void loadNewData(ArrayList<CartItem> cartList) {

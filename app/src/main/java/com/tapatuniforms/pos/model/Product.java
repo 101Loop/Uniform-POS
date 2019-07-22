@@ -20,9 +20,9 @@ public class Product {
     private String name;
     private String sku;
     private String image;
-//    private double price;
-    private ArrayList<String> sizeList;
-    private ArrayList<String> priceList;
+    //    private double price;
+    private ArrayList<String> sizeList = new ArrayList<>();
+    private ArrayList<Double> priceList = new ArrayList<>();
     private int category;
     private int outlet;
     private String color;
@@ -30,7 +30,7 @@ public class Product {
     private String colorCode;
     private String productType;
 
-    public Product(int id, int apiId, String name, String sku, String image, ArrayList<String> priceList,
+    public Product(int id, int apiId, String name, String sku, String image, ArrayList<Double> priceList,
                    ArrayList<String> sizeList, int category, int outlet, String color) {
         this.id = id;
         this.apiId = apiId;
@@ -50,10 +50,10 @@ public class Product {
         JSONArray subProductArray = object.getJSONArray(APIStatic.Key.outletSubproductSet);
 
         JSONObject currentObject;
-        for (int i=0; i<subProductArray.length(); i++){
+        for (int i = 0; i < subProductArray.length(); i++) {
             currentObject = subProductArray.getJSONObject(i);
             sizeList.add(currentObject.getString(APIStatic.Key.size));
-            priceList.add(currentObject.getString(APIStatic.Key.price));
+            priceList.add(currentObject.getDouble(APIStatic.Key.price));
         }
 
         this.id = 0;
@@ -183,11 +183,11 @@ public class Product {
         this.sizeList = sizeList;
     }
 
-    public ArrayList<String> getPriceList() {
+    public ArrayList<Double> getPriceList() {
         return priceList;
     }
 
-    public void setPriceList(ArrayList<String> priceList) {
+    public void setPriceList(ArrayList<Double> priceList) {
         this.priceList = priceList;
     }
 }

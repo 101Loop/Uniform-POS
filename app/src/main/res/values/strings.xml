@@ -36,4 +36,5 @@
     <string name="close_day">Close Day</string>
     <string name="remove">Remove</string>
     <string name="no_products">No Products available</string>
+    <string name="field_required">This field is required</string>
 </resources>

@@ -79,7 +79,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.closeButton.setOnClickListener(view -> {
             holder.sizeLayout.setVisibility(View.GONE);
-            sizeAdapter = null;
+//            sizeAdapter = null;
         });
 
         holder.addToCartButton.setOnClickListener(view -> {
@@ -94,9 +94,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 holder.sizeRecyclerView.setAdapter(sizeAdapter);
             }
 
-            sizeAdapter.setOnSizeClickListener(pos -> {
+            sizeAdapter.setOnSizeClickListener((pos, size) -> {
                 if (listener != null) {
-                    listener.onProductClicked(product, pos);
+                    listener.onProductClicked(product, pos, size);
                 }
             });
         });
@@ -135,7 +135,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
          *
          * @param product Product that was clicked
          */
-        void onProductClicked(Product product, int size);
+        void onProductClicked(Product product, int position, String size);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -5,12 +5,14 @@ public class CartItem {
     private int quantity;
     private Product product;
     private int position;
+    private String size;
 
-    public CartItem(int id, int quantity, Product product, int position) {
+    public CartItem(int id, int quantity, Product product, int position, String size) {
         this.id = id;
         this.quantity = quantity;
         this.product = product;
         this.position = position;
+        this.size = size;
     }
 
     public int getId() {
@@ -43,5 +45,13 @@ public class CartItem {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

@@ -24,7 +24,7 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
     private SizeSelectedListener listener;
 
     public interface SizeSelectedListener {
-        void onSizeSelected(int pos);
+        void onSizeSelected(int pos, String size);
     }
 
     public SizeAdapter(Context context, ArrayList<String> sizeList) {
@@ -47,7 +47,7 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
 
         holder.rootLayout.setOnClickListener(view -> {
             if (listener != null) {
-                listener.onSizeSelected(position);
+                listener.onSizeSelected(position, size);
             }
         });
     }

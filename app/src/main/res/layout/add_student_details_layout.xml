@@ -160,6 +160,17 @@
 
                 </RadioGroup>
 
+                <TextView
+                    android:id="@+id/genderErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/field_required"
+                    android:textColor="@color/danger"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <LinearLayout

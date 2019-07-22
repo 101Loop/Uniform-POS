@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.tapatuniforms.pos.helper.DataHelper;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
+import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.ViewHelper;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Category;
@@ -77,6 +79,25 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private boolean notSelectedYet = true;
 
     private int position;
+    private int cartQuantity = 0;
+
+    private TextInputLayout studentIDLayout;
+    private TextInputLayout studentNameLayout;
+    private TextInputLayout classLayout;
+    private TextInputLayout sectionLayout;
+    private TextInputLayout fatherNameLayout;
+    private TextInputLayout phoneLayout;
+    private TextInputLayout emailLayout;
+    private TextView genderErrorText;
+
+    private String studentID;
+    private String studentName;
+    private String classStr;
+    private String section;
+    private String fatherName;
+    private String gender;
+    private String phone;
+    private String email;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -141,6 +162,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         // Category Views
         categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         cartRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
+
+        categoryRecycler.addItemDecoration(new GridItemDecoration(12, 12));
         categoryAdapter.setOnCategorySelectedListener(this);
         categoryRecycler.setAdapter(categoryAdapter);
 
@@ -253,9 +276,11 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         // Fetch Data
         DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
         DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter);
-        checkAvailability();
     }
 
+    /**
+     * This method simply creates add details dialog
+     */
     private void showAddDetailsDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
@@ -275,13 +300,14 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         final EditText emailText = view.findViewById(R.id.emailText);
 
         //just in case,, error is to be generated
-        final TextInputLayout studentIDLayout = view.findViewById(R.id.studentIDInputLayout);
-        final TextInputLayout studentNameLayout = view.findViewById(R.id.studentNameInputLayout);
-        final TextInputLayout classLayout = view.findViewById(R.id.classInputLayout);
-        final TextInputLayout sectionLayout = view.findViewById(R.id.sectionInputLayout);
-        final TextInputLayout fatherNameLayout = view.findViewById(R.id.fatherNameInputLayout);
-        final TextInputLayout phoneLayout = view.findViewById(R.id.phoneInputLayout);
-        final TextInputLayout emailLayout = view.findViewById(R.id.emailInputLayout);
+        studentIDLayout = view.findViewById(R.id.studentIDInputLayout);
+        studentNameLayout = view.findViewById(R.id.studentNameInputLayout);
+        classLayout = view.findViewById(R.id.classInputLayout);
+        sectionLayout = view.findViewById(R.id.sectionInputLayout);
+        fatherNameLayout = view.findViewById(R.id.fatherNameInputLayout);
+        phoneLayout = view.findViewById(R.id.phoneInputLayout);
+        emailLayout = view.findViewById(R.id.emailInputLayout);
+        genderErrorText = view.findViewById(R.id.genderErrorText);
 
         final RadioButton maleRadio = view.findViewById(R.id.maleRadio);
         final RadioButton femaleRadio = view.findViewById(R.id.femaleRadio);
@@ -292,28 +318,30 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         //TODO: fetch school from API
         if (addDetailsCard != null) {
             addDetailsCard.setOnClickListener(view1 -> {
-                String studentID = studentIDText.getText().toString();
-                String studentName = studentNameText.getText().toString();
-                String classStr = classText.getText().toString();
-                String section = sectionText.getText().toString();
-                String fatherName = fatherNameText.getText().toString();
-                String phone = phoneText.getText().toString();
+                studentID = studentIDText.getText().toString();
+                studentName = studentNameText.getText().toString();
+                classStr = classText.getText().toString();
+                section = sectionText.getText().toString();
+                fatherName = fatherNameText.getText().toString();
+                phone = phoneText.getText().toString();
                 int school = 1;
-                String email = emailText.getText().toString();
-                String gender = "";
+                email = emailText.getText().toString();
 
                 if (maleRadio != null && femaleRadio != null) {
                     if (maleRadio.isChecked()) {
                         gender = "M";
-                    } else {
+                    } else if (femaleRadio.isChecked()) {
                         gender = "F";
                     }
                 }
 
-                try {
-                    Billing.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, classStr, section, gender, fatherName, dialog);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                //input validation
+                if (isValidInput()) {
+                    try {
+                        Billing.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, classStr, section, gender, fatherName, dialog);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -328,6 +356,84 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    /**
+     * validating inputs
+     *
+     * @return return true if all the inputs are valid else false
+     */
+    private boolean isValidInput() {
+        boolean isValidInput = true;
+
+        if (TextUtils.isEmpty(studentID)) {
+            Validator.setEmptyError(studentIDLayout);
+            isValidInput = false;
+        } else {
+            studentIDLayout.setError(null);
+            studentIDLayout.setErrorEnabled(false);
+        }
+
+        if (TextUtils.isEmpty(studentName)) {
+            Validator.setEmptyError(studentNameLayout);
+            isValidInput = false;
+        } else {
+            studentNameLayout.setError(null);
+            studentNameLayout.setErrorEnabled(false);
+        }
+
+        if (TextUtils.isEmpty(classStr)) {
+            Validator.setEmptyError(classLayout);
+            isValidInput = false;
+        } else {
+            classLayout.setError(null);
+            classLayout.setErrorEnabled(false);
+        }
+
+        if (TextUtils.isEmpty(section)) {
+            Validator.setEmptyError(sectionLayout);
+            isValidInput = false;
+        } else {
+            sectionLayout.setError(null);
+            sectionLayout.setErrorEnabled(false);
+        }
+
+        if (TextUtils.isEmpty(fatherName)) {
+            Validator.setEmptyError(fatherNameLayout);
+            isValidInput = false;
+        } else {
+            fatherNameLayout.setError(null);
+            fatherNameLayout.setErrorEnabled(false);
+        }
+
+        if (TextUtils.isEmpty(gender)) {
+            genderErrorText.setVisibility(View.VISIBLE);
+            isValidInput = false;
+        } else {
+            genderErrorText.setVisibility(View.GONE);
+        }
+
+        if (TextUtils.isEmpty(phone)) {
+            Validator.setEmptyError(phoneLayout);
+            isValidInput = false;
+        } else if (!Validator.isValidMobile(phone)) {
+            phoneLayout.setError("This phone is not valid");
+        } else {
+            phoneLayout.setError(null);
+            phoneLayout.setErrorEnabled(false);
+        }
+
+        if (TextUtils.isEmpty(email)) {
+            Validator.setEmptyError(emailLayout);
+            isValidInput = false;
+        } else if (!Validator.isValidEmail(email)) {
+            emailLayout.setError("This email is not valid");
+        } else {
+            emailLayout.setError(null);
+            emailLayout.setErrorEnabled(false);
+        }
+
+        return isValidInput;
     }
 
     /**
@@ -421,7 +527,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             Product product = cartItem.getProduct();
             //TODO: uncomment the following code and apply logic
             subOrderList.add(new SubOrder(0, product.getName(), product.getApiId(),
-                    product.getSku(), Double.parseDouble(product.getPriceList().get(position)), cartItem.getQuantity(),
+                    product.getSku(), product.getPriceList().get(position), cartItem.getQuantity(),
                     0, 0, 0, 0, false));
         }
 
@@ -432,16 +538,16 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * Helper method to calculate and update price on the UI
      */
     private void updatePriceView() {
-        double subTotal = 0;
-        int cartQuantity = 0;
+//        double subTotal = 0;
+//        int cartQuantity = 0;
         double calculatedDiscount = 0;
 
         DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
 
         for (CartItem cartItem : cartList) {
             cartQuantity += cartItem.getQuantity();
-            //TODO: check if it works or not
-            subTotal += cartItem.getQuantity() * Integer.parseInt(cartItem.getProduct().getPriceList().get(position));
+            //got an error here
+            subTotal += cartItem.getQuantity() * cartItem.getProduct().getPriceList().get(position);
         }
 
         switch (discountType) {
@@ -476,7 +582,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      */
     class ProductItemListener implements ProductAdapter.ProductClickListener {
         @Override
-        public void onProductClicked(Product product, int pos) {
+        public void onProductClicked(Product product, int pos, String size) {
 
             position = pos;
             ViewHelper.hideView(emptyCartView);
@@ -484,15 +590,17 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             ViewHelper.hideView(discountRecyclerView);
 
             for (CartItem cartItem : cartList) {
-                if (cartItem.getProduct().getSizeList().get(pos).equals(product.getSizeList().get(pos))) {
-                    cartItem.setQuantity(cartItem.getQuantity() + 1);
-                    cartAdapter.notifyDataSetChanged();
-                    updatePriceView();
-                    return;
+                if (cartItem.getProduct().getId() == product.getId()) {
+                    if (cartItem.getSize().equals(size)) {
+                        cartItem.setQuantity(cartItem.getQuantity() + 1);
+                        cartAdapter.notifyDataSetChanged();
+                        updatePriceView();
+                        return;
+                    }
                 }
             }
 
-            cartList.add(new CartItem(product.getApiId(), 1, product, pos));
+            cartList.add(new CartItem(product.getApiId(), 1, product, pos, size));
             cartAdapter.notifyDataSetChanged();
             updatePriceView();
         }
