@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white3"
+    android:background="@color/appBG"
     tools:context=".fragment.POSFragment">
 
     <include
         android:id="@+id/sideBar"
+        layout="@layout/sidebar_filter"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        layout="@layout/sidebar_filter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +23,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/appBG"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sideBar"
@@ -30,7 +31,20 @@
         app:spanCount="3"
         tools:listitem="@layout/item_layout" />
 
+    <TextView
+        android:id="@+id/noProductText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_products"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cartLayout"
+        app:layout_constraintStart_toEndOf="@+id/sideBar"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <include
+        android:id="@+id/cartLayout"
         layout="@layout/cart_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"

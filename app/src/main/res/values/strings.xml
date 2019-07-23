@@ -13,7 +13,7 @@
     <string name="no_network">No connection to the internet</string>
     <string name="login_substring">Lorem Ipsum dolor sit amet, consectour adipcing elit. Curabitur mollis purus et sem lobortis condimenturm</string>
     <string name="login_heading">Welcome to\nPoint of Sale App</string>
-    <string name="size">Size</string>
+    <string name="sizeList">Size</string>
     <string name="display">Display</string>
     <string name="add_to_order">Add to Order</string>
     <string name="share">Share</string>
@@ -31,4 +31,12 @@
     <string name="email">Email ID</string>
     <string name="add_details">Add Details</string>
     <string name="close">Close</string>
+    <string name="sale_summary">Sale Summary</string>
+    <string name="stock_report">Stock Report</string>
+    <string name="close_day">Close Day</string>
+    <string name="remove">Remove</string>
+    <string name="no_products">No Products available</string>
+    <string name="field_required">This field is required</string>
+    <string name="no_indents_available">No indents available</string>
+    <string name="no_boxes_available">No boxes available</string>
 </resources>

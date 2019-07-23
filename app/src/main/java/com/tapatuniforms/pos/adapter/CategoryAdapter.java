@@ -1,12 +1,15 @@
 package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,8 +22,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private static final String TAG = "CategoryAdapter";
 
     private ArrayList<Category> categoryList;
+    private Category selectedCategory;
+    private Category lastCategory;
     private CategoryClickListener listener;
     private Context context;
+    private ViewHolder lastViewHolder;
+    private ViewHolder holder;
 
     public interface CategoryClickListener {
         void onCategorySelected(Category category);
@@ -41,12 +48,34 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Category category = categoryList.get(position);
+        Category category = categoryList.get(position);
+
+        this.holder = holder;
+
+        if (selectedCategory != null && selectedCategory.getName().equals(category.getName())) {
+            lastViewHolder = holder;
+            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
+        } else {
+            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
+        }
 
         holder.categoryImage.setOnClickListener(v -> {
+
             if (listener != null) {
                 listener.onCategorySelected(category);
             }
+
+            selectedCategory = categoryList.get(position);
+            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
+
+            if (lastViewHolder != null) {
+                holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
+            }
+
+            lastViewHolder = holder;
+            lastCategory = selectedCategory;
+            //TODO: this is just a work around.... change if a better work around is found
+            notifyDataSetChanged();
         });
 
         Glide.with(context)
@@ -69,12 +98,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         View rootView;
         ImageView categoryImage;
+        LinearLayout rootLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
 
             categoryImage = itemView.findViewById(R.id.categoryImage);
+            rootLayout = itemView.findViewById(R.id.rootLayout);
         }
+    }
+
+    public void clearBackground(){
+        selectedCategory = null;
+        notifyDataSetChanged();
     }
 }

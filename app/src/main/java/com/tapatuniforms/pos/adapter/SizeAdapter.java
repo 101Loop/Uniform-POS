@@ -19,12 +19,17 @@ import java.util.ArrayList;
 
 public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Integer> sizes;
+    private ArrayList<String> sizeList;
 
+    private SizeSelectedListener listener;
 
-    public SizeAdapter(Context context, ArrayList<Integer> sizes) {
+    public interface SizeSelectedListener {
+        void onSizeSelected(int pos, String size);
+    }
+
+    public SizeAdapter(Context context, ArrayList<String> sizeList) {
         this.context = context;
-        this.sizes = sizes;
+        this.sizeList = sizeList;
     }
 
     @NonNull
@@ -36,12 +41,25 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.sizeText.setText(String.valueOf(sizes.get(position)));
+        String size = sizeList.get(position);
+
+        holder.sizeText.setText(size);
+
+        holder.rootLayout.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onSizeSelected(position, size);
+//                holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return sizes.size();
+        return sizeList.size();
+    }
+
+    public void setOnSizeClickListener(SizeSelectedListener listener) {
+        this.listener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

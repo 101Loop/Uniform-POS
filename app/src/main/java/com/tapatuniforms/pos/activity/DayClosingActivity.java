@@ -1,17 +1,20 @@
 package com.tapatuniforms.pos.activity;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.DayClosingPagerAdapter;
+import com.tapatuniforms.pos.fragment.SaleSummaryFragment;
 
 public class DayClosingActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+    private static final String TAG = "DayClosingActivity";
     private TextView saleText, stockReportText, closeDayText;
     private ViewPager viewPager;
     private LinearLayout saleSummaryLayout;
@@ -31,6 +34,12 @@ public class DayClosingActivity extends AppCompatActivity implements ViewPager.O
         viewPager.setAdapter(dayClosingPagerAdapter);
 
         viewPager.addOnPageChangeListener(this);
+
+        saleSummaryLayout.setOnClickListener(view -> viewPager.setCurrentItem(0));
+
+        stockReportLayout.setOnClickListener(view -> viewPager.setCurrentItem(1));
+
+        closeDayLayout.setOnClickListener(view -> viewPager.setCurrentItem(2));
     }
 
     private void initViews() {

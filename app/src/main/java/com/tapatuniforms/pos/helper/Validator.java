@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Patterns;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class Validator {
     /**
      * Check if Email Address is Valid
@@ -35,5 +37,9 @@ public class Validator {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+    public static void setEmptyError(TextInputLayout inputLayout){
+        inputLayout.setError("This field can't be empty");
     }
 }

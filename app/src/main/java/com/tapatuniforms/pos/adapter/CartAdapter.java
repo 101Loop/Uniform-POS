@@ -5,21 +5,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.dialog.CartItemDialog;
 import com.tapatuniforms.pos.model.CartItem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private static final String TAG = "CartAdapter";
 
     private ArrayList<CartItem> cartList;
-    private CartItemDialog.CartItemDialogListener listener;
+    private UpdateItemListener listener;
 
     public CartAdapter(ArrayList<CartItem> cartList) {
         this.cartList = cartList;
@@ -40,22 +39,39 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
 
         holder.itemName.setText(cartItem.getProduct().getName());
-        holder.itemSize.setText(cartItem.getProduct().getSize());
-        holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPrice()));
+
+        //getPosition() method returns the position of the size and price to be shown
+        holder.itemSize.setText(String.valueOf(cartItem.getProduct().getSizeList().get(cartItem.getPosition())));
+        holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPriceList().get(cartItem.getPosition())));
 
         holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
 
         holder.addButton.setOnClickListener(v -> {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
             holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-            listener.onDoneButtonClicked();
+
+            if (listener != null) {
+                listener.onItemUpdateListener();
+            }
         });
 
         holder.minusButton.setOnClickListener(v -> {
             if (cartItem.getQuantity() > 1) {
                 cartItem.setQuantity(cartItem.getQuantity() - 1);
                 holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-                listener.onDoneButtonClicked();
+
+                if (listener != null) {
+                    listener.onItemUpdateListener();
+                }
+            }
+        });
+
+        holder.removeButton.setOnClickListener(view -> {
+            cartList.remove(position);
+            notifyDataSetChanged();
+
+            if (listener != null) {
+                listener.onItemUpdateListener();
             }
         });
     }
@@ -65,8 +81,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return cartList.size();
     }
 
+    public interface UpdateItemListener {
+        void onItemUpdateListener();
+    }
+
+    public void setOnItemUpdateListener(UpdateItemListener listener) {
+        this.listener = listener;
+    }
+
     /**
      * This method will notify data set changed and will update the view
+     *
      * @param cartList ArrayList of CartItem
      */
     public void loadNewData(ArrayList<CartItem> cartList) {
@@ -74,17 +99,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    /**
-     * Sets the item click listener on CartItems
-     * @param listener CartItemListener
-     */
-    public void setOnClickListener(CartItemDialog.CartItemDialogListener listener) {
-        this.listener = listener;
-    }
-
     class ViewHolder extends RecyclerView.ViewHolder {
         View rootView;
-        TextView itemName, itemSize, itemPrice, itemDiscount, minusButton, addButton, quantityText;
+        TextView itemName, itemSize, itemPrice, itemDiscount, minusButton, addButton, quantityText, removeButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,6 +113,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             minusButton = itemView.findViewById(R.id.minusButton);
             addButton = itemView.findViewById(R.id.addButton);
             quantityText = itemView.findViewById(R.id.quantity);
+            removeButton = itemView.findViewById(R.id.removeButton);
         }
     }
 }

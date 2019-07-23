@@ -49,7 +49,7 @@
     <LinearLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="36dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
     <RelativeLayout
         android:id="@+id/activity_landing"
         android:layout_width="wrap_content"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".9"
@@ -101,39 +101,56 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/nameEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="64dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="Name"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/black3" />
+                    android:layout_marginEnd="16dp">
 
-                <EditText
-                    android:id="@+id/emailEditText"
+                    <EditText
+                        android:id="@+id/nameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:textColorHint="@color/black3" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:textColorHint="@color/black3" />
+                    android:layout_marginEnd="16dp">
 
+                    <EditText
+                        android:id="@+id/emailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:textColorHint="@color/black3" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/mobileEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="Mobile"
-                    android:inputType="phone"
-                    android:textColorHint="@color/black3" />
+                    android:layout_marginEnd="16dp">
+
+                    <EditText
+                        android:id="@+id/mobileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Mobile"
+                        android:inputType="phone"
+                        android:textColorHint="@color/black3" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:layout_width="match_parent"
