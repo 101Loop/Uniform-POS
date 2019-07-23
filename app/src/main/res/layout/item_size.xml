@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootLayout"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:padding="5dp"
-    android:background="@drawable/rounded_white"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:background="@drawable/stroke_around_rect"
     android:gravity="center"
     android:orientation="vertical">
 

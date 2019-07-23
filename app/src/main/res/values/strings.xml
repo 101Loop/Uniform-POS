@@ -26,7 +26,7 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="father_s_name">Father\'s Name</string>
+    <string name="father_name">Father Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="email">Email ID</string>
     <string name="add_details">Add Details</string>
@@ -39,4 +39,6 @@
     <string name="field_required">This field is required</string>
     <string name="no_indents_available">No indents available</string>
     <string name="no_boxes_available">No boxes available</string>
+    <string name="submit">Submit</string>
+    <string name="copyright">Copyright © 2019 POS. All Rights Reserved</string>
 </resources>
