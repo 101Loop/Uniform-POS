@@ -66,11 +66,11 @@
             <Button
                 android:id="@+id/addDetailsButton"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="50dp"
                 android:background="@color/success"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:textAllCaps="false"
                 android:text="@string/add_details"
                 android:textColor="@color/white1" />
 

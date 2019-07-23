@@ -66,28 +66,63 @@
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Stock Remaining"
                 android:textColor="@color/white1"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
-                app:layout_constraintEnd_toStartOf="@+id/closeDayView"
+                app:layout_constraintEnd_toStartOf="@+id/homeNavIcon"
                 app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
 
-            <TextView
-                android:id="@+id/closeDayView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Day Closing"
-                android:textColor="@color/white1"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView22"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView22" />
 
+            <ImageView
+                android:id="@+id/homeNavIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_home"
+                app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintEnd_toStartOf="@+id/calenderNavIcon"
+                app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+            <ImageView
+                android:id="@+id/calenderNavIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_cal_top"
+                app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintEnd_toStartOf="@+id/bagNavIcon"
+                app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+            <ImageView
+                android:id="@+id/bagNavIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_bag"
+                app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintEnd_toStartOf="@+id/notificationNavIcon"
+                app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+            <ImageView
+                android:id="@+id/notificationNavIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_notification"
+                app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
+                app:layout_constraintEnd_toStartOf="@+id/detailNavIcon"
+                app:layout_constraintTop_toTopOf="@+id/hamburgerMenuIcon" />
+
+            <ImageView
+                android:id="@+id/detailNavIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
