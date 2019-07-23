@@ -1,13 +1,12 @@
 package com.tapatuniforms.pos.fragment;
 
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.adapter.StockIndentAdapter;
 import com.tapatuniforms.pos.adapter.StockBoxAdapter;
+import com.tapatuniforms.pos.adapter.StockIndentAdapter;
 import com.tapatuniforms.pos.dialog.StockItemDialog;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Box;
@@ -36,6 +35,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     private ArrayList<Product> productList;
     private StockBoxAdapter stockAdapter;
     private ArrayList<Box> boxList;
+    private LinearLayout noIndentsLayout, noBoxLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -48,13 +48,15 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         return v;
     }
 
-
     private void init(View v) {
         indentRecyclerView = v.findViewById(R.id.indentRecyclerView);
         requestRecyclerView = v.findViewById(R.id.itemRequestRecyclerView);
+        noIndentsLayout = v.findViewById(R.id.noIndentsLayout);
+        noBoxLayout = v.findViewById(R.id.noBoxLayout);
 //        requestButton = v.findViewById(R.id.raiseRequestButton);
 
         StockIndentAdapter adapter = new StockIndentAdapter(getContext(), getIndentList());
+        checkIndentsAvailability();
         indentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         indentRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
         indentRecyclerView.setAdapter(adapter);
@@ -62,6 +64,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
         boxList = new ArrayList<>();
         boxList.add(getBoxList().get(0));
+        checkBoxAvailability();
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         stockAdapter = new StockBoxAdapter(boxList);
         requestRecyclerView.setAdapter(stockAdapter);
@@ -166,15 +169,8 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
                 300, 120));
         list.add(new Box(20, "Box 20", "1234456677", "10/May/2019 6:55 PM",
                 300, 120));
-//        list.add(new Box(1, "Box 3", "1234456677", "10/May/2019 6:55 PM",
-//                300, 213));
-//        list.add(new Box(1, "Box 4", "1234456677", "10/May/2019 6:55 PM",
-//                300, 223));
-//        list.add(new Box(1, "Box 5", "1234456677", "10/May/2019 6:55 PM",
-//                300, 200));
 
         return list;
-
     }
 
     @Override
@@ -182,7 +178,27 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         boxList.clear();
 
         boxList.add(getBoxList().get(position));
-
+        checkBoxAvailability();
         stockAdapter.notifyDataSetChanged();
+    }
+
+    private void checkIndentsAvailability() {
+        if (getIndentList().size() > 0) {
+            noIndentsLayout.setVisibility(View.GONE);
+            indentRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            noIndentsLayout.setVisibility(View.VISIBLE);
+            indentRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    private void checkBoxAvailability() {
+        if (boxList.size() > 0) {
+            noBoxLayout.setVisibility(View.GONE);
+            requestRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            noBoxLayout.setVisibility(View.VISIBLE);
+            requestRecyclerView.setVisibility(View.GONE);
+        }
     }
 }

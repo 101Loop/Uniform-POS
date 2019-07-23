@@ -48,6 +48,7 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
         holder.rootLayout.setOnClickListener(view -> {
             if (listener != null) {
                 listener.onSizeSelected(position, size);
+//                holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
             }
         });
     }

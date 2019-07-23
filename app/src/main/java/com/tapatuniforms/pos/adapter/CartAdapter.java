@@ -40,7 +40,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         holder.itemName.setText(cartItem.getProduct().getName());
 
-        //TODO: check if it works or not(product)
+        //getPosition() method returns the position of the size and price to be shown
         holder.itemSize.setText(String.valueOf(cartItem.getProduct().getSizeList().get(cartItem.getPosition())));
         holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPriceList().get(cartItem.getPosition())));
 

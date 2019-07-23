@@ -37,4 +37,6 @@
     <string name="remove">Remove</string>
     <string name="no_products">No Products available</string>
     <string name="field_required">This field is required</string>
+    <string name="no_indents_available">No indents available</string>
+    <string name="no_boxes_available">No boxes available</string>
 </resources>

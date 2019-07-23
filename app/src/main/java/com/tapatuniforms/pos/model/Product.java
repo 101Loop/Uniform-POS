@@ -30,6 +30,8 @@ public class Product {
     private String colorCode;
     private String productType;
 
+    private boolean isSizeAlreadyOpen = false;
+
     public Product(int id, int apiId, String name, String sku, String image, ArrayList<Double> priceList,
                    ArrayList<String> sizeList, int category, int outlet, String color) {
         this.id = id;
@@ -189,5 +191,13 @@ public class Product {
 
     public void setPriceList(ArrayList<Double> priceList) {
         this.priceList = priceList;
+    }
+
+    public boolean isSizeAlreadyOpen() {
+        return isSizeAlreadyOpen;
+    }
+
+    public void setSizeAlreadyOpen(boolean sizeAlreadyOpen) {
+        isSizeAlreadyOpen = sizeAlreadyOpen;
     }
 }

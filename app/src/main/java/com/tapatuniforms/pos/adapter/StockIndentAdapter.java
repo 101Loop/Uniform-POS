@@ -29,7 +29,9 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
     public StockIndentAdapter(Context context, ArrayList<Indent> indentList) {
         this.context = context;
         this.indentList = indentList;
-        selectedIndent = indentList.get(0);
+
+        if (indentList.size() > 0)
+            selectedIndent = indentList.get(0);
     }
 
     @NonNull

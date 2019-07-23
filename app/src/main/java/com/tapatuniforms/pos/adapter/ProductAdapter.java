@@ -32,7 +32,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private ProductClickListener listener;
 
     private SizeAdapter sizeAdapter;
-    private Product oldProduct;
 
     public ProductAdapter(Context context, ArrayList<Product> productList, ArrayList<String> sizeList) {
         this.context = context;
@@ -78,15 +77,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 .into(holder.productImage);
 
         holder.closeButton.setOnClickListener(view -> {
+            product.setSizeAlreadyOpen(false);
             holder.sizeLayout.setVisibility(View.GONE);
-//            sizeAdapter = null;
         });
 
         holder.addToCartButton.setOnClickListener(view -> {
             holder.sizeLayout.setVisibility(View.VISIBLE);
 
-            if (oldProduct == null || oldProduct != product) {
-                oldProduct = product;
+            if (!product.isSizeAlreadyOpen()) {
+                product.setSizeAlreadyOpen(true);
                 sizeList = getSizes(product);
                 sizeAdapter = new SizeAdapter(this.context, sizeList);
                 holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));

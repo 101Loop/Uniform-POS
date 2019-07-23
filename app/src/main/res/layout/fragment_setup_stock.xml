@@ -201,8 +201,8 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:src="@drawable/ic_paytm" />
 
                     <TextView
@@ -323,9 +323,9 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_give" />
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_offline_sale" />
 
                     <TextView
                         android:id="@+id/offlineSaleText"
@@ -384,9 +384,9 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_card" />
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_expense" />
 
                     <TextView
                         android:id="@+id/expenseText"

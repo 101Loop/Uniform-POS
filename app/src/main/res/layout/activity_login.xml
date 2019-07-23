@@ -48,7 +48,7 @@
     <LinearLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="36dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,20 +100,25 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/destinationView"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="64dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="Email or mobile number"
-                    android:inputType="text"
-                    android:textColorHint="@color/black3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginEnd="16dp">
 
+                    <EditText
+                        android:id="@+id/destinationView"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Email or mobile number"
+                        android:inputType="text"
+                        android:textColorHint="@color/black3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/button2"

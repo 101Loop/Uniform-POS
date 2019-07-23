@@ -79,7 +79,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private boolean notSelectedYet = true;
 
     private int position;
-    private int cartQuantity = 0;
+//    private int cartQuantity = 0;
 
     private TextInputLayout studentIDLayout;
     private TextInputLayout studentNameLayout;
@@ -286,7 +286,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         AlertDialog dialog = alertDialog.create();
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_student_details_layout, null);
         dialog.setView(view);
@@ -336,7 +338,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
 
                 //input validation
-                if (isValidInput()) {
+                if (isInputValid()) {
                     try {
                         Billing.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, classStr, section, gender, fatherName, dialog);
                     } catch (JSONException e) {
@@ -359,11 +361,11 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     }
 
     /**
-     * validating inputs
+     * basically used to add client side input verification
      *
      * @return return true if all the inputs are valid else false
      */
-    private boolean isValidInput() {
+    private boolean isInputValid() {
         boolean isValidInput = true;
 
         if (TextUtils.isEmpty(studentID)) {
@@ -538,8 +540,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * Helper method to calculate and update price on the UI
      */
     private void updatePriceView() {
-//        double subTotal = 0;
-//        int cartQuantity = 0;
+        double subTotal = 0;
+        int cartQuantity = 0;
         double calculatedDiscount = 0;
 
         DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
@@ -547,7 +549,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         for (CartItem cartItem : cartList) {
             cartQuantity += cartItem.getQuantity();
             //got an error here
-            subTotal += cartItem.getQuantity() * cartItem.getProduct().getPriceList().get(position);
+            subTotal += cartItem.getQuantity() * cartItem.getPrice();
         }
 
         switch (discountType) {
@@ -590,7 +592,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             ViewHelper.hideView(discountRecyclerView);
 
             for (CartItem cartItem : cartList) {
-                if (cartItem.getProduct().getId() == product.getId()) {
+                if (cartItem.getProduct().getApiId() == product.getApiId()) {
                     if (cartItem.getSize().equals(size)) {
                         cartItem.setQuantity(cartItem.getQuantity() + 1);
                         cartAdapter.notifyDataSetChanged();
@@ -600,12 +602,15 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
             }
 
-            cartList.add(new CartItem(product.getApiId(), 1, product, pos, size));
+            cartList.add(new CartItem(product.getApiId(), 1, product, pos, size, product.getPriceList().get(pos)));
             cartAdapter.notifyDataSetChanged();
             updatePriceView();
         }
     }
 
+    /**
+     * if no products are available, show an empty state text
+     * */
     private void checkAvailability() {
         if (productList != null) {
             if (productList.size() == 0) {
