@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/appBG"
     android:layout_height="match_parent"
     tools:context=".activity.DayClosingActivity">
+
+    <include
+        android:id="@+id/topBarLayout"
+        layout="@layout/top_bar_layout"/>
 
     <TextView
         android:id="@+id/headerText"
@@ -12,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="DAY CLOSE"
         android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBarLayout"
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="24sp"
         android:layout_margin="20dp"/>

@@ -35,26 +35,59 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:fontFamily="@font/roboto"
+                    android:textStyle="bold"
                     android:text="Box 1 - #2342343"
                     android:textColor="@color/black1" />
 
-                <TextView
-                    android:id="@+id/femaleCountItem"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="Female - 21 Items"
-                    android:textColor="@color/black1" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/maleCountItem"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="Female -"
+                        android:textStyle="bold"
+                        android:textColor="@color/black1" />
+
+                    <TextView
+                        android:id="@+id/femaleCountItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="21 Items"
+                        android:textColor="@color/black1" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="Male - 21 Items"
-                    android:textColor="@color/black1" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="Male -"
+                        android:textStyle="bold"
+                        android:textColor="@color/black1" />
+
+                    <TextView
+                        android:id="@+id/maleCountItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="21 Items"
+                        android:textColor="@color/black1" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

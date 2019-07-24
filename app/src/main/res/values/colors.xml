@@ -32,4 +32,5 @@
     <color name="appBG">#EEF1F6</color>
     <color name="lightText">#848D98</color>
     <color name="limeGreen">#eafde4</color>
+    <color name="indentBG">#B0CEE7</color>
 </resources>

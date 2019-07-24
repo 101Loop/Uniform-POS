@@ -55,11 +55,11 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
 
         holder.indentNameView.setText(indent.getName());
         holder.indentBoxNumber.setText(indent.getNumberOfBoxes() + " Boxes");
-        holder.price.setText(String.valueOf(indent.getBoxValue()));
+        holder.price.setText("₹" + indent.getBoxValue());
+        holder.itemCount.setText(indent.getNumberOfItems() + " Items");
         holder.senderName.setText(indent.getDispatchPerson());
         holder.receivedDate.setText(indent.getDateTime());
-        holder.shippingFrom.setText(indent.getDateTime());
-        holder.shippingLocation.setText("Your current location");
+        holder.shippingLocation.setText(indent.getShippingFrom());
 
         holder.rootLayout.setOnClickListener(view -> {
 
@@ -90,6 +90,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         holder.indentNameView.setTextColor(context.getResources().getColor(R.color.white1));
         holder.indentBoxNumber.setTextColor(context.getResources().getColor(R.color.white1));
         holder.price.setTextColor(context.getResources().getColor(R.color.success));
+        holder.itemCount.setTextColor(context.getResources().getColor(R.color.success));
         holder.senderName.setTextColor(context.getResources().getColor(R.color.white1));
         holder.shippingOn.setTextColor(context.getResources().getColor(R.color.white1));
         holder.shippingDate.setTextColor(context.getResources().getColor(R.color.white1));
@@ -104,6 +105,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         holder.indentNameView.setTextColor(context.getResources().getColor(R.color.black));
         holder.indentBoxNumber.setTextColor(context.getResources().getColor(R.color.black3));
         holder.price.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+        holder.itemCount.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         holder.senderName.setTextColor(context.getResources().getColor(R.color.black3));
         holder.shippingOn.setTextColor(context.getResources().getColor(R.color.black));
         holder.shippingDate.setTextColor(context.getResources().getColor(R.color.black3));
@@ -120,7 +122,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
         CardView rootLayout;
-        TextView indentNameView, indentBoxNumber, price, senderName, shippingOn, shippingDate, receivedOn, receivedDate, shippingFrom, shippingLocation;
+        TextView indentNameView, indentBoxNumber, price, senderName, shippingOn, shippingDate, receivedOn, receivedDate, shippingFrom, shippingLocation, itemCount;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -135,6 +137,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
             receivedDate = itemView.findViewById(R.id.receivedDateTextView);
             shippingFrom = itemView.findViewById(R.id.shippingFromTextView);
             shippingLocation = itemView.findViewById(R.id.shippingLocationTextView);
+            itemCount = itemView.findViewById(R.id.itemCount);
         }
     }
 

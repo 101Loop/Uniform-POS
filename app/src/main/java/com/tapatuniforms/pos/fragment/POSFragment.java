@@ -58,7 +58,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView, discountRecyclerView;
     private Button paymentButton;
     private Button addDetailsButton;
-    private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView, noProductText;
+    private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView, noProductText, categoryText;
 
     private ArrayList<Category> categoryList;
     private ArrayList<Product> allProducts, productList, maleList, femaleList;
@@ -133,6 +133,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         maleView = view.findViewById(R.id.maleButton);
         femaleView = view.findViewById(R.id.femaleButton);
         noProductText = view.findViewById(R.id.noProductText);
+        categoryText = view.findViewById(R.id.categoryText);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -214,6 +215,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         maleView.setOnClickListener(view -> {
 
             if (!isMaleSelected || notSelectedYet) {
+                categoryText.setText(null);
+
                 isMaleSelected = true;
                 notSelectedYet = false;
 
@@ -246,6 +249,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         femaleView.setOnClickListener(view -> {
 
             if (isMaleSelected || notSelectedYet) {
+                categoryText.setText(null);
+
                 isMaleSelected = false;
                 notSelectedYet = false;
                 categoryAdapter.clearBackground();
@@ -468,6 +473,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             }
         }
 
+        categoryText.setText(category.getName());
+
         checkAvailability();
         productAdapter.notifyDataSetChanged();
     }
@@ -527,7 +534,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         for (CartItem cartItem : cartList) {
             Product product = cartItem.getProduct();
-            //TODO: uncomment the following code and apply logic
+            //TODO: got an error here
             subOrderList.add(new SubOrder(0, product.getName(), product.getApiId(),
                     product.getSku(), product.getPriceList().get(position), cartItem.getQuantity(),
                     0, 0, 0, 0, false));

@@ -119,13 +119,14 @@
 
                 <TextView
                     android:id="@+id/discountNotification"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:background="@drawable/cart_notification"
                     android:gravity="center"
+                    android:textSize="12sp"
                     android:text="1"
                     android:textColor="@color/white1"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </RelativeLayout>
 
@@ -146,13 +147,14 @@
 
                 <TextView
                     android:id="@+id/cartNotification"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:background="@drawable/cart_notification"
                     android:gravity="center"
                     android:text="1"
+                    android:textSize="12sp"
                     android:textColor="@color/white1"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </RelativeLayout>
 
@@ -160,7 +162,6 @@
                 android:id="@+id/cartSeparator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cartButtonLayout" />
@@ -193,9 +194,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Sub Total"
-                android:textColor="@color/black2"
+                android:fontFamily="@font/roboto"
+                android:text="@string/sub_total"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -217,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:text="₹0"
                 android:textColor="@color/black2"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView"
@@ -229,9 +229,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Tax Included"
-                android:textColor="@color/black2"
+                android:fontFamily="@font/roboto"
+                android:text="@string/tax_included"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView3"
                 app:layout_constraintStart_toStartOf="@+id/textView" />
@@ -240,7 +239,7 @@
                 android:id="@+id/taxView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:text="₹0"
                 android:textColor="@color/black2"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
@@ -251,9 +250,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Discount / Offer"
-                android:textColor="@color/black2"
+                android:fontFamily="@font/roboto"
+                android:text="@string/discount_offer"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@+id/textView2" />
@@ -262,7 +260,7 @@
                 android:id="@+id/discountView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:text="₹0"
                 android:textColor="@color/black2"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
@@ -285,9 +283,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Total"
-                android:textColor="@color/black2"
+                android:fontFamily="@font/roboto"
+                android:text="@string/total"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/paymentButton"
                 app:layout_constraintStart_toStartOf="@+id/view" />
@@ -296,7 +293,7 @@
                 android:id="@+id/totalView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:text="₹0"
                 android:textColor="@color/black2"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
@@ -310,7 +307,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/rounded_button"
-                android:text="Place Order"
+                android:text="@string/place_order"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"

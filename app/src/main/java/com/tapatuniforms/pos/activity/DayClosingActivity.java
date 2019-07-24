@@ -2,18 +2,21 @@ package com.tapatuniforms.pos.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.DayClosingPagerAdapter;
 import com.tapatuniforms.pos.fragment.SaleSummaryFragment;
 
-public class DayClosingActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class DayClosingActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "DayClosingActivity";
     private TextView saleText, stockReportText, closeDayText;
     private ViewPager viewPager;
@@ -85,5 +88,10 @@ public class DayClosingActivity extends AppCompatActivity implements ViewPager.O
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
     }
 }

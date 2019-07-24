@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tapatuniforms.pos.R;
 
 public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapter.ViewHolder> {
+    private Context context;
+
+    public StockBoxItemAdapter(Context context) {
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_list_item_layout,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_list_item_layout, parent, false);
         return new StockBoxItemAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
     }
 
     @Override

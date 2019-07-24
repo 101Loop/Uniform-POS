@@ -36,7 +36,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.ViewHo
     @Override
     public int getItemCount() {
         //TODO: change this with the list size provided
-        return 10;
+        return 1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
