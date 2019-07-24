@@ -38,6 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sideBar"
+        tools:listitem="@layout/inventory_transfer_item_layout"
         app:layout_constraintTop_toBottomOf="@+id/recommendedRecyclerView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

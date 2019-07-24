@@ -45,18 +45,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         final InventoryItem item = itemList.get(position);
 
         holder.itemNameView.setText(item.getName());
-        /*holder.productType.setText("#" + item.getSerialNumber());
-        holder.itemWarehouseCount.setText(item.getWarehouseQuantity() + " in Warehouse");
-        holder.itemDisplayCount.setText(item.getDisplayQuantity() + " On Display");
 
-        holder.transferButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onTransferButtonClick(item);
-                }
-            }
-        });*/
         sizeList.clear();
         sizeList.add("24");
         sizeList.add("26");
@@ -65,6 +54,12 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         SizeAdapter sizeAdapter = new SizeAdapter(context, sizeList);
         holder.sizeRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         holder.sizeRecyclerView.setAdapter(sizeAdapter);
+
+        holder.addToOrderButton.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onTransferButtonClick(item);
+            }
+        });
     }
 
     @Override
@@ -77,17 +72,14 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemNameView, productType, itemWarehouseCount, itemDisplayCount;
+        TextView itemNameView, addToOrderButton, itemWarehouseCount, itemDisplayCount;
 //        Button transferButton;
         RecyclerView sizeRecyclerView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemNameView = itemView.findViewById(R.id.itemNameView);
-//            productType = itemView.findViewById(R.id.itemSerialView);
-//            itemWarehouseCount = itemView.findViewById(R.id.itemWarehouseCount);
-//            itemDisplayCount = itemView.findViewById(R.id.itemDisplayCount);
-//            transferButton = itemView.findViewById(R.id.transferButton);
+            addToOrderButton = itemView.findViewById(R.id.addToOrderButton);
             sizeRecyclerView = itemView.findViewById(R.id.sizeRecyclerView);
         }
     }
