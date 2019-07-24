@@ -31,7 +31,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="30dp"
                     android:layout_weight="1"
                     android:gravity="end">
 
@@ -39,14 +39,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Opening Cash:"
-                        android:textColor="#000" />
+                        android:textColor="#000"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="₹3000"
-                        android:textColor="#000" />
+                        android:textColor="#000"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -65,14 +67,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Closing Cash:"
-                        android:textColor="#000" />
+                        android:textColor="#000"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="₹3000"
-                        android:textColor="#000" />
+                        android:textColor="#000"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -83,17 +87,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginBottom="16dp"
+                android:weightSum="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/openingClosingLayout">
 
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2" />
+
+                <TextView
                     android:id="@+id/paymentType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Payment Type"
                     android:textColor="@color/black2"
@@ -152,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:fontFamily="@font/roboto"
-                        android:text="Total Cash"
+                        android:text="Cash"
                         android:textColor="@color/black3"
                         android:textSize="17sp" />
                 </LinearLayout>
@@ -211,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:fontFamily="@font/roboto"
-                        android:text="Paytm"
+                        android:text="Pay TM"
                         android:textColor="@color/black3"
                         android:textSize="17sp" />
 

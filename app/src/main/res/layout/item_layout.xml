@@ -113,6 +113,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/closeButton"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:clipToPadding="false" />
 
                 </RelativeLayout>
@@ -128,6 +130,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/rounded_button"
                 android:text="Add to Cart"
+                android:textAllCaps="false"
                 android:textColor="@color/white1" />
         </LinearLayout>
 

@@ -1,8 +1,11 @@
 package com.tapatuniforms.pos.adapter;
 
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,11 +41,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
 
-        holder.itemName.setText(cartItem.getProduct().getName());
+        holder.itemName.setText(cartItem.getProduct().getName() + " (Size: " + cartItem.getSize() + ")");
 
         //getPosition() method returns the position of the size and price to be shown
-        holder.itemSize.setText(String.valueOf(cartItem.getProduct().getSizeList().get(cartItem.getPosition())));
-        holder.itemPrice.setText(decimalFormatter.format(cartItem.getProduct().getPriceList().get(cartItem.getPosition())));
+        String itemType = cartItem.getProduct().getProductType();
+
+        if (itemType != null && !itemType.isEmpty() && !itemType.equals("null")) {
+            holder.itemType.setText(itemType);
+        }
+
+        holder.itemPrice.setText("₹ " + cartItem.getPrice());
+        String color = cartItem.getProduct().getColor();
+
+        holder.itemColor.setText(color);
+
+        holder.itemColorImage.setBackgroundColor(Color.parseColor(cartItem.getProduct().getColorCode()));
 
         holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
 
@@ -101,19 +114,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View rootView;
-        TextView itemName, itemSize, itemPrice, itemDiscount, minusButton, addButton, quantityText, removeButton;
+        TextView itemName, itemType, itemColor, itemPrice, minusButton, addButton, quantityText, removeButton;
+        ImageView itemColorImage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
             itemName = itemView.findViewById(R.id.cartItemName);
-            itemSize = itemView.findViewById(R.id.cartItemSize);
+            itemType = itemView.findViewById(R.id.cartItemType);
+            itemColor = itemView.findViewById(R.id.cartItemColor);
             itemPrice = itemView.findViewById(R.id.cartItemPrice);
-            itemDiscount = itemView.findViewById(R.id.cartItemDiscount);
             minusButton = itemView.findViewById(R.id.minusButton);
             addButton = itemView.findViewById(R.id.addButton);
             quantityText = itemView.findViewById(R.id.quantity);
             removeButton = itemView.findViewById(R.id.removeButton);
+            itemColorImage = itemView.findViewById(R.id.colorImage);
         }
     }
 }
