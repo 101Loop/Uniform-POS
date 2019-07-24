@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:text="Share Sale Summary"
+        android:textColor="@color/white1"
+        android:background="@color/denim"
+        android:padding="8dp"
+        android:textSize="17dp"/>
+
+    <LinearLayout
+        android:id="@+id/fullNameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/stroke_around_rect"
+        android:padding="2dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:weightSum="3" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/transAmountEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="start"
+            android:hint="Add Email -ID"
+            android:inputType="numberDecimal"
+            android:padding="8dp"
+            android:textColor="@color/black1"
+            android:theme="@style/EditTextTheme" />
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:background="@color/denim"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textColor="@color/white1" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/emailRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/share_email_recycler_item"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_button"
+            android:text="Share"
+            android:textAllCaps="false"
+            android:textColor="@color/white1" />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_button_grey"
+            android:text="Close"
+            android:textAllCaps="false"
+            android:textColor="@color/white1" />
+    </LinearLayout>
+
+</LinearLayout>

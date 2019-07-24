@@ -2,17 +2,14 @@ package com.tapatuniforms.pos.fragment;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.InventoryAdapter;
@@ -46,6 +43,15 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         recommendedRecyclerView.setAdapter(new InventoryOrderAdapter());
 
         adapter.setOnClickListener(this);
+
+        setData();
+    }
+
+    private void setData() {
+        adapter.setOnClickListener(inventoryItem -> {
+            InventoryDialog dialog = new InventoryDialog(getContext());
+            dialog.show();
+        });
     }
 
     private ArrayList<InventoryItem> getItemList() {
