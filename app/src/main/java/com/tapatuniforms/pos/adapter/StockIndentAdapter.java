@@ -30,8 +30,10 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         this.context = context;
         this.indentList = indentList;
 
-        if (indentList.size() > 0)
+        if (indentList.size() > 0) {
             selectedIndent = indentList.get(0);
+            lastIndent = selectedIndent;
+        }
     }
 
     @NonNull
@@ -63,11 +65,15 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
 
         holder.rootLayout.setOnClickListener(view -> {
 
+            selectedIndent = indentList.get(position);
+
+            if (lastIndent != null && lastIndent == selectedIndent) {
+                return;
+            }
+
             if (listener != null) {
                 listener.onClickListener(position);
             }
-
-            selectedIndent = indentList.get(position);
 
             if (selectedIndent != lastIndent) {
                 setBackgroundBlue(holder);

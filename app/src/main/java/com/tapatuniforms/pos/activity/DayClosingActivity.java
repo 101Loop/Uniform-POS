@@ -72,14 +72,20 @@ public class DayClosingActivity extends AppCompatActivity implements ViewPager.O
         switch (position) {
             case 0:
                 saleSummaryLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow));
+                stockReportLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow_unselected));
+                closeDayLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow_unselected));
                 saleText.setTextColor(getResources().getColor(R.color.white1));
                 break;
             case 1:
                 stockReportLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow));
+                closeDayLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow_unselected));
+                saleSummaryLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow_unselected));
                 stockReportText.setTextColor(getResources().getColor(R.color.white1));
                 break;
             case 2:
                 closeDayLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow));
+                saleSummaryLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow_unselected));
+                stockReportLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_arrow_unselected));
                 closeDayText.setTextColor(getResources().getColor(R.color.white1));
                 break;
         }
