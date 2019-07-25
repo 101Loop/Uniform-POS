@@ -34,6 +34,7 @@ public class PosActivity extends AppCompatActivity implements
     private DrawerLayout mDrawerLayout;
     private ImageView hamburgerMenuIcon;
     private TextView closeDayView;
+    private ImageView detailIcon;
 
     long lastBackPress;
 
@@ -46,6 +47,7 @@ public class PosActivity extends AppCompatActivity implements
         NavigationView navigationView = findViewById(R.id.nav_view);
         hamburgerMenuIcon = findViewById(R.id.hamburgerMenuIcon);
 //        closeDayView = findViewById(R.id.closeDayView);
+        detailIcon = findViewById(R.id.detailNavIcon);
         hamburgerMenuIcon.setOnClickListener(this);
 
         //set home fragment on create of the activity
@@ -53,8 +55,8 @@ public class PosActivity extends AppCompatActivity implements
                 .replace(R.id.fragmentContainer, new DashboardFragment()).commit();
 
         navigationView.setNavigationItemSelectedListener(this);
-//        closeDayView.setOnClickListener(v -> startActivity(
-//                new Intent(getApplicationContext(), DayClosingActivity.class)));
+        detailIcon.setOnClickListener(v -> startActivity(
+                new Intent(getApplicationContext(), DayClosingActivity.class)));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.tapatuniforms.pos.fragment;
 
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,11 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     private void setData() {
         adapter.setOnClickListener(inventoryItem -> {
             InventoryDialog dialog = new InventoryDialog(getContext());
+
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+
             dialog.show();
         });
     }
@@ -74,6 +81,11 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     @Override
     public void onTransferButtonClick(InventoryItem item) {
         InventoryDialog dialog = new InventoryDialog(getContext());
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
         dialog.show();
     }
 }

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,7 +25,6 @@
                 android:id="@+id/hamburgerMenuIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:src="@drawable/ic_hamburger_black_24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -66,7 +63,7 @@
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="64dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Stock Remaining"
                 android:textColor="@color/white1"
@@ -80,7 +77,7 @@
                 android:id="@+id/homeNavIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:src="@drawable/ic_home"
                 app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
                 app:layout_constraintEnd_toStartOf="@+id/calenderNavIcon"
@@ -90,7 +87,7 @@
                 android:id="@+id/calenderNavIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:src="@drawable/ic_cal_top"
                 app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
                 app:layout_constraintEnd_toStartOf="@+id/bagNavIcon"
@@ -100,7 +97,7 @@
                 android:id="@+id/bagNavIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:src="@drawable/ic_bag"
                 app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
                 app:layout_constraintEnd_toStartOf="@+id/notificationNavIcon"
@@ -110,7 +107,7 @@
                 android:id="@+id/notificationNavIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:src="@drawable/ic_notification"
                 app:layout_constraintBottom_toBottomOf="@+id/hamburgerMenuIcon"
                 app:layout_constraintEnd_toStartOf="@+id/detailNavIcon"

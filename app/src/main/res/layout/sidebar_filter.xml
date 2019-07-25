@@ -40,7 +40,7 @@
                         android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:background="@color/denim"
+                        android:background="@color/denim1"
                         android:gravity="center"
                         android:text="M"
                         android:textColor="@color/white1" />

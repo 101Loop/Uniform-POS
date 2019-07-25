@@ -75,6 +75,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     public void onBoxSelected() {
         StockItemDialog dialog = new StockItemDialog(getContext());
         dialog.show();
+
         Objects.requireNonNull(dialog.getWindow()).clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -83,46 +84,46 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     private ArrayList<Indent> getIndentList() {
         ArrayList<Indent> list = new ArrayList<>();
 
-        list.add(new Indent(1, "Indent 1", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2000, 260, getBoxList().get(0)));
-        list.add(new Indent(2, "Indent 2", "20/May/2019 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(1)));
-        list.add(new Indent(3, "Indent 3", "20/May/2019 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(2)));
-        list.add(new Indent(4, "Indent 4", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(3)));
-        list.add(new Indent(5, "Indent 5", "20/May/2019 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(4)));
-        list.add(new Indent(6, "Indent 6", "20/May/2019 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(5)));
-        list.add(new Indent(7, "Indent 7", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(6)));
-        list.add(new Indent(8, "Indent 8", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2000, 260, getBoxList().get(7)));
-        list.add(new Indent(9, "Indent 9", "20/May/2019 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(8)));
-        list.add(new Indent(10, "Indent 10", "20/May/2019 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(9)));
-        list.add(new Indent(11, "Indent 11", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(10)));
-        list.add(new Indent(12, "Indent 12", "20/May/2019 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(11)));
-        list.add(new Indent(13, "Indent 13", "20/May/2019 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(12)));
-        list.add(new Indent(14, "Indent 14", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(13)));
-        list.add(new Indent(15, "Indent 15", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2000, 260, getBoxList().get(14)));
-        list.add(new Indent(16, "Indent 16", "20/May/2019 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(15)));
-        list.add(new Indent(17, "Indent 17", "20/May/2019 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(16)));
-        list.add(new Indent(18, "Indent 18", "20/May/2019 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(17)));
-        list.add(new Indent(19, "Indent 19", "20/May/2019 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(18)));
-        list.add(new Indent(20, "Indent 20", "20/May/2019 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(19)));
+        list.add(new Indent(1, "Indent 1", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2000, 260, getBoxList().get(0), "Delhi"));
+        list.add(new Indent(2, "Indent 2", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                9, 5200, 350, getBoxList().get(1), "Faridabad"));
+        list.add(new Indent(3, "Indent 3", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                8, 4700, 300, getBoxList().get(2), "kanpur"));
+        list.add(new Indent(4, "Indent 4", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2400, 400, getBoxList().get(3), "New York"));
+        list.add(new Indent(5, "Indent 5", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                9, 5200, 350, getBoxList().get(4), "Noida"));
+        list.add(new Indent(6, "Indent 6", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                8, 4700, 300, getBoxList().get(5), "Haryana"));
+        list.add(new Indent(7, "Indent 7", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2400, 400, getBoxList().get(6), "Kurukshetra"));
+        list.add(new Indent(8, "Indent 8", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2000, 260, getBoxList().get(7), "Panipat"));
+        list.add(new Indent(9, "Indent 9", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                9, 5200, 350, getBoxList().get(8), "Shamli"));
+        list.add(new Indent(10, "Indent 10", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                8, 4700, 300, getBoxList().get(9), "Meerut"));
+        list.add(new Indent(11, "Indent 11", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2400, 400, getBoxList().get(10), "Dehradun"));
+        list.add(new Indent(12, "Indent 12", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                9, 5200, 350, getBoxList().get(11), "Shimla"));
+        list.add(new Indent(13, "Indent 13", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                8, 4700, 300, getBoxList().get(12), "Mumbai"));
+        list.add(new Indent(14, "Indent 14", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2400, 400, getBoxList().get(13), "Goa"));
+        list.add(new Indent(15, "Indent 15", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2000, 260, getBoxList().get(14), "Pune"));
+        list.add(new Indent(16, "Indent 16", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                9, 5200, 350, getBoxList().get(15), "Maharashtra"));
+        list.add(new Indent(17, "Indent 17", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                8, 4700, 300, getBoxList().get(16), "Gujrat"));
+        list.add(new Indent(18, "Indent 18", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                5, 2400, 400, getBoxList().get(17), "Lucknow"));
+        list.add(new Indent(19, "Indent 19", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                9, 5200, 350, getBoxList().get(18), "Delhi"));
+        list.add(new Indent(20, "Indent 20", "20/May/2019, 06:44 PM", "Vivek Kumar",
+                8, 4700, 300, getBoxList().get(19), "Faridabad"));
         return list;
     }
 

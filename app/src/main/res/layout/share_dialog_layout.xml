@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 
     <TextView
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Share Sale Summary"
         android:textColor="@color/white1"
@@ -23,27 +23,28 @@
         android:background="@drawable/stroke_around_rect"
         android:padding="2dp"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:weightSum="3" >
+        android:gravity="center">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/transAmountEditText"
+        <EditText
+            android:id="@+id/emailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="6"
             android:background="@android:color/transparent"
             android:fontFamily="@font/roboto_medium"
             android:gravity="start"
             android:hint="Add Email -ID"
-            android:inputType="numberDecimal"
+            android:inputType="textEmailAddress"
             android:padding="8dp"
             android:textColor="@color/black1"
             android:theme="@style/EditTextTheme" />
 
         <Button
-            android:layout_width="20dp"
+            android:id="@+id/addButton"
+            android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
+            android:layout_marginEnd="5dp"
             android:background="@color/denim"
             android:text="Add"
             android:textAllCaps="false"
@@ -72,6 +73,7 @@
             android:textColor="@color/white1" />
 
         <Button
+            android:id="@+id/closeButton"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_margin="8dp"

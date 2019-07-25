@@ -51,9 +51,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = productList.get(position);
 
-        holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
-        holder.sizeRecyclerView.addItemDecoration(new GridItemDecoration(3, 3));
-
         holder.sizeLayout.setVisibility(View.GONE);
         holder.productName.setText(product.getName());
         holder.colorText.setText(product.getColor());
@@ -90,6 +87,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             if (!product.isSizeAlreadyOpen()) {
                 product.setSizeAlreadyOpen(true);
                 sizeList = getSizes(product);
+                holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
                 sizeAdapter = new SizeAdapter(this.context, sizeList);
                 holder.sizeRecyclerView.setAdapter(sizeAdapter);
             }

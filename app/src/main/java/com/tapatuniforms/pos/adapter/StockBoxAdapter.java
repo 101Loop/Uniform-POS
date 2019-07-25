@@ -37,7 +37,7 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.boxNameView.setText(boxList.get(position).getName());
-        holder.itemCount.setText(String.valueOf(boxList.get(position).getNumberOfItems()));
+        holder.itemCount.setText(boxList.get(position).getNumberOfItems() + " Items");
         holder.itemTextView.setText(boxList.get(position).getDateTime());
 
         holder.rootView.setOnClickListener(v -> {

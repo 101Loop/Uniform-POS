@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBG"
     android:orientation="vertical">
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="Inventory Detail"
+        android:text="@string/inventory_details"
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -26,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,19 +36,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:orientation="horizontal"
             android:weightSum="2">
 
             <LinearLayout
                 android:id="@+id/fullNameLayout"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
+                android:padding="2dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/stroke_around_rect"
-                android:padding="8dp"
-                android:weightSum="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -55,21 +55,26 @@
                     android:id="@+id/transAmountEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="2.8"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="start"
-                    android:hint="Search by Serial No."
+                    android:hint="@string/search_by_indent_serial_no"
                     android:inputType="numberDecimal"
-                    android:padding="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="2dp"
+                    android:textSize="14sp"
                     android:textColor="@color/black1"
                     android:theme="@style/EditTextTheme" />
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_height="35dp"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
+                    android:layout_gravity="center_vertical"
                     android:text="Search"
                     android:textColor="@color/white1" />
             </LinearLayout>
@@ -77,12 +82,11 @@
             <LinearLayout
                 android:id="@+id/barcodeLayout"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/stroke_around_rect"
-                android:padding="8dp"
-                android:weightSum="3"
+                android:padding="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -91,20 +95,25 @@
                     android:id="@+id/barcodeEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="2.8"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="start"
                     android:hint="Add Barcode"
+                    android:textSize="14sp"
                     android:inputType="numberDecimal"
-                    android:padding="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="2dp"
                     android:textColor="@color/black1"
                     android:theme="@style/EditTextTheme" />
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_height="35dp"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
                     android:background="@color/colorPrimary"
                     android:text="Add"
                     android:textColor="@color/white1" />
@@ -119,7 +128,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="June 2019"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/blueButton"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView4" />

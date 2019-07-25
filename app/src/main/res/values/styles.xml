@@ -33,7 +33,16 @@
         <item name="android:textSize">13sp</item>
     </style>
 
-    <style name="EditTextHintTheme" parent="TextAppearance.Design.Hint">
+    <style name="EditTextHintTheme" parent="@android:style/TextAppearance">
         <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/strokeColor</item>
+        <item name="hintTextAppearance">@style/EditTextHintTheme</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textColorHint">@color/black</item>
+    </style>
+
 </resources>

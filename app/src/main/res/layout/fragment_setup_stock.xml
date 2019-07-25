@@ -106,7 +106,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="Payment Type"
                     android:textColor="@color/black2"
-                    android:textSize="17sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/requiredAmount"
@@ -116,7 +116,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="Amount Captured"
                     android:textColor="@color/black2"
-                    android:textSize="17sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/availableAmount"
@@ -126,7 +126,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="Available Amount"
                     android:textColor="@color/black2"
-                    android:textSize="17sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -163,7 +163,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Cash"
                         android:textColor="@color/black3"
-                        android:textSize="17sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <TextView
@@ -174,20 +174,26 @@
                     android:fontFamily="@font/roboto"
                     android:text="₹3000"
                     android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/availableCash"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Enter Cash Sale"
-                    android:inputType="number"
-                    android:nextFocusLeft="@id/availableCash"
-                    android:nextFocusUp="@id/availableCash"
-                    android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/availableCash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="number"
+                        android:nextFocusLeft="@id/availableCash"
+                        android:nextFocusUp="@id/availableCash"
+                        android:textColor="@color/black3"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -222,7 +228,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Pay TM"
                         android:textColor="@color/black3"
-                        android:textSize="17sp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -234,20 +240,25 @@
                     android:fontFamily="@font/roboto"
                     android:text="₹3000"
                     android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/aPaytmAmount"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusableInTouchMode="true"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Enter Paytm Sale"
-                    android:inputType="number"
-                    android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:layout_weight="1">
 
+                    <EditText
+                        android:id="@+id/aPaytmAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="number"
+                        android:textColor="@color/black3"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
 
@@ -283,7 +294,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Card"
                         android:textColor="@color/black3"
-                        android:textSize="17sp"
+                        android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/paytmText" />
 
@@ -297,19 +308,25 @@
                     android:fontFamily="@font/roboto"
                     android:text="₹3000"
                     android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/aCardAmount"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusableInTouchMode="true"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Enter Card Sale"
-                    android:inputType="number"
-                    android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/aCardAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="number"
+                        android:textColor="@color/black3"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
 
@@ -344,7 +361,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Offline Sale"
                         android:textColor="@color/black3"
-                        android:textSize="17sp"
+                        android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/paytmText" />
 
@@ -358,19 +375,25 @@
                     android:fontFamily="@font/roboto"
                     android:text="₹3000"
                     android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/aOfflineAmount"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusableInTouchMode="true"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Enter Offline Sale"
-                    android:inputType="number"
-                    android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/aOfflineAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="number"
+                        android:textColor="@color/black3"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
 
@@ -405,7 +428,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Expense"
                         android:textColor="@color/black3"
-                        android:textSize="17sp"
+                        android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/paytmText" />
 
@@ -419,19 +442,25 @@
                     android:fontFamily="@font/roboto"
                     android:text="₹3000"
                     android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/aExpenseAmount"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusableInTouchMode="true"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Enter Card Sale"
-                    android:inputType="number"
-                    android:textColor="@color/black3"
-                    android:textSize="17sp" />
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/aExpenseAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="number"
+                        android:textColor="@color/black3"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!--<EditText-->
@@ -459,23 +488,27 @@
 
                 <Button
                     android:id="@+id/share"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/rounded_button"
+                    android:background="@color/denim"
                     android:text="@string/share"
-                    android:textColor="@color/white1" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/white1"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/next"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/rounded_button"
+                    android:background="@color/denim"
                     android:text="@string/next"
-                    android:textColor="@color/white1" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/white1"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
