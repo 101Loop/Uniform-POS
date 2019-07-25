@@ -177,21 +177,21 @@
                     android:textSize="15sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <EditText
                         android:id="@+id/availableCash"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="180dp"
+                        android:layout_height="45dp"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"
                         android:nextFocusLeft="@id/availableCash"
+                        android:textSize="12sp"
                         android:nextFocusUp="@id/availableCash"
-                        android:textColor="@color/black3"
-                        android:textSize="15sp" />
+                        android:textColor="@color/black3" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -243,20 +243,20 @@
                     android:textSize="15sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <EditText
                         android:id="@+id/aPaytmAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="180dp"
+                        android:layout_height="45dp"
+                        android:textSize="12sp"
                         android:focusableInTouchMode="true"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"
-                        android:textColor="@color/black3"
-                        android:textSize="15sp" />
+                        android:textColor="@color/black3"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -311,20 +311,20 @@
                     android:textSize="15sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <EditText
                         android:id="@+id/aCardAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="180dp"
+                        android:layout_height="45dp"
                         android:focusableInTouchMode="true"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"
                         android:textColor="@color/black3"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -378,20 +378,20 @@
                     android:textSize="15sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <EditText
                         android:id="@+id/aOfflineAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="180dp"
+                        android:layout_height="45dp"
                         android:focusableInTouchMode="true"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"
                         android:textColor="@color/black3"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -445,20 +445,20 @@
                     android:textSize="15sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <EditText
                         android:id="@+id/aExpenseAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="180dp"
+                        android:layout_height="45dp"
                         android:focusableInTouchMode="true"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"
                         android:textColor="@color/black3"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
