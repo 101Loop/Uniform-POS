@@ -5,90 +5,94 @@
     android:background="#FFFFFF"
     android:orientation="horizontal">
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/grey" />-->
 
     <ImageView
         android:id="@+id/itemCheckedStatus"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@drawable/stroke_rectangle"
         android:layout_gravity="center"
         android:layout_marginStart="-1dp"
         android:padding="8dp"
         android:src="@drawable/ic_check_grey_24" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/grey" />-->
 
     <TextView
         android:id="@+id/itemNameView"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:background="@drawable/stroke_rectangle"
+        android:padding="8dp"
+        android:gravity="center_vertical"
         android:text="Item Name"
         android:textColor="@color/black2" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/grey" />-->
 
 
     <TextView
         android:id="@+id/itemSentView"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="start"
-        android:paddingStart="8dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/stroke_rectangle"
+        android:gravity="center_vertical"
+        android:padding="8dp"
         android:text="120"
         android:textColor="@color/black1" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/grey" />-->
 
     <TextView
         android:id="@+id/itemScannedView"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/stroke_rectangle"
         android:layout_gravity="center"
-        android:paddingStart="8dp"
-        android:gravity="start"
+        android:padding="8dp"
+        android:gravity="center_vertical"
         android:text="100"
         android:textColor="@color/black1" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/grey" />-->
 
     <TextView
         android:id="@+id/itemShelfView"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:gravity="start"
+        android:layout_width="115dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/stroke_rectangle"
+        android:gravity="center_vertical"
+        android:padding="8dp"
         android:text="10"
         android:textColor="@color/black1" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:background="@color/grey" />-->
 
     <LinearLayout
         android:layout_width="150dp"
-        android:paddingStart="8dp"
+        android:padding="8dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/stroke_rectangle"
         android:layout_gravity="center">
 
         <EditText
@@ -104,31 +108,35 @@
             android:textSize="17sp" />
 
         <Button
-            android:layout_width="70dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="30dp"
-            android:layout_margin="8dp"
             android:background="@color/denim"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Move"
             android:textColor="@color/white1" />
 
     </LinearLayout>
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/grey" />-->
 
     <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
+        android:padding="8dp"
+        android:background="@drawable/stroke_rectangle"
         android:text="All Items are matched"
         android:textColor="@color/green" />
 
-    <View
-        android:layout_width="1dp"
-        android:layout_marginStart="33dp"
-        android:layout_height="match_parent"
-        android:background="@color/grey" />
+    <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_marginStart="33dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/grey" />-->
 </TableRow>

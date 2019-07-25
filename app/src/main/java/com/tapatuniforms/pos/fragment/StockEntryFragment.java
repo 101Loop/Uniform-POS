@@ -75,6 +75,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     public void onBoxSelected() {
         StockItemDialog dialog = new StockItemDialog(getContext());
         dialog.show();
+
         Objects.requireNonNull(dialog.getWindow()).clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);

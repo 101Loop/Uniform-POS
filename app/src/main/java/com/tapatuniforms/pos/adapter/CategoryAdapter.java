@@ -54,7 +54,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         if (selectedCategory != null && selectedCategory.getName().equals(category.getName())) {
             lastViewHolder = holder;
-            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
+            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rectangle_light_blue));
         } else {
             holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
         }
@@ -66,7 +66,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             }
 
             selectedCategory = categoryList.get(position);
-            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
+            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rectangle_light_blue));
 
             if (lastViewHolder != null) {
                 holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
@@ -74,7 +74,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             lastViewHolder = holder;
             lastCategory = selectedCategory;
-            //TODO: this is just a work around.... change if a better work around is found
             notifyDataSetChanged();
         });
 

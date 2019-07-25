@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#4657DB</color>
     <!--<color name="colorPrimaryDark">#00574B</color>-->
     <color name="colorPrimaryDark">#4657DB</color>
@@ -10,9 +10,13 @@
     <color name="black1">#252E39</color>
     <color name="black2">#464F5C</color>
     <color name="black3">#617181</color>
+    <color name="black4">#575757</color>
+    <color name="blue">#3E6589</color>
+    <color name="strokeColor">#e3e3e3</color>
     <color name="grey">#666667</color>
     <color name="lighterGrey">#d4d4d4</color>
     <color name="greyLight">#AFAFAF</color>
+    <color name="white">#FFFFFF</color>
     <color name="white1">#F9FAFB</color>
     <color name="white2">#F3F5F8</color>
     <color name="white3">#E9EBEE</color>
@@ -25,12 +29,18 @@
     <color name="backgroundGreenHint">#D9F3E3</color>
     <color name="backgroundRedHint">#EDE8EF</color>
     <color name="denim">#005EB8</color>
+    <color name="denim1">#0083D5</color>
     <color name="green">#6ac259</color>
     <color name="red">#F22F2F</color>
     <color name="blueButton">#4e67c3</color>
+    <color name="blueButton1">#4e67c1</color>
     <color name="darkerBlueButton">#3B65C2</color>
     <color name="appBG">#EEF1F6</color>
     <color name="lightText">#848D98</color>
     <color name="limeGreen">#eafde4</color>
     <color name="indentBG">#B0CEE7</color>
+    <color name="lightPink">#F9F2F1</color>
+    <color name="greenBox">#4B9130</color>
+    <color name="redBox">#DF433A</color>
+    <color name="blueBox">#2961BB</color>
 </resources>

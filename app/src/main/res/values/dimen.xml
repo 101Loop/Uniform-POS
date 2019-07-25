@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="copyright_bottom_margin">20dp</dimen>
+    <dimen name="copyright_bottom_margin">30dp</dimen>
     <dimen name="dummy_text_margin">40dp</dimen>
+    <dimen name="dummy_heading_size">32sp</dimen>
+    <dimen name="dummy_text_size">18sp</dimen>
 </resources>

@@ -23,6 +23,7 @@
         android:text="@string/stock_transfer"
         android:layout_margin="10dp"
         android:textSize="18sp"
+        android:textColor="@color/black"
         android:fontFamily="@font/roboto_medium"
         app:layout_constraintStart_toEndOf="@id/sideBar"/>
 
@@ -41,12 +42,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
-        app:contentPadding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sideBar"
@@ -57,6 +58,9 @@
             android:id="@+id/inventoryRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
             tools:listitem="@layout/inventory_transfer_item_layout" />
 
     </androidx.cardview.widget.CardView>

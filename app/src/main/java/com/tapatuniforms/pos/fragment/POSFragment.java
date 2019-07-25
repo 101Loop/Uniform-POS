@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -58,7 +59,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView, discountRecyclerView;
     private Button paymentButton;
     private Button addDetailsButton;
-    private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView, noProductText, categoryText;
+    private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView,
+            noProductText, categoryText, cartNotification;
 
     private ArrayList<Category> categoryList;
     private ArrayList<Product> allProducts, productList, maleList, femaleList;
@@ -134,6 +136,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         femaleView = view.findViewById(R.id.femaleButton);
         noProductText = view.findViewById(R.id.noProductText);
         categoryText = view.findViewById(R.id.categoryText);
+        cartNotification = view.findViewById(R.id.cartNotification);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -222,7 +225,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
                 categoryAdapter.clearBackground();
                 //change button views
-                maleView.setBackgroundColor(getResources().getColor(R.color.denim));
+                maleView.setBackgroundColor(getResources().getColor(R.color.denim1));
                 maleView.setTextColor(getResources().getColor(R.color.white1));
 
                 femaleView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -254,7 +257,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 isMaleSelected = false;
                 notSelectedYet = false;
                 categoryAdapter.clearBackground();
-                femaleView.setBackgroundColor(getResources().getColor(R.color.denim));
+                femaleView.setBackgroundColor(getResources().getColor(R.color.denim1));
                 femaleView.setTextColor(getResources().getColor(R.color.white1));
 
                 maleView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -443,17 +446,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         return isValidInput;
     }
 
-    /**
-     * This method will clear cart
-     */
-    private void clearCartData() {
-        // DeleteAll Clicked clear cart data
-        cartList.clear();
-        cartAdapter.loadNewData(cartList);
-        ViewHelper.showView(emptyCartView);
-        updatePriceView();
-    }
-
     @Override
     public void onCategorySelected(Category category) {
         productList.clear();
@@ -477,34 +469,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         checkAvailability();
         productAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * This method will create a Discount Dialog
-     */
-    private void showDiscountDialog() {
-        DiscountDialog dialog = new DiscountDialog(getContext());
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
-                LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        dialog.setOnDiscountChangeListener((type, amount) -> {
-//            switch (type) {
-//                case PERCENTAGE:
-//                    discountView.setText("" + amount + "%");
-//                    break;
-//                case MONEY:
-//                    discount = amount;
-//                    DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
-//                    discountView.setText(decimalFormatter.format(amount));
-//                    break;
-//            }
-            discountType = type;
-            discount = amount;
-            updatePriceView();
-        });
     }
 
     /**
@@ -534,13 +498,20 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         for (CartItem cartItem : cartList) {
             Product product = cartItem.getProduct();
-            //TODO: got an error here
             subOrderList.add(new SubOrder(0, product.getName(), product.getApiId(),
-                    product.getSku(), product.getPriceList().get(position), cartItem.getQuantity(),
+                    product.getSku(), cartItem.getPrice(), cartItem.getQuantity(),
                     0, 0, 0, 0, false));
         }
 
         DataHelper.saveAndSyncOrder(getContext(), db, order, subOrderList, transactionList);
+
+        Toast.makeText(getContext(), "Order completed", Toast.LENGTH_SHORT).show();
+        cartList.clear();
+        cartAdapter.notifyDataSetChanged();
+        updatePriceView();
+
+        cartRecyclerView.setVisibility(View.GONE);
+        emptyCartView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -569,10 +540,20 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         }
 
         subTotalView.setText(decimalFormatter.format(subTotal));
-        textNumberItems.setText("(" + cartQuantity + " items)");
+
+        String count = "(" + cartQuantity;
+
+        if (cartQuantity < 2) {
+            count += " Item)";
+        }else{
+            count += " Items)";
+        }
+
+        textNumberItems.setText(count);
         discountView.setText(decimalFormatter.format(calculatedDiscount));
         total = subTotal - calculatedDiscount;
         totalView.setText(decimalFormatter.format(total));
+        updateCartNotification(cartQuantity);
     }
 
     @Override
@@ -626,5 +607,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 noProductText.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void updateCartNotification(int cartQuantity){
+        cartNotification.setText(String.valueOf(cartQuantity));
     }
 }

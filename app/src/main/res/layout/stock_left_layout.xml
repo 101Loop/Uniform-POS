@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBG"
     android:orientation="vertical">
 
     <TextView
@@ -35,18 +36,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:orientation="horizontal"
             android:weightSum="2">
 
             <LinearLayout
                 android:id="@+id/fullNameLayout"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
+                android:padding="2dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/stroke_around_rect"
-                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -71,9 +71,10 @@
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_height="35dp"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
+                    android:layout_gravity="center_vertical"
                     android:text="Search"
                     android:textColor="@color/white1" />
             </LinearLayout>
@@ -81,11 +82,11 @@
             <LinearLayout
                 android:id="@+id/barcodeLayout"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/stroke_around_rect"
-                android:padding="8dp"
+                android:padding="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -110,8 +111,9 @@
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_height="35dp"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
                     android:background="@color/colorPrimary"
                     android:text="Add"
                     android:textColor="@color/white1" />
@@ -126,7 +128,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="June 2019"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/blueButton"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView4" />

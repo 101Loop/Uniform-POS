@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
                     android:text="2 Boxes"
+                    android:textSize="17sp"
                     android:textColor="@color/black3" />
             </LinearLayout>
 
@@ -50,6 +51,7 @@
                     android:id="@+id/priceItemView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="17sp"
                     android:text="₹2000"
                     android:textColor="@color/colorPrimary" />
 
@@ -58,6 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
+                    android:textSize="17sp"
                     android:text="270 Items"
                     android:textColor="@color/colorPrimary" />
             </LinearLayout>

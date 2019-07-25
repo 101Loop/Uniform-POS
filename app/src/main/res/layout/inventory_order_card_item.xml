@@ -48,14 +48,32 @@
                     android:layout_height="24dp"
                     android:textSize="16dp"
                     android:text="Shirt Type 1"
-                    android:textColor="@color/black2"/>
+                    android:textColor="@color/black4"/>
 
-                <TextView
-                    android:id="@+id/itemDetailView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="08 in Warehouse"/>
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
+                        android:background="@drawable/cart_notification"
+                        android:textColor="@color/white"
+                        android:text="08"/>
+
+                    <TextView
+                        android:id="@+id/itemDetailView"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/blue"
+                        android:layout_marginStart="5dp"
+                        android:layout_height="wrap_content"
+                        android:text="Warehouse"/>
+                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -74,8 +92,8 @@
                 android:layout_height="0dp"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
-                android:text="Order Now"
-                android:textColor="@color/denim"
+                android:text="@string/add_to_order"
+                android:textColor="@color/denim1"
                 android:textSize="17dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
