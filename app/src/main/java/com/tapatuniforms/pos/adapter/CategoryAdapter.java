@@ -56,7 +56,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             lastViewHolder = holder;
             holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rectangle_light_blue));
         } else {
-            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
+            holder.rootLayout.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+//            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
         }
 
         holder.categoryImage.setOnClickListener(v -> {
@@ -69,7 +70,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rectangle_light_blue));
 
             if (lastViewHolder != null) {
-                holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
+                holder.rootLayout.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             }
 
             lastViewHolder = holder;

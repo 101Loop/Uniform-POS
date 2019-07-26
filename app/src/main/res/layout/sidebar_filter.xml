@@ -24,7 +24,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="48dp"
+                android:layout_marginTop="32dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp">
 
@@ -37,9 +40,11 @@
                     <TextView
                         android:id="@+id/maleButton"
                         android:layout_width="0dp"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
+                        android:textSize="21sp"
+                        android:padding="8dp"
                         android:background="@color/denim1"
                         android:gravity="center"
                         android:text="M"
@@ -48,13 +53,14 @@
                     <TextView
                         android:id="@+id/femaleButton"
                         android:layout_width="0dp"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:padding="8dp"
                         android:text="F"
                         android:textColor="@color/black1"
-                        android:textSize="17sp" />
+                        android:textSize="21sp" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

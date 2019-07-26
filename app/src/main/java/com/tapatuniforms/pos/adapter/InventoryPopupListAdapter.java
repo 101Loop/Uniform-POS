@@ -24,7 +24,22 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.plusButton.setOnClickListener(view -> {
+            int count = Integer.parseInt(holder.quantityEditText.getText().toString());
+            ++count;
+            holder.quantityEditText.setText(String.valueOf(count));
+            holder.quantityTextView.setText(String.valueOf(count));
+        });
 
+        holder.minusButton.setOnClickListener(view -> {
+            int count = Integer.parseInt(holder.quantityEditText.getText().toString());
+
+            if (count > 1) {
+                --count;
+                holder.quantityEditText.setText(String.valueOf(count));
+                holder.quantityTextView.setText(String.valueOf(count));
+            }
+        });
     }
 
     @Override
