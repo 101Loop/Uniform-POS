@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/popup_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:elevation="10dp"
         android:src="@drawable/blue"
         tools:targetApi="lollipop" />
@@ -163,14 +163,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="15dp">
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/sizeList"
                         android:textColor="@android:color/black"
-                        android:textSize="17sp" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/sizeRecyclerView"
@@ -183,36 +185,42 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_margin="10dp"
                     android:background="@color/white">
 
                     <TableRow>
 
                         <TextView
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
                             android:text="Box 1"
+                            android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
                             android:text="Box 2"
+                            android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
                             android:text="Box 3"
+                            android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -221,6 +229,8 @@
                     <TableRow android:layout_width="match_parent">
 
                         <TextView
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
@@ -228,6 +238,8 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
@@ -235,6 +247,8 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"

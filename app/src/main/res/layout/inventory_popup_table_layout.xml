@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/sizeView"
         android:layout_width="120dp"
-        android:background="@drawable/stroke_rectangle"
+        android:background="@drawable/stroke_rectangle_light"
         android:gravity="center"
         android:padding="8dp"
         android:text="22"
@@ -18,7 +18,7 @@
     <TextView
         android:id="@+id/stockNumberView"
         android:layout_width="120dp"
-        android:background="@drawable/stroke_rectangle"
+        android:background="@drawable/stroke_rectangle_light"
         android:gravity="center"
         android:padding="8dp"
         android:text="00"
@@ -27,7 +27,7 @@
 
     <LinearLayout
         android:layout_height="38dp"
-        android:background="@drawable/stroke_rectangle"
+        android:background="@drawable/stroke_rectangle_light"
         android:orientation="horizontal">
 
         <LinearLayout

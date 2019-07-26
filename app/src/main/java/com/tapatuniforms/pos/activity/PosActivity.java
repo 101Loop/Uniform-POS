@@ -35,6 +35,8 @@ public class PosActivity extends AppCompatActivity implements
     private ImageView hamburgerMenuIcon;
     private TextView closeDayView;
     private ImageView detailIcon;
+    private ImageView calendarIcon;
+    private ImageView homeIcon;
 
     long lastBackPress;
 
@@ -46,8 +48,10 @@ public class PosActivity extends AppCompatActivity implements
         mDrawerLayout = findViewById(R.id.drawerLayout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         hamburgerMenuIcon = findViewById(R.id.hamburgerMenuIcon);
-//        closeDayView = findViewById(R.id.closeDayView);
         detailIcon = findViewById(R.id.detailNavIcon);
+        calendarIcon = findViewById(R.id.calenderNavIcon);
+        homeIcon = findViewById(R.id.homeNavIcon);
+
         hamburgerMenuIcon.setOnClickListener(this);
 
         //set home fragment on create of the activity
@@ -55,8 +59,10 @@ public class PosActivity extends AppCompatActivity implements
                 .replace(R.id.fragmentContainer, new DashboardFragment()).commit();
 
         navigationView.setNavigationItemSelectedListener(this);
-        detailIcon.setOnClickListener(v -> startActivity(
+        calendarIcon.setOnClickListener(v -> startActivity(
                 new Intent(getApplicationContext(), DayClosingActivity.class)));
+
+        homeIcon.setOnClickListener(v -> getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DashboardFragment()).commit());
     }
 
     @Override

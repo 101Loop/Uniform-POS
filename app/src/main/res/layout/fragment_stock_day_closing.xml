@@ -24,6 +24,7 @@
         tools:listitem="@layout/dayclosing_stock_item_layout"/>
 
     <Button
+        android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
