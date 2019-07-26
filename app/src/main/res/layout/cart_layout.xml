@@ -22,7 +22,7 @@
         <LinearLayout
             android:id="@+id/studentDetailsLayout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_margin="8dp"
             android:background="@drawable/stroke_around_rect"
             android:weightSum="3"
@@ -47,9 +47,9 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:background="@color/colorPrimary"
                 android:text="Submit"
                 android:textAllCaps="false"
@@ -78,7 +78,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="40dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,8 +96,9 @@
                 layout="@layout/empty_cart_layout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="90dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintBottom_toTopOf="@id/bottomLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/cartRecyclerView"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -103,15 +107,15 @@
                 android:id="@+id/discountButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 app:layout_constraintBottom_toTopOf="@+id/cartSeparator"
                 app:layout_constraintEnd_toStartOf="@+id/cartButtonLayout"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/addDiscountButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_margin="8dp"
                     android:src="@drawable/ic_discount" />
 
@@ -121,8 +125,8 @@
                     android:layout_height="18dp"
                     android:background="@drawable/cart_notification"
                     android:gravity="center"
-                    android:text="1"
                     android:minWidth="18dp"
+                    android:text="1"
                     android:textColor="@color/white1"
                     android:textSize="12sp"
                     android:visibility="visible" />
@@ -133,15 +137,15 @@
                 android:id="@+id/cartButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 app:layout_constraintBottom_toTopOf="@+id/cartSeparator"
-                android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/addCartButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_margin="8dp"
                     android:src="@drawable/ic_cart" />
 
@@ -151,8 +155,8 @@
                     android:layout_height="18dp"
                     android:background="@drawable/cart_notification"
                     android:gravity="center"
-                    android:text="0"
                     android:minWidth="18dp"
+                    android:text="0"
                     android:textColor="@color/white1"
                     android:textSize="12sp"
                     android:visibility="visible" />
@@ -172,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cartSeparator"
@@ -183,139 +187,167 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cartSeparator"
                 tools:listitem="@layout/discount_item_layout" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto"
-                android:text="@string/sub_total"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/textNumberItems"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="(0 Item)"
-                android:textColor="@color/black3"
-                android:textSize="15sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView"
-                app:layout_constraintStart_toEndOf="@+id/textView" />
-
-
-            <TextView
-                android:id="@+id/subTotalView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/roboto"
-                android:text="₹0"
-                android:textColor="@color/black2"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto"
-                android:text="@string/tax_included"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView3"
-                app:layout_constraintStart_toStartOf="@+id/textView" />
-
-            <TextView
-                android:id="@+id/taxView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:text="₹0"
-                android:textColor="@color/black2"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-                app:layout_constraintEnd_toEndOf="@+id/subTotalView" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto"
-                android:text="@string/discount_offer"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/view"
-                app:layout_constraintStart_toStartOf="@+id/textView2" />
-
-            <TextView
-                android:id="@+id/discountView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:text="₹0"
-                android:textColor="@color/black2"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-                app:layout_constraintEnd_toEndOf="@+id/taxView" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/black3"
-                app:layout_constraintBottom_toTopOf="@+id/textView4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto"
-                android:text="@string/total"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/paymentButton"
-                app:layout_constraintStart_toStartOf="@+id/view" />
-
-            <TextView
-                android:id="@+id/totalView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:text="₹0"
-                android:textColor="@color/black2"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-                app:layout_constraintEnd_toEndOf="@+id/view" />
-
-            <Button
-                android:id="@+id/paymentButton"
+            <LinearLayout
+                android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/rounded_button"
-                android:text="@string/place_order"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:background="@color/white1"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:text="@string/sub_total"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textNumberItems"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="(0 Item)"
+                            android:textColor="@color/black3"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/subTotalView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto"
+                        android:gravity="end"
+                        android:text="₹0" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/tax_included"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/taxView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto"
+                        android:gravity="end"
+                        android:text="₹0" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/discount_offer"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/discountView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto"
+                        android:gravity="end"
+                        android:text="₹0" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/strokeColor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/total"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/totalView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/roboto"
+                        android:gravity="end"
+                        android:text="₹0" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/paymentButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/rounded_button"
+                    android:text="@string/place_order"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.Product;
 
@@ -84,17 +83,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.addToCartButton.setOnClickListener(view -> {
             holder.sizeLayout.setVisibility(View.VISIBLE);
 
-            if (!product.isSizeAlreadyOpen()) {
-                product.setSizeAlreadyOpen(true);
-                sizeList = getSizes(product);
-                holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
-                sizeAdapter = new SizeAdapter(this.context, sizeList);
-                holder.sizeRecyclerView.setAdapter(sizeAdapter);
-            }
+            sizeList = getSizes(product);
+            holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
+            sizeAdapter = new SizeAdapter(this.context, sizeList);
+            holder.sizeRecyclerView.setAdapter(sizeAdapter);
 
             sizeAdapter.setOnSizeClickListener((pos, size) -> {
                 if (listener != null) {
                     listener.onProductClicked(product, pos, size);
+
+                    holder.sizeLayout.setVisibility(View.GONE);
                 }
             });
         });

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootLayout"
-    android:layout_width="25dp"
-    android:layout_height="25dp"
-    android:background="@drawable/stroke_rectangle_light"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:background="@drawable/stroke_rectangle_white_bg"
     android:gravity="center"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/sizeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:text="24" />
 
 </LinearLayout>
