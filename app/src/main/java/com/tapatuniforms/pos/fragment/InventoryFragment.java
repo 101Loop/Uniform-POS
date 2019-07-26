@@ -14,9 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.InventoryAdapter;
 import com.tapatuniforms.pos.adapter.InventoryOrderAdapter;
 import com.tapatuniforms.pos.dialog.InventoryDialog;
+import com.tapatuniforms.pos.helper.DataHelper;
+import com.tapatuniforms.pos.helper.GridItemDecoration;
+import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.InventoryItem;
 
 import java.util.ArrayList;
@@ -24,6 +28,9 @@ import java.util.ArrayList;
 public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener {
     private RecyclerView inventoryRecyclerView, recommendedRecyclerView;
     private InventoryAdapter adapter;
+    private ArrayList<Category> categoryList;
+    private CategoryAdapter categoryAdapter;
+    private RecyclerView categoryRecyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -34,8 +41,16 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     }
 
     private void init(View view) {
+        categoryList = new ArrayList<>();
+        categoryRecyclerView = view.findViewById(R.id.categoryRecycler);
+        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+        categoryRecyclerView.addItemDecoration(new GridItemDecoration(16, 16));
+        categoryRecyclerView.setAdapter(categoryAdapter);
+
         inventoryRecyclerView = view.findViewById(R.id.inventoryRecyclerView);
         inventoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        inventoryRecyclerView.addItemDecoration(new GridItemDecoration(12, 12));
         adapter = new InventoryAdapter(getContext(), getItemList());
         inventoryRecyclerView.setAdapter(adapter);
 
@@ -46,6 +61,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
 
         adapter.setOnClickListener(this);
 
+        DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
         setData();
     }
 

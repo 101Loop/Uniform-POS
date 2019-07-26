@@ -75,7 +75,7 @@
             android:background="@drawable/stroke_around_rect"
             android:inputType="number"
             android:gravity="center"
-            android:text="03" />
+            android:text="02" />
     </LinearLayout>
 
 </TableRow>

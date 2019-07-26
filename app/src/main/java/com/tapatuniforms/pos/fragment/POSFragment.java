@@ -167,7 +167,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         cartRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
 
-        categoryRecycler.addItemDecoration(new GridItemDecoration(12, 12));
+        categoryRecycler.addItemDecoration(new GridItemDecoration(16, 16));
         categoryAdapter.setOnCategorySelectedListener(this);
         categoryRecycler.setAdapter(categoryAdapter);
 
@@ -427,6 +427,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             Validator.setEmptyError(phoneLayout);
             isValidInput = false;
         } else if (!Validator.isValidMobile(phone)) {
+            isValidInput = false;
             phoneLayout.setError("This phone is not valid");
         } else {
             phoneLayout.setError(null);
@@ -437,6 +438,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             Validator.setEmptyError(emailLayout);
             isValidInput = false;
         } else if (!Validator.isValidEmail(email)) {
+            isValidInput = false;
             emailLayout.setError("This email is not valid");
         } else {
             emailLayout.setError(null);
@@ -526,7 +528,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         for (CartItem cartItem : cartList) {
             cartQuantity += cartItem.getQuantity();
-            //got an error here
             subTotal += cartItem.getQuantity() * cartItem.getPrice();
         }
 

@@ -91,12 +91,13 @@
 
             <TextView
                 android:id="@+id/minusButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@color/greyLight"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/lighterGrey"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="-"
+                android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <TextView
@@ -110,12 +111,13 @@
 
             <TextView
                 android:id="@+id/addButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@color/greyLight"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/lighterGrey"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="+"
+                android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <TextView
