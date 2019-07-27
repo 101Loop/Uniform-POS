@@ -54,6 +54,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.productName.setText(product.getName());
         holder.colorText.setText(product.getColor());
 
+        //product type
         String productType = product.getProductType();
 
         if (productType != null && !productType.equalsIgnoreCase("null")) {
@@ -62,6 +63,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.productType.setText("");
         }
 
+        //color
         String hexColor = product.getColorCode();
 
         if (hexColor.length() == 4) {
@@ -69,6 +71,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             hexColor = "#" + arrHexColor[1] + arrHexColor[1];
         }
         holder.colorImage.setBackgroundColor(Color.parseColor(hexColor));
+
+        //product image
+
 
         Glide.with(context)
                 .load(product.getImage())

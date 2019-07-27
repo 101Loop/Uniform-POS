@@ -72,8 +72,8 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     }
 
     @Override
-    public void onBoxSelected() {
-        StockItemDialog dialog = new StockItemDialog(getContext());
+    public void onBoxSelected(Box box) {
+        StockItemDialog dialog = new StockItemDialog(getContext(), box);
         dialog.show();
 
         Objects.requireNonNull(dialog.getWindow()).clearFlags(
@@ -131,54 +131,56 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         ArrayList<Box> list = new ArrayList<>();
 
         list.add(new Box(1, "Box 1", "1234456677", "10/May/2019 6:55 PM",
-                300, 213));
+                300, 213, "Indent 1"));
         list.add(new Box(2, "Box 2", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(3, "Box 3", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(4, "Box 4", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(5, "Box 5", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(6, "Box 6", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(7, "Box 7", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(8, "Box 8", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(9, "Box 9", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(10, "Box 10", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(11, "Box 11", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(12, "Box 12", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(13, "Box 13", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(14, "Box 14", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(15, "Box 15", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(16, "Box 16", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(17, "Box 17", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(18, "Box 18", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(19, "Box 19", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
         list.add(new Box(20, "Box 20", "1234456677", "10/May/2019 6:55 PM",
-                300, 120));
+                300, 120, ""));
 
         return list;
     }
 
     @Override
-    public void onClickListener(int position) {
+    public void onClickListener(int position, String indentName) {
         boxList.clear();
 
-        boxList.add(getBoxList().get(position));
+        Box box = getBoxList().get(position);
+        box.setIndentName(indentName);
+        boxList.add(box);
         checkBoxAvailability();
         stockAdapter.notifyDataSetChanged();
     }

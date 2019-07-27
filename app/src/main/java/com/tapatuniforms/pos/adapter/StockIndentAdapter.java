@@ -72,7 +72,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
             }
 
             if (listener != null) {
-                listener.onClickListener(position);
+                listener.onClickListener(position, selectedIndent.getName());
             }
 
             if (selectedIndent != lastIndent) {
@@ -148,7 +148,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
     }
 
     public interface OnIndentClickListener {
-        void onClickListener(int position);
+        void onClickListener(int position, String indentName);
     }
 
     public void setOnIndentClickListener(OnIndentClickListener listener) {

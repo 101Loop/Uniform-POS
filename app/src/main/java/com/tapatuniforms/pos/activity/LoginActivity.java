@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private EditText destinationView;
     private boolean isOtpSent = false;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,10 @@ public class LoginActivity extends AppCompatActivity {
             destinationView.setError("Invalid value");
         } else {
             try {
+                showProgressDialog();
                 sendRequest(destination);
             } catch (JSONException e) {
+                dismissDialog();
                 e.printStackTrace();
             }
         }
@@ -70,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 Request.Method.POST, APIStatic.User.loginOTPURL, requestObject,
                 response -> {
                     // Response Received
-
+                    dismissDialog();
                     Toast.makeText(getApplicationContext(), "OTP Sent", Toast.LENGTH_SHORT)
                             .show();
 
@@ -88,5 +92,19 @@ public class LoginActivity extends AppCompatActivity {
     public void signUpClicked(View view) {
         startActivity(new Intent(this, SignUpActivity.class));
         finish();
+    }
+
+    private void showProgressDialog(){
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Please wait");
+        dialog.setMessage("loading...");
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private void dismissDialog(){
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 }

@@ -26,7 +26,7 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 5;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
