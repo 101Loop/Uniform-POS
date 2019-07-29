@@ -60,9 +60,13 @@ public class DataHelper {
     }
 
     public static void fetchProducts(Context context, ArrayList<Product> allProducts,
-                                     ArrayList<Product> productList, ProductAdapter productAdapter) {
+                                     ArrayList<Product> productList, ProductAdapter productAdapter, DatabaseSingleton db) {
+
+        ArrayList<Product> localProductList = (ArrayList<Product>) db.productDao().getAll();
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            productList.clear();
+            productList.addAll(localProductList);
             return;
         }
 
@@ -83,6 +87,12 @@ public class DataHelper {
 
                         productAdapter.notifyDataSetChanged();
                     }
+
+                    if (localProductList.size() != productList.size()) {
+                        db.productDao().deleteAll();
+                        db.productDao().insertAll(productList);
+                    }
+
                 }, new APIErrorListener(context), context);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,

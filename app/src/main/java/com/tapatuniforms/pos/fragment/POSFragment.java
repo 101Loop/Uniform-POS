@@ -286,7 +286,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         // Fetch Data
         DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
-        DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter);
+        DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter, db);
     }
 
     /**
@@ -602,7 +602,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
             }
 
-            cartList.add(new CartItem(product.getApiId(), 1, product, pos, size, product.getPriceList().get(pos)));
+            cartList.add(new CartItem(product.getApiId(), 1, product, pos, size, Double.parseDouble(product.getPriceList().get(pos))));
             cartAdapter.notifyDataSetChanged();
             updatePriceView();
         }
