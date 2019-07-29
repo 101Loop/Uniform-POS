@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.helper;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,9 +13,15 @@ import org.json.JSONObject;
 public class APIErrorListener extends DjangoErrorListener {
     private static final String TAG = "APIErrorListener";
     private Context context;
+    private ProgressDialog dialog;
 
     public APIErrorListener(Context context) {
         this.context = context;
+    }
+
+    public APIErrorListener(Context context, ProgressDialog dialog) {
+        this.context = context;
+        this.dialog = dialog;
     }
 
     @Override
@@ -110,6 +117,10 @@ public class APIErrorListener extends DjangoErrorListener {
     public void defaultErrorListener(String message) {
         Log.e(TAG, "defaultErrorListener: " + message);
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 
     @Override

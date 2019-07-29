@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText nameEditText, emailEditText, mobileEditText;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
+        showProgressDialog();
         JSONObject requestObject = new JSONObject();
         requestObject.put(APIStatic.Key.name, name);
         requestObject.put(APIStatic.Key.email, email);
@@ -80,6 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "OTP Sent", Toast.LENGTH_SHORT)
                             .show();
 
+                    dismissDialog();
                     Intent intent = new Intent(this, OtpActivity.class);
                     intent.putExtra(AppStatic.name, name);
                     intent.putExtra(AppStatic.email, email);
@@ -87,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                     intent.putExtra(AppStatic.isLogin, false);
                     startActivity(intent);
                     finish();
-                }, new APIErrorListener(this), this);
+                }, new APIErrorListener(this, dialog), this);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -97,5 +101,22 @@ public class SignUpActivity extends AppCompatActivity {
     public void loginClicked(View view) {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    private void showProgressDialog(){
+        if (dialog == null) {
+            dialog = new ProgressDialog(this);
+        }
+
+        dialog.setTitle(R.string.dialog_title);
+        dialog.setMessage(getResources().getString(R.string.dialog_message));
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private void dismissDialog(){
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 }
