@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             try {
                 destinationView.setError(null);
-                showProgressDialog();
                 sendRequest(destination);
             } catch (JSONException e) {
                 dismissDialog();
@@ -68,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        showProgressDialog();
         JSONObject requestObject = new JSONObject();
         requestObject.put(APIStatic.Key.isLogin, true);
         requestObject.put(APIStatic.Key.destination, destination);

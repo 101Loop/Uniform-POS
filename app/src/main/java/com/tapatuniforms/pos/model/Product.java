@@ -20,9 +20,8 @@ public class Product {
     private String name;
     private String sku;
     private String image;
-    //    private double price;
     private ArrayList<String> sizeList = new ArrayList<>();
-    private ArrayList<Double> priceList = new ArrayList<>();
+    private ArrayList<String> priceList = new ArrayList<>();
     private int category;
     private int outlet;
     private String color;
@@ -32,15 +31,15 @@ public class Product {
 
     private boolean isSizeAlreadyOpen = false;
 
-    public Product(int id, int apiId, String name, String sku, String image, ArrayList<Double> priceList,
+    public Product(int id, int apiId, String name, String sku, String image, ArrayList<String> priceList,
                    ArrayList<String> sizeList, int category, int outlet, String color) {
         this.id = id;
         this.apiId = apiId;
         this.name = name;
         this.sku = sku;
         this.image = image;
-        this.priceList = priceList;
-        this.sizeList = sizeList;
+        this.priceList.addAll(priceList);
+        this.sizeList.addAll(sizeList);
         this.category = category;
         this.outlet = outlet;
         this.color = color;
@@ -55,7 +54,7 @@ public class Product {
         for (int i = 0; i < subProductArray.length(); i++) {
             currentObject = subProductArray.getJSONObject(i);
             sizeList.add(currentObject.getString(APIStatic.Key.size));
-            priceList.add(currentObject.getDouble(APIStatic.Key.price));
+            priceList.add(currentObject.getString(APIStatic.Key.price));
         }
 
         this.id = 0;
@@ -63,8 +62,6 @@ public class Product {
         this.name = productObject.optString(APIStatic.Key.name);
         this.sku = productObject.optString(APIStatic.Key.sku);
         this.image = object.optString(APIStatic.Key.image);
-//        this.price = object.optDouble(APIStatic.Key.price);
-//        this.sizeList = object.optString(APIStatic.Key.sizeList);
         this.category = productObject.optInt(APIStatic.Key.category);
         this.outlet = object.optInt(APIStatic.Key.outlet);
         this.color = object.optString(APIStatic.Key.color);
@@ -112,22 +109,6 @@ public class Product {
     public void setImage(String image) {
         this.image = image;
     }
-
-    /*public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }*/
-
-    /*public String getSize() {
-        return sizeList;
-    }
-
-    public void setSize(String sizeList) {
-        this.sizeList = sizeList;
-    }*/
 
     public int getCategory() {
         return category;
@@ -185,11 +166,11 @@ public class Product {
         this.sizeList = sizeList;
     }
 
-    public ArrayList<Double> getPriceList() {
+    public ArrayList<String> getPriceList() {
         return priceList;
     }
 
-    public void setPriceList(ArrayList<Double> priceList) {
+    public void setPriceList(ArrayList<String> priceList) {
         this.priceList = priceList;
     }
 
