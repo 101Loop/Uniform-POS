@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.fragment.DashboardFragment;
+import com.tapatuniforms.pos.fragment.DayClosingFragment;
 import com.tapatuniforms.pos.fragment.InventoryFragment;
 import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
@@ -59,8 +60,11 @@ public class PosActivity extends AppCompatActivity implements
                 .replace(R.id.fragmentContainer, new DashboardFragment()).commit();
 
         navigationView.setNavigationItemSelectedListener(this);
-        calendarIcon.setOnClickListener(v -> startActivity(
-                new Intent(getApplicationContext(), DayClosingActivity.class)));
+        calendarIcon.setOnClickListener(v -> {
+            if (!(getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) instanceof DayClosingFragment)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DayClosingFragment()).commit();
+            }
+        });
 
         homeIcon.setOnClickListener(v -> getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DashboardFragment()).commit());
     }
