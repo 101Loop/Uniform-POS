@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.sizeRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         holder.sizeRecyclerView.setAdapter(sizeAdapter);
 
-        holder.addToOrderButton.setOnClickListener(view -> {
+        holder.transferButton.setOnClickListener(view -> {
             if (listener != null) {
                 listener.onTransferButtonClick(item);
             }
@@ -75,12 +76,14 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         TextView itemNameView, addToOrderButton, itemWarehouseCount, itemDisplayCount;
 //        Button transferButton;
         RecyclerView sizeRecyclerView;
+        LinearLayout transferButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemNameView = itemView.findViewById(R.id.itemNameView);
             addToOrderButton = itemView.findViewById(R.id.addToOrderButton);
             sizeRecyclerView = itemView.findViewById(R.id.sizeRecyclerView);
+            transferButton = itemView.findViewById(R.id.transferButton);
         }
     }
 }

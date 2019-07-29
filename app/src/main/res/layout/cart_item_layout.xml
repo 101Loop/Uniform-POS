@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end">
 
-                    <ImageView
+                    <com.tapatuniforms.pos.helper.RoundedCornerLayout
                         android:id="@+id/colorImage"
                         android:layout_width="16dp"
                         android:layout_height="16dp"

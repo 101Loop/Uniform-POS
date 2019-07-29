@@ -7,14 +7,16 @@ public class Box {
     private String dateTime;
     private int numberOfItems;
     private int itemsVerified;
+    private String indentName;
 
-    public Box(long id, String name, String serialNumber, String dateTime, int numberOfItems, int itemsVerified) {
+    public Box(long id, String name, String serialNumber, String dateTime, int numberOfItems, int itemsVerified, String indentName) {
         this.id = id;
         this.name = name;
         this.serialNumber = serialNumber;
         this.dateTime = dateTime;
         this.numberOfItems = numberOfItems;
         this.itemsVerified = itemsVerified;
+        this.indentName = indentName;
     }
 
     public long getId() {
@@ -63,5 +65,13 @@ public class Box {
 
     public void setItemsVerified(int itemsVerified) {
         this.itemsVerified = itemsVerified;
+    }
+
+    public String getIndentName() {
+        return indentName;
+    }
+
+    public void setIndentName(String indentName) {
+        this.indentName = indentName;
     }
 }

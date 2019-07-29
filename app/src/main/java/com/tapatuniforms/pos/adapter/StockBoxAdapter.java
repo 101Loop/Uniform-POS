@@ -19,7 +19,7 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
     private OnBoxClickListener listener;
 
     public interface OnBoxClickListener {
-        void onBoxSelected();
+        void onBoxSelected(Box box);
     }
 
     public StockBoxAdapter(ArrayList<Box> boxList) {
@@ -36,13 +36,14 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.boxNameView.setText(boxList.get(position).getName());
-        holder.itemCount.setText(boxList.get(position).getNumberOfItems() + " Items");
-        holder.itemTextView.setText(boxList.get(position).getDateTime());
+        Box currentBox = boxList.get(position);
+        holder.boxNameView.setText(currentBox.getName());
+        holder.itemCount.setText(currentBox.getNumberOfItems() + " Items");
+        holder.itemTextView.setText(currentBox.getDateTime());
 
         holder.rootView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onBoxSelected();
+                listener.onBoxSelected(currentBox);
             }
         });
     }

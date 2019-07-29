@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="400dp"
+        android:layout_width="535dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dummy_text_margin"
         android:orientation="vertical"
@@ -44,7 +44,7 @@
             android:text="@string/login_heading"
             android:textAllCaps="true"
             android:textColor="@color/white1"
-            android:textSize="35sp" />
+            android:textSize="@dimen/dummy_heading_size" />
 
         <TextView
             android:id="@+id/subHeading"
@@ -55,7 +55,7 @@
             android:lineSpacingExtra="5dp"
             android:text="@string/login_substring"
             android:textColor="@color/white1"
-            android:textSize="18sp" />
+            android:textSize="@dimen/dummy_text_size" />
     </LinearLayout>
 
     <RelativeLayout
@@ -75,7 +75,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="45dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,7 +84,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -94,7 +95,7 @@
                         android:id="@+id/otpEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="OTP"
+                        android:hint="@string/otp"
                         android:inputType="phone"
                         android:textColorHint="@color/black3"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +139,8 @@
             android:src="@drawable/ic_shirt_rounded"
             app:layout_constraintEnd_toEndOf="@+id/cardView3"
             app:layout_constraintStart_toStartOf="@+id/cardView3"
-            app:layout_constraintTop_toTopOf="@+id/cardView3" />
+            app:layout_constraintTop_toTopOf="@+id/cardView3"
+            tools:targetApi="LOLLIPOP" />
 
     </RelativeLayout>
 
@@ -148,7 +150,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/copyright_bottom_margin"
         android:text="@string/copyright"
         android:textColor="@color/white1"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"

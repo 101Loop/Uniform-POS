@@ -50,4 +50,7 @@
     <string name="search_by_indent_serial_no">Search by Indent Serial No</string>
     <string name="add">Add</string>
     <string name="stock_transfer">STOCK TRANSFER</string>
+    <string name="dialog_title">Please wait</string>
+    <string name="dialog_message">Loading</string>
+    <string name="otp">OTP</string>
 </resources>

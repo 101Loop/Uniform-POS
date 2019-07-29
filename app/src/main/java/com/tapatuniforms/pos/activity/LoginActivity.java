@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private EditText destinationView;
     private boolean isOtpSent = false;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +44,19 @@ public class LoginActivity extends AppCompatActivity {
     public void loginClicked(View view) {
         String destination = destinationView.getText().toString().trim();
 
-        if (destination.length() < 5) {
+        if (destination.isEmpty()) {
+            destinationView.requestFocus();
+            destinationView.setError("This field can't be empty");
+        } else if (destination.length() < 5 || (!Validator.isValidEmail(destination) && !Validator.isValidMobile(destination))) {
             destinationView.requestFocus();
             destinationView.setError("Invalid value");
         } else {
             try {
+                destinationView.setError(null);
+                showProgressDialog();
                 sendRequest(destination);
             } catch (JSONException e) {
+                dismissDialog();
                 e.printStackTrace();
             }
         }
@@ -70,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 Request.Method.POST, APIStatic.User.loginOTPURL, requestObject,
                 response -> {
                     // Response Received
-
+                    dismissDialog();
                     Toast.makeText(getApplicationContext(), "OTP Sent", Toast.LENGTH_SHORT)
                             .show();
 
@@ -78,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra(AppStatic.mobile, destination);
                     intent.putExtra(AppStatic.isLogin, true);
                     startActivity(intent);
-                }, new APIErrorListener(this), this);
+                }, new APIErrorListener(this, dialog), this);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -88,5 +96,22 @@ public class LoginActivity extends AppCompatActivity {
     public void signUpClicked(View view) {
         startActivity(new Intent(this, SignUpActivity.class));
         finish();
+    }
+
+    private void showProgressDialog() {
+        if (dialog == null) {
+            dialog = new ProgressDialog(this);
+        }
+
+        dialog.setTitle(R.string.dialog_title);
+        dialog.setMessage(getResources().getString(R.string.dialog_message));
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private void dismissDialog() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.tapatuniforms.pos.fragment;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -100,6 +101,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private String gender;
     private String phone;
     private String email;
+
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -287,7 +290,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     }
 
     /**
-     * This method simply creates add details dialog
+     * This method simply creates add details progressDialog
      */
     private void showAddDetailsDialog() {
 
@@ -480,7 +483,14 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         final PaymentDialog dialog = new PaymentDialog(getContext(), total);
         dialog.show();
         dialog.setOnOrderCompleteListener(transactionList -> {
-            orderCompleted(transactionList);
+
+            if (cartList != null && cartList.size() > 0) {
+                showProgressDialog();
+                orderCompleted(transactionList);
+            } else {
+                Toast.makeText(getContext(), "Your cart is empty", Toast.LENGTH_SHORT).show();
+            }
+
             dialog.dismiss();
         });
         Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.
@@ -514,6 +524,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         cartRecyclerView.setVisibility(View.GONE);
         emptyCartView.setVisibility(View.VISIBLE);
+        dismissDialog();
     }
 
     /**
@@ -546,7 +557,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         if (cartQuantity < 2) {
             count += " Item)";
-        }else{
+        } else {
             count += " Items)";
         }
 
@@ -599,7 +610,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     /**
      * if no products are available, show an empty state text
-     * */
+     */
     private void checkAvailability() {
         if (productList != null) {
             if (productList.size() == 0) {
@@ -610,7 +621,24 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         }
     }
 
-    private void updateCartNotification(int cartQuantity){
+    private void updateCartNotification(int cartQuantity) {
         cartNotification.setText(String.valueOf(cartQuantity));
+    }
+
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getContext());
+        }
+
+        progressDialog.setTitle(R.string.dialog_title);
+        progressDialog.setMessage(getResources().getString(R.string.dialog_message));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    private void dismissDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 }

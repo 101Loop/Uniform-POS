@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.CartItem;
 
 import java.text.DecimalFormat;
@@ -50,7 +51,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             holder.itemType.setText(itemType);
         }
 
-        holder.itemPrice.setText("₹ " + cartItem.getPrice());
+        holder.itemPrice.setText("₹ " + (cartItem.getPrice() * cartItem.getQuantity()));
         String color = cartItem.getProduct().getColor();
 
         holder.itemColor.setText(color);
@@ -62,6 +63,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.addButton.setOnClickListener(v -> {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
             holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
+            holder.itemPrice.setText("₹ " + (cartItem.getPrice() * cartItem.getQuantity()));
 
             if (listener != null) {
                 listener.onItemUpdateListener();
@@ -72,6 +74,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             if (cartItem.getQuantity() > 1) {
                 cartItem.setQuantity(cartItem.getQuantity() - 1);
                 holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
+                holder.itemPrice.setText("₹ " + (cartItem.getPrice() * cartItem.getQuantity()));
 
                 if (listener != null) {
                     listener.onItemUpdateListener();
@@ -115,7 +118,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         View rootView;
         TextView itemName, itemType, itemColor, itemPrice, minusButton, addButton, quantityText, removeButton;
-        ImageView itemColorImage;
+        RoundedCornerLayout itemColorImage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
