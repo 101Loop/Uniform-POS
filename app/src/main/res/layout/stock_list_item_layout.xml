@@ -9,8 +9,8 @@
         android:id="@+id/itemCheckedStatus"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/stroke_rectangle_light"
         android:layout_gravity="center"
+        android:background="@drawable/stroke_rectangle_light"
         android:padding="8dp"
         android:src="@drawable/ic_check_grey_24" />
 
@@ -19,8 +19,8 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:background="@drawable/stroke_rectangle_light"
-        android:padding="8dp"
         android:gravity="center_vertical"
+        android:padding="8dp"
         android:text="Item Name"
         android:textColor="@color/black2" />
 
@@ -38,10 +38,10 @@
         android:id="@+id/itemScannedView"
         android:layout_width="120dp"
         android:layout_height="match_parent"
-        android:background="@drawable/stroke_rectangle_light"
         android:layout_gravity="center"
-        android:padding="8dp"
+        android:background="@drawable/stroke_rectangle_light"
         android:gravity="center_vertical"
+        android:padding="8dp"
         android:text="100"
         android:textColor="@color/black1" />
 
@@ -57,10 +57,10 @@
 
     <LinearLayout
         android:layout_width="150dp"
-        android:padding="8dp"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:background="@drawable/stroke_rectangle_light"
-        android:layout_gravity="center">
+        android:padding="8dp">
 
         <EditText
             android:id="@+id/itemReceivedView"
@@ -70,17 +70,19 @@
             android:layout_weight="1"
             android:background="@drawable/stroke_around_rect"
             android:gravity="center"
+            android:inputType="number"
             android:text="54"
             android:textColor="@color/black1"
             android:textSize="17sp" />
 
         <Button
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="30dp"
-            android:background="@color/denim"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@color/denim"
+            android:gravity="center"
             android:text="Move"
             android:textColor="@color/white1" />
 
@@ -90,9 +92,9 @@
         android:layout_width="179dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:background="@drawable/stroke_rectangle_light"
         android:gravity="center"
         android:padding="8dp"
-        android:background="@drawable/stroke_rectangle_light"
         android:text="All Items are matched"
         android:textColor="@color/green" />
 </TableRow>
