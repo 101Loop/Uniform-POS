@@ -26,10 +26,13 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
             if (orderList != null && !orderList.isEmpty()) {
                 for (Order order : orderList) {
-                    try {
-                        DataHelper.syncOrder(context, db, order);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+                    if (order.isSynced()) {
+                        try {
+                            DataHelper.syncOrder(context, db, order);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

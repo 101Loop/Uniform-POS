@@ -225,11 +225,10 @@ public class DataHelper {
                     Request.Method.POST, APIStatic.Order.transactionUrl, object,
                     response -> {
 
-                        //deleting all the entries related to an order from the database
-                        //at this point, all the orders will be updated to the server
-                        db.orderDao().deleteAll();
-                        db.subOrderDao().deleteAll();
-                        db.transactionDao().deleteAll();
+                        //setting sync status as false in order to avoid unnecessary update to server
+                        db.orderDao().setSync(orderId, false);
+                        db.subOrderDao().setSync(orderId, false);
+                        db.transactionDao().setSync(orderId, false);
                     }, new APIErrorListener(context), context);
 
             request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
