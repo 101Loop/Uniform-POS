@@ -83,7 +83,7 @@ public class PaymentDialog extends AlertDialog implements PaymentButtonAdapter.B
         if (paid == total) return;
 
         double amount = Double.valueOf(transAmountEditText.getText().toString().trim());
-        transactionList.add(new Transaction(0, name, amount, -1, false));
+        transactionList.add(new Transaction(name, amount, -1, false));
 
         paid += amount;
         transAmountEditText.setText("" + (total - paid));

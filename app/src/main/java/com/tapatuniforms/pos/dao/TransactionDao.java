@@ -33,4 +33,7 @@ public interface TransactionDao {
 
     @Query("UPDATE `Transaction` SET orderId = :orderId WHERE id = :id")
     void setOrderId(long id, long orderId);
+
+    @Query("DELETE FROM `Transaction`")
+    void deleteAll();
 }

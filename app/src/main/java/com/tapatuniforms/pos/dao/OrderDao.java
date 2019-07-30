@@ -30,4 +30,7 @@ public interface OrderDao {
 
     @Query("UPDATE `Order` SET apiId = :apiId WHERE id = :id")
     void setApiId(long id, long apiId);
+
+    @Query("DELETE FROM `Order`")
+    void deleteAll();
 }

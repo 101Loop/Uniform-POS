@@ -1,6 +1,8 @@
 package com.tapatuniforms.pos.activity;
 
-import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
 import com.tapatuniforms.pos.fragment.SaleReportFragment;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
+import com.tapatuniforms.pos.helper.NetworkChangeReceiver;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +41,7 @@ public class PosActivity extends AppCompatActivity implements
     private ImageView detailIcon;
     private ImageView calendarIcon;
     private ImageView homeIcon;
+    private NetworkChangeReceiver receiver;
 
     long lastBackPress;
 
@@ -52,6 +56,7 @@ public class PosActivity extends AppCompatActivity implements
         detailIcon = findViewById(R.id.detailNavIcon);
         calendarIcon = findViewById(R.id.calenderNavIcon);
         homeIcon = findViewById(R.id.homeNavIcon);
+        receiver = new NetworkChangeReceiver();
 
         hamburgerMenuIcon.setOnClickListener(this);
 
@@ -66,7 +71,19 @@ public class PosActivity extends AppCompatActivity implements
             }
         });
 
-        homeIcon.setOnClickListener(v -> getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DashboardFragment()).commit());
+        homeIcon.setOnClickListener(v -> {
+            if (!(getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) instanceof DashboardFragment)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DashboardFragment()).commit();
+            }
+        });
+
+        registerBroadcastReceiver();
+    }
+
+    private void registerBroadcastReceiver() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
     }
 
     @Override
@@ -76,7 +93,7 @@ public class PosActivity extends AppCompatActivity implements
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.dashboardScreen:
                 fragment = new DashboardFragment();
                 break;
@@ -125,5 +142,12 @@ public class PosActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         mDrawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(receiver);
     }
 }

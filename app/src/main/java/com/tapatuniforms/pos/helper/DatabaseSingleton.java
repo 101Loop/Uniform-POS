@@ -19,7 +19,7 @@ import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.model.User;
 
-@Database(version = 7, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
+@Database(version = 8, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
         Transaction.class, Category.class, Product.class}, exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class DatabaseSingleton extends RoomDatabase {
