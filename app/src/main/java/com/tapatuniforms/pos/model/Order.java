@@ -16,9 +16,9 @@ public class Order {
     private double discount;
     private boolean isSynced;
 
-    public Order(long id, long apiId, String custName, String custMobile, String custEmail,
+    public Order(long apiId, String custName, String custMobile, String custEmail,
                  String invoiceNo, double orderTotal, double discount, boolean isSynced) {
-        this.id = id;
+//        this.id = id;
         this.apiId = apiId;
         this.custName = custName;
         this.custMobile = custMobile;

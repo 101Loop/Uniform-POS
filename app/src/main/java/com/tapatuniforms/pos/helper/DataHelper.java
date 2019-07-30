@@ -1,7 +1,6 @@
 package com.tapatuniforms.pos.helper;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -67,6 +66,9 @@ public class DataHelper {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             productList.clear();
             productList.addAll(localProductList);
+
+            allProducts.clear();
+            allProducts.addAll(localProductList);
             return;
         }
 
@@ -109,7 +111,7 @@ public class DataHelper {
         order.setId(orderId);
 
         // Set local order Id to subOrders
-        for (SubOrder subOrder: subOrderList) {
+        for (SubOrder subOrder : subOrderList) {
             subOrder.setOrderId(orderId);
         }
 
@@ -117,7 +119,7 @@ public class DataHelper {
         db.subOrderDao().insertAll(subOrderList);
 
         // Set local Order Id to transaction list items
-        for (Transaction transaction: transactionList) {
+        for (Transaction transaction : transactionList) {
             transaction.setOrderId(orderId);
         }
 
@@ -132,9 +134,14 @@ public class DataHelper {
     }
 
 
-    private static void syncOrder(Context context, DatabaseSingleton db, Order order) throws JSONException {
+    public static void syncOrder(Context context, DatabaseSingleton db, Order order) throws JSONException {
+
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            db.orderDao().setSync(order.getId(), true);
+
+            long apiOrderId = 0;
+            db.orderDao().setApiId(order.getId(), apiOrderId);
             return;
         }
 
@@ -172,25 +179,23 @@ public class DataHelper {
                                      DatabaseSingleton db) throws JSONException {
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            db.subOrderDao().setSync(orderId, true);
             return;
         }
 
         ArrayList<SubOrder> subOrderList = (ArrayList<SubOrder>) db.subOrderDao()
                 .getSubOrderByOrderId(orderId);
 
-        for (SubOrder subOrder: subOrderList) {
+        for (SubOrder subOrder : subOrderList) {
             JSONObject object = new JSONObject();
             object.put(APIStatic.Key.order, apiOrderId);
             object.put(APIStatic.Key.product, subOrder.getProductApiId());
             object.put(APIStatic.Key.price, subOrder.getPrice());
             object.put(APIStatic.Key.qunatity, subOrder.getQuantity());
 
-
             DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                     Request.Method.POST, APIStatic.Order.subOrderUrl, object,
                     response -> {
-                        // Response Received
-                        db.subOrderDao().setSync(subOrder.getId(), true);
                     }, new APIErrorListener(context), context);
 
             request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
@@ -203,24 +208,28 @@ public class DataHelper {
                                         DatabaseSingleton db) throws JSONException {
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            db.subOrderDao().setSync(orderId, true);
             return;
         }
 
         ArrayList<Transaction> transactionList = (ArrayList<Transaction>) db.transactionDao()
                 .getTransactionByOrderId(orderId);
 
-        for (Transaction transaction: transactionList) {
+        for (Transaction transaction : transactionList) {
             JSONObject object = new JSONObject();
             object.put(APIStatic.Key.order, apiOrderId);
             object.put(APIStatic.Key.amount, transaction.getAmount());
             object.put(APIStatic.Key.mode, transaction.getPaymentOption());
 
-
             DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                     Request.Method.POST, APIStatic.Order.transactionUrl, object,
                     response -> {
-                        // Response Received
-                        db.subOrderDao().setSync(transaction.getId(), true);
+
+                        //deleting all the entries related to an order from the database
+                        //at this point, all the orders will be updated to the server
+                        db.orderDao().deleteAll();
+                        db.subOrderDao().deleteAll();
+                        db.transactionDao().deleteAll();
                     }, new APIErrorListener(context), context);
 
             request.setRetryPolicy(new DefaultRetryPolicy(0, -1,

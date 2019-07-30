@@ -37,13 +37,6 @@ public class DayClosingFragment extends Fragment implements ViewPager.OnPageChan
         return view;
     }
 
-//    @Override
-//    public void onResume() {
-//        // TODO Auto-generated method stub
-//        super.onResume();
-//        viewPager.setAdapter(dayClosingPagerAdapter);
-//    }
-
     private void initViews(View view) {
         saleText = view.findViewById(R.id.saleText);
         stockReportText = view.findViewById(R.id.stockReport);

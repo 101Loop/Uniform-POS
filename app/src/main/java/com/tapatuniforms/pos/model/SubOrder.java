@@ -18,9 +18,9 @@ public class SubOrder {
     private double igst;
     private boolean isSynced;
 
-    public SubOrder(long id, String name, long productApiId, String productCode, double price, int quantity,
+    public SubOrder(String name, long productApiId, String productCode, double price, int quantity,
                     long orderId, double gst, double sgst, double igst, boolean isSynced) {
-        this.id = id;
+//        this.id = id;
         this.name = name;
         this.productApiId = productApiId;
         this.productCode = productCode;

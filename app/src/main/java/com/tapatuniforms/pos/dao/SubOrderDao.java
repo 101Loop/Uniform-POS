@@ -33,4 +33,7 @@ public interface SubOrderDao {
 
     @Query("UPDATE SubOrder SET orderId = :orderId WHERE id = :id")
     void setOrderId(long id, long orderId);
+
+    @Query("DELETE FROM SubOrder")
+    void deleteAll();
 }

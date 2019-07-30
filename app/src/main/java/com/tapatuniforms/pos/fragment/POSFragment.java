@@ -502,7 +502,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * This method will save order to database and call sync function
      */
     private void orderCompleted(ArrayList<Transaction> transactionList) {
-        Order order = new Order(0, -1, "Vivek", "8826317151",
+        Order order = new Order(-1, "Vivek", "8826317151",
                 "me@vivekkaushik.com", "",
                 total, discount, false);
 
@@ -510,7 +510,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         for (CartItem cartItem : cartList) {
             Product product = cartItem.getProduct();
-            subOrderList.add(new SubOrder(0, product.getName(), product.getApiId(),
+            subOrderList.add(new SubOrder( product.getName(), product.getApiId(),
                     product.getSku(), cartItem.getPrice(), cartItem.getQuantity(),
                     0, 0, 0, 0, false));
         }

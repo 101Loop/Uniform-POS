@@ -12,8 +12,8 @@ public class Transaction {
     private long orderId;
     private boolean isSynced;
 
-    public Transaction(long id, String paymentOption, double amount, long orderId, boolean isSynced) {
-        this.id = id;
+    public Transaction(String paymentOption, double amount, long orderId, boolean isSynced) {
+//        this.id = id;
         this.paymentOption = paymentOption;
         this.amount = amount;
         this.orderId = orderId;
@@ -24,7 +24,7 @@ public class Transaction {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
