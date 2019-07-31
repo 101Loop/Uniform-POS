@@ -1,5 +1,9 @@
 package com.tapatuniforms.pos.model;
 
+import com.tapatuniforms.pos.helper.APIStatic;
+
+import org.json.JSONObject;
+
 public class Indent {
     private long id;
     private String name;
@@ -23,6 +27,19 @@ public class Indent {
         this.isSelected = false;
         this.box = box;
         this.shippingFrom = shippingFrom;
+    }
+
+    public Indent(JSONObject jsonObject){
+        this.id = jsonObject.optInt(APIStatic.Key.id);
+        this.name = jsonObject.optString(APIStatic.Key.name);
+        this.dateTime = "";
+        this.dispatchPerson = "";
+        this.numberOfBoxes = jsonObject.optInt(APIStatic.Key.numberOfBoxes);
+        this.boxValue = 0;
+        this.numberOfItems = 0;
+        this.isSelected = false;
+        this.box = null; //this is to be fetched from another API
+        this.shippingFrom = jsonObject.optString(APIStatic.Key.shippingFrom);
     }
 
     public long getId() {

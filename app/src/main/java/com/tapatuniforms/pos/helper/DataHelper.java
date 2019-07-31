@@ -28,6 +28,13 @@ public class DataHelper {
         return null;
     }
 
+    /**
+     * Method to fetch the categories from server
+     *
+     * @param context Context of calling activity
+     * @param categoryList list of categories
+     * @param adapter reference to CategoryAdapter
+     * */
     public static void fetchCategories(Context context, ArrayList<Category> categoryList,
                                        CategoryAdapter adapter) {
         if (!Validator.isNetworkConnected(context)) {
@@ -58,6 +65,15 @@ public class DataHelper {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
+    /**
+     * Method to fetch products from server
+     *
+     * @param context Context of calling activity
+     * @param allProducts list of products, this list is never changes
+     * @param productList list of products, changes according to the requirement
+     * @param productAdapter reference of product adapter to notify changes
+     * @param db DatabaseSingleton reference to store and fetch from database
+     * */
     public static void fetchProducts(Context context, ArrayList<Product> allProducts,
                                      ArrayList<Product> productList, ProductAdapter productAdapter, DatabaseSingleton db) {
 
@@ -102,6 +118,15 @@ public class DataHelper {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
+    /**
+     * Method to save and sync the order
+     *
+     * @param context Context of the calling activity
+     * @param db DatabaseSingleton reference to store the data in the database
+     * @param order Order, which is to be saved and synced
+     * @param subOrderList list of SubOrder
+     * @param transactionList list of Transaction
+     * */
     public static void saveAndSyncOrder(Context context, DatabaseSingleton db, Order order,
                                         ArrayList<SubOrder> subOrderList,
                                         ArrayList<Transaction> transactionList) {
@@ -133,7 +158,13 @@ public class DataHelper {
         }
     }
 
-
+    /**
+     * Method to save the order if not connected to the internet, otherwise make an API call
+     *
+     * @param context Context of the calling activity
+     * @param db DatabaseSingleton reference to save order from database
+     * @param order Order
+     * */
     public static void syncOrder(Context context, DatabaseSingleton db, Order order) throws JSONException {
 
         if (!Validator.isNetworkConnected(context)) {
@@ -175,6 +206,13 @@ public class DataHelper {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
+    /**
+     * Method to either save SubOrder in db or make an API call
+     *
+     * @param context Context of calling activity
+     * @param orderId id of the order to which, the SubOrder is related to
+     * @param db DatabaseSingleton reference to save SubOrder in db
+     * */
     private static void syncSubOrder(Context context, long orderId, long apiOrderId,
                                      DatabaseSingleton db) throws JSONException {
         if (!Validator.isNetworkConnected(context)) {
@@ -204,6 +242,14 @@ public class DataHelper {
         }
     }
 
+    /**
+     * Method to either save Transaction or make API call
+     *
+     * @param context Context of the calling activity
+     * @param orderId id of the order to which, the transaction is related to
+     * @param apiOrderId API's order id TODO: this is to be fetched from server, currently it is static
+     * @param db DatabaseSingleton reference to save the transaction in db
+     * */
     private static void syncTransaction(Context context, long orderId, long apiOrderId,
                                         DatabaseSingleton db) throws JSONException {
         if (!Validator.isNetworkConnected(context)) {

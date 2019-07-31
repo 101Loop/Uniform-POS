@@ -48,7 +48,6 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
         holder.rootLayout.setOnClickListener(view -> {
             if (listener != null) {
                 listener.onSizeSelected(position, size);
-//                holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_blue));
             }
         });
     }
@@ -58,6 +57,10 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
         return sizeList.size();
     }
 
+    /**
+     * Method to set listener
+     * @param listener SizeSelectedListener
+     * */
     public void setOnSizeClickListener(SizeSelectedListener listener) {
         this.listener = listener;
     }

@@ -53,4 +53,5 @@
     <string name="dialog_title">Please wait</string>
     <string name="dialog_message">Loading</string>
     <string name="otp">OTP</string>
+    <string name="no_box_items">Box items not available</string>
 </resources>

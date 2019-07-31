@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -20,9 +19,8 @@ import com.tapatuniforms.pos.adapter.StockIndentAdapter;
 import com.tapatuniforms.pos.dialog.StockItemDialog;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Box;
-import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Indent;
-import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.network.StockOrder;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,12 +28,14 @@ import java.util.Objects;
 public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBoxClickListener, StockIndentAdapter.OnIndentClickListener {
     private static final String TAG = "StockEntryFragment";
     private RecyclerView indentRecyclerView, requestRecyclerView;
-    private Button requestButton;
-    private ArrayList<CartItem> requestList;
-    private ArrayList<Product> productList;
-    private StockBoxAdapter stockAdapter;
-    private ArrayList<Box> boxList;
     private LinearLayout noIndentsLayout, noBoxLayout;
+
+    private StockBoxAdapter stockBoxAdapter;
+    private ArrayList<Box> boxList;
+    private ArrayList<Box> allBoxList;
+
+    private StockIndentAdapter stockIndentAdapter;
+    private ArrayList<Indent> indentList;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -53,24 +53,27 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         requestRecyclerView = v.findViewById(R.id.itemRequestRecyclerView);
         noIndentsLayout = v.findViewById(R.id.noIndentsLayout);
         noBoxLayout = v.findViewById(R.id.noBoxLayout);
-//        requestButton = v.findViewById(R.id.raiseRequestButton);
 
-        StockIndentAdapter adapter = new StockIndentAdapter(getContext(), getIndentList());
-        checkIndentsAvailability();
+        indentList = new ArrayList<>();
+        stockIndentAdapter = new StockIndentAdapter(getContext(), indentList);
+        getIndentList();
         indentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         indentRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
-        indentRecyclerView.setAdapter(adapter);
-        adapter.setOnIndentClickListener(this);
+        indentRecyclerView.setAdapter(stockIndentAdapter);
+        stockIndentAdapter.setOnIndentClickListener(this);
 
         boxList = new ArrayList<>();
-        boxList.add(getBoxList().get(0));
-        checkBoxAvailability();
+        stockBoxAdapter = new StockBoxAdapter(boxList);
+        getBoxList();
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        stockAdapter = new StockBoxAdapter(boxList);
-        requestRecyclerView.setAdapter(stockAdapter);
-        stockAdapter.setOnBoxClickListener(this);
+        requestRecyclerView.setAdapter(stockBoxAdapter);
+        stockBoxAdapter.setOnBoxClickListener(this);
     }
 
+    /**
+     * called when a box is selected
+     * shows the stock item dialog
+     */
     @Override
     public void onBoxSelected(Box box) {
         StockItemDialog dialog = new StockItemDialog(getContext(), box);
@@ -81,112 +84,42 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
-    private ArrayList<Indent> getIndentList() {
-        ArrayList<Indent> list = new ArrayList<>();
-
-        list.add(new Indent(1, "Indent 1", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2000, 260, getBoxList().get(0), "Delhi"));
-        list.add(new Indent(2, "Indent 2", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(1), "Faridabad"));
-        list.add(new Indent(3, "Indent 3", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(2), "kanpur"));
-        list.add(new Indent(4, "Indent 4", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(3), "New York"));
-        list.add(new Indent(5, "Indent 5", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(4), "Noida"));
-        list.add(new Indent(6, "Indent 6", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(5), "Haryana"));
-        list.add(new Indent(7, "Indent 7", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(6), "Kurukshetra"));
-        list.add(new Indent(8, "Indent 8", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2000, 260, getBoxList().get(7), "Panipat"));
-        list.add(new Indent(9, "Indent 9", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(8), "Shamli"));
-        list.add(new Indent(10, "Indent 10", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(9), "Meerut"));
-        list.add(new Indent(11, "Indent 11", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(10), "Dehradun"));
-        list.add(new Indent(12, "Indent 12", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(11), "Shimla"));
-        list.add(new Indent(13, "Indent 13", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(12), "Mumbai"));
-        list.add(new Indent(14, "Indent 14", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(13), "Goa"));
-        list.add(new Indent(15, "Indent 15", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2000, 260, getBoxList().get(14), "Pune"));
-        list.add(new Indent(16, "Indent 16", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(15), "Maharashtra"));
-        list.add(new Indent(17, "Indent 17", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(16), "Gujrat"));
-        list.add(new Indent(18, "Indent 18", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                5, 2400, 400, getBoxList().get(17), "Lucknow"));
-        list.add(new Indent(19, "Indent 19", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                9, 5200, 350, getBoxList().get(18), "Delhi"));
-        list.add(new Indent(20, "Indent 20", "20/May/2019, 06:44 PM", "Vivek Kumar",
-                8, 4700, 300, getBoxList().get(19), "Faridabad"));
-        return list;
+    private void getIndentList() {
+        StockOrder.getInstance(getContext()).getIndentList(indentList, stockIndentAdapter, this);
     }
 
-    private ArrayList<Box> getBoxList() {
-        ArrayList<Box> list = new ArrayList<>();
-
-        list.add(new Box(1, "Box 1", "1234456677", "10/May/2019 6:55 PM",
-                300, 213, "Indent 1"));
-        list.add(new Box(2, "Box 2", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(3, "Box 3", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(4, "Box 4", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(5, "Box 5", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(6, "Box 6", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(7, "Box 7", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(8, "Box 8", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(9, "Box 9", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(10, "Box 10", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(11, "Box 11", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(12, "Box 12", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(13, "Box 13", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(14, "Box 14", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(15, "Box 15", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(16, "Box 16", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(17, "Box 17", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(18, "Box 18", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(19, "Box 19", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-        list.add(new Box(20, "Box 20", "1234456677", "10/May/2019 6:55 PM",
-                300, 120, ""));
-
-        return list;
+    private void getBoxList() {
+        if (allBoxList == null) {
+            allBoxList = new ArrayList<>();
+        } else {
+            allBoxList.clear();
+        }
+        StockOrder.getInstance(getContext()).getBoxList(boxList, allBoxList, stockBoxAdapter, this);
     }
 
+    /**
+     * called when an indent is clicked
+     * sets boxes, their names and checks if there are any boxes or not
+     */
     @Override
-    public void onClickListener(int position, String indentName) {
+    public void onClickListener(long indentId, String indentName) {
         boxList.clear();
 
-        Box box = getBoxList().get(position);
-        box.setIndentName(indentName);
-        boxList.add(box);
-        checkBoxAvailability();
-        stockAdapter.notifyDataSetChanged();
+        for (Box box : allBoxList) {
+            if (box.getIndentId().equals(String.valueOf(indentId))) {
+                box.setIndentName(indentName);
+                boxList.add(box);
+            }
+        }
+
+        stockBoxAdapter.notifyDataSetChanged();
     }
 
-    private void checkIndentsAvailability() {
-        if (getIndentList().size() > 0) {
+    /**
+     * shows empty state if indent list is empty, hides otherwise
+     */
+    public void checkIndentsAvailability() {
+        if (indentList.size() > 0) {
             noIndentsLayout.setVisibility(View.GONE);
             indentRecyclerView.setVisibility(View.VISIBLE);
         } else {
@@ -195,7 +128,10 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         }
     }
 
-    private void checkBoxAvailability() {
+    /**
+     * shows empty state if box list is empty, hides otherwise
+     */
+    public void checkBoxAvailability() {
         if (boxList.size() > 0) {
             noBoxLayout.setVisibility(View.GONE);
             requestRecyclerView.setVisibility(View.VISIBLE);

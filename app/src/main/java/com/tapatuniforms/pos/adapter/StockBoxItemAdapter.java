@@ -12,12 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.model.BoxItem;
+
+import java.util.ArrayList;
 
 public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapter.ViewHolder> {
     private Context context;
+    private ArrayList<BoxItem> boxItemList;
 
-    public StockBoxItemAdapter(Context context) {
+    public StockBoxItemAdapter(Context context, ArrayList<BoxItem> boxItemList) {
         this.context = context;
+        this.boxItemList = boxItemList;
     }
 
     @NonNull
@@ -29,15 +34,21 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        BoxItem currentItem = boxItemList.get(position);
+
+        holder.itemNameView.setText(currentItem.getName());
+        holder.itemSentView.setText(String.valueOf(currentItem.getNumberOfItems()));
+        holder.itemScannedView.setText(String.valueOf(currentItem.getNumberOfScannedItems()));
+        holder.itemShelfView.setText(String.valueOf(currentItem.getNumberOfShelfItems()));
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return boxItemList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemNameView, itemSentView;
+        TextView itemNameView, itemSentView, itemScannedView, itemShelfView;
         EditText itemReceivedView;
         ImageView itemCheckedStatus;
 
@@ -45,6 +56,8 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             super(itemView);
             itemNameView = itemView.findViewById(R.id.itemNameView);
             itemSentView = itemView.findViewById(R.id.itemSentView);
+            itemScannedView = itemView.findViewById(R.id.itemScannedView);
+            itemShelfView = itemView.findViewById(R.id.itemShelfView);
             itemReceivedView = itemView.findViewById(R.id.itemReceivedView);
             itemCheckedStatus = itemView.findViewById(R.id.itemCheckedStatus);
         }

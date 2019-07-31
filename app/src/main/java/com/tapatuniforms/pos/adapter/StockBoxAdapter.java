@@ -40,6 +40,8 @@ public class StockBoxAdapter extends RecyclerView.Adapter<StockBoxAdapter.ViewHo
         holder.boxNameView.setText(currentBox.getName());
         holder.itemCount.setText(currentBox.getNumberOfItems() + " Items");
         holder.itemTextView.setText(currentBox.getDateTime());
+        holder.maleCountItem.setText(currentBox.getNumberOfMaleItems() + " Items");
+        holder.femaleCountItem.setText(currentBox.getNumberOfFemaleItems() + " Items");
 
         holder.rootView.setOnClickListener(v -> {
             if (listener != null) {

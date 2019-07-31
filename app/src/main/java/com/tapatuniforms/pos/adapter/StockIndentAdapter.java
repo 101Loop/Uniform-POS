@@ -29,11 +29,6 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
     public StockIndentAdapter(Context context, ArrayList<Indent> indentList) {
         this.context = context;
         this.indentList = indentList;
-
-        if (indentList.size() > 0) {
-            selectedIndent = indentList.get(0);
-            lastIndent = selectedIndent;
-        }
     }
 
     @NonNull
@@ -72,7 +67,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
             }
 
             if (listener != null) {
-                listener.onClickListener(position, selectedIndent.getName());
+                listener.onClickListener(selectedIndent.getId(), selectedIndent.getName());
             }
 
             if (selectedIndent != lastIndent) {
@@ -148,10 +143,17 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
     }
 
     public interface OnIndentClickListener {
-        void onClickListener(int position, String indentName);
+        void onClickListener(long indentId, String indentName);
     }
 
     public void setOnIndentClickListener(OnIndentClickListener listener) {
         this.listener = listener;
+    }
+
+    public void selectFirstIndent(){
+        if (indentList.size() > 0) {
+            selectedIndent = indentList.get(0);
+            lastIndent = selectedIndent;
+        }
     }
 }

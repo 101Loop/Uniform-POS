@@ -80,12 +80,18 @@ public class PosActivity extends AppCompatActivity implements
         registerBroadcastReceiver();
     }
 
+    /**
+     * registering a broadcast receiver to listen any connectivity change
+     * */
     private void registerBroadcastReceiver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
 
+    /**
+     * replacing fragment on navigation selection
+     * */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Add code here to update the UI based on the item selected
@@ -139,11 +145,17 @@ public class PosActivity extends AppCompatActivity implements
         lastBackPress = currentTime;
     }
 
+    /**
+     * opens navigation drawer on clicking hamburger icon
+     * */
     @Override
     public void onClick(View v) {
         mDrawerLayout.openDrawer(GravityCompat.START);
     }
 
+    /**
+     * unregistering broadcast receiver
+     * */
     @Override
     protected void onDestroy() {
         super.onDestroy();
