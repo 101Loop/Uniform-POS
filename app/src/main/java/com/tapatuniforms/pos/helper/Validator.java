@@ -39,6 +39,10 @@ public class Validator {
         return activeNetwork != null && activeNetwork.isConnected();
     }
 
+    /**
+     * sets an empty text error
+     * @param inputLayout input layout on which error is to be set
+     * */
     public static void setEmptyError(TextInputLayout inputLayout){
         inputLayout.setError("This field can't be empty");
     }

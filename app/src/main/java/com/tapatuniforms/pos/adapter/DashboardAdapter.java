@@ -41,12 +41,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         holder.dashImage.setImageResource(dashItem.getImage());
         holder.dashName.setText(dashItem.getName());
 
-        holder.rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onItemClicked(dashItem);
-                }
+        holder.rootView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClicked(dashItem);
             }
         });
     }

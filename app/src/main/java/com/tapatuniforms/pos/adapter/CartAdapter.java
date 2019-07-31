@@ -40,30 +40,31 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final CartItem cartItem = cartList.get(position);
 
-        DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
-
+        //name + size
         holder.itemName.setText(cartItem.getProduct().getName() + " (Size: " + cartItem.getSize() + ")");
 
-        //getPosition() method returns the position of the size and price to be shown
+        //item type
         String itemType = cartItem.getProduct().getProductType();
-
         if (itemType != null && !itemType.isEmpty() && !itemType.equals("null")) {
             holder.itemType.setText(itemType);
         }
 
-        holder.itemPrice.setText("₹ " + (cartItem.getPrice() * cartItem.getQuantity()));
+        //color name and image
         String color = cartItem.getProduct().getColor();
-
         holder.itemColor.setText(color);
-
         holder.itemColorImage.setBackgroundColor(Color.parseColor(cartItem.getProduct().getColorCode()));
 
+        //quantity
         holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
+
+        //price
+        DecimalFormat decimalFormatter = new DecimalFormat("₹ #,##,###");
+        holder.itemPrice.setText(decimalFormatter.format(cartItem.getPrice() * cartItem.getQuantity()));
 
         holder.addButton.setOnClickListener(v -> {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
             holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-            holder.itemPrice.setText("₹ " + (cartItem.getPrice() * cartItem.getQuantity()));
+            holder.itemPrice.setText(decimalFormatter.format(cartItem.getPrice() * cartItem.getQuantity()));
 
             if (listener != null) {
                 listener.onItemUpdateListener();
@@ -74,7 +75,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             if (cartItem.getQuantity() > 1) {
                 cartItem.setQuantity(cartItem.getQuantity() - 1);
                 holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
-                holder.itemPrice.setText("₹ " + (cartItem.getPrice() * cartItem.getQuantity()));
+                holder.itemPrice.setText(decimalFormatter.format(cartItem.getPrice() * cartItem.getQuantity()));
 
                 if (listener != null) {
                     listener.onItemUpdateListener();

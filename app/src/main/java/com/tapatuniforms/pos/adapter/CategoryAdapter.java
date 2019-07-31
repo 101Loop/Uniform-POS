@@ -29,6 +29,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private ViewHolder lastViewHolder;
     private ViewHolder holder;
 
+    /**
+     * interface for category
+     * */
     public interface CategoryClickListener {
         void onCategorySelected(Category category);
     }
@@ -57,11 +60,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rectangle_light_blue));
         } else {
             holder.rootLayout.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-//            holder.rootLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_white));
         }
 
-        holder.categoryImage.setOnClickListener(v -> {
+        Glide.with(context)
+                .load(category.getImage())
+                .centerCrop()
+                .placeholder(R.drawable.ic_shirt)
+                .into(holder.categoryImage);
 
+        holder.categoryImage.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onCategorySelected(category);
             }
@@ -77,13 +84,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             lastCategory = selectedCategory;
             notifyDataSetChanged();
         });
-
-        Glide.with(context)
-                .load(category.getImage())
-                .centerCrop()
-                .placeholder(R.drawable.ic_shirt)
-                .into(holder.categoryImage);
-
     }
 
     @Override
@@ -91,6 +91,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return categoryList.size();
     }
 
+    /**
+     * Method to set category select listener
+     * @param listener CategoryClickListener
+     * */
     public void setOnCategorySelectedListener(CategoryClickListener listener) {
         this.listener = listener;
     }
@@ -109,6 +113,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
     }
 
+    /**
+     * deselecting category on male/female click
+     * */
     public void clearBackground(){
         selectedCategory = null;
         notifyDataSetChanged();

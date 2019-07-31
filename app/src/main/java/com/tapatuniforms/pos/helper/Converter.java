@@ -17,22 +17,8 @@ public class Converter {
     }
 
     @TypeConverter
-    public static Double fromArrayDouble(ArrayList<Double> list) {
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        return Double.parseDouble(json);
-    }
-
-    @TypeConverter
-    public static ArrayList<Double> fromDouble(Double value) {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        return new Gson().fromJson(String.valueOf(value), listType);
-    }
-
-    @TypeConverter
     public static String fromArrayList(ArrayList<String> list) {
         Gson gson = new Gson();
-        String json = gson.toJson(list);
-        return json;
+        return gson.toJson(list);
     }
 }

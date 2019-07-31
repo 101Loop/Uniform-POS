@@ -73,8 +73,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.colorImage.setBackgroundColor(Color.parseColor(hexColor));
 
         //product image
-
-
         Glide.with(context)
                 .load(product.getImage())
                 .centerCrop()

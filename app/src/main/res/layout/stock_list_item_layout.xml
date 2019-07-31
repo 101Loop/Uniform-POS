@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/itemScannedView"
-        android:layout_width="120dp"
+        android:layout_width="126dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@drawable/stroke_rectangle_light"

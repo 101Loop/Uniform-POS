@@ -84,12 +84,14 @@ public class DayClosingFragment extends Fragment implements ViewPager.OnPageChan
                 closeDayLayout.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_arrow_unselected));
                 saleText.setTextColor(getResources().getColor(R.color.white1));
                 break;
+
             case 1:
                 stockReportLayout.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_arrow));
                 closeDayLayout.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_arrow_unselected));
                 saleSummaryLayout.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_arrow_unselected));
                 stockReportText.setTextColor(getResources().getColor(R.color.white1));
                 break;
+
             case 2:
                 closeDayLayout.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_arrow));
                 saleSummaryLayout.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_arrow_unselected));

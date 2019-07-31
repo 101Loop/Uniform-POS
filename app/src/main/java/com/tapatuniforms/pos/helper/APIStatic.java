@@ -35,6 +35,13 @@ public interface APIStatic {
         String addDetailsUrl = baseURL + endPoint + "student/";
     }
 
+    interface StockOrder{
+        String endPoint = "stockOrder/";
+        String getIndentUrl = baseURL + endPoint;
+        String getBoxUrl = baseURL + endPoint + "box/";
+        String getBoxItem = getBoxUrl + "boxItem/";
+    }
+
     interface Key {
         String id = "id";
         String name = "name";
@@ -79,6 +86,16 @@ public interface APIStatic {
         String section = "section";
         String fatherName = "father_name";
         String gender = "gender";
+        String numberOfBoxes = "num_of_boxes";
+        String shippingFrom = "shipping_from";
+        String boxCode = "box_code";
+        String totalItems = "total_item";
+        String indent = "indent";
+        String numberOfMaleItems = "male_items";
+        String numberOfFemaleItems = "female_items";
+        String numberOfItems = "num_of_item";
+        String numberOfScannedItems = "item_scanned";
+        String box = "box";
     }
 
     interface Constants {

@@ -44,12 +44,14 @@ import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.network.Billing;
 
 import org.json.JSONException;
 
+import java.sql.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -104,6 +106,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     private ProgressDialog progressDialog;
 
+    private EditText studentIdText;
+    private Button submitButton;
+    private Student[] studentDetails = new Student[1];
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -140,6 +145,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         noProductText = view.findViewById(R.id.noProductText);
         categoryText = view.findViewById(R.id.categoryText);
         cartNotification = view.findViewById(R.id.cartNotification);
+        studentIdText = view.findViewById(R.id.studentIDText);
+        submitButton = view.findViewById(R.id.submit);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -212,10 +219,21 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             }
         });
 
-        //add details button
-        addDetailsButton.setOnClickListener(view -> {
-            showAddDetailsDialog();
+        //fetch student details
+        submitButton.setOnClickListener(view -> {
+            String studentId = studentIdText.getText().toString();
+
+            if (!studentId.isEmpty()) {
+                try {
+                    Billing.getInstance(getContext()).getStudentDetails(Integer.parseInt(studentId), studentDetails);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         });
+
+        //add details button
+        addDetailsButton.setOnClickListener(view -> showAddDetailsDialog());
 
         //gender_type button
         maleView.setOnClickListener(view -> {
@@ -451,6 +469,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         return isValidInput;
     }
 
+    /**
+     * lists the products of the selected categories
+     * */
     @Override
     public void onCategorySelected(Category category) {
         productList.clear();
@@ -502,15 +523,24 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * This method will save order to database and call sync function
      */
     private void orderCompleted(ArrayList<Transaction> transactionList) {
-        Order order = new Order(-1, "Vivek", "8826317151",
-                "me@vivekkaushik.com", "",
+        String customerName = "Vivek";
+        String customerMobile = "8826317151";
+        String customerEmail = "me@vivekkaushik.com";
+
+        if (studentDetails[0] != null) {
+            customerName = studentDetails[0].getName();
+            customerMobile = studentDetails[0].getMobile();
+            customerEmail = studentDetails[0].getEmail();
+        }
+        Order order = new Order(-1, customerName, customerMobile, customerEmail
+                , "",
                 total, discount, false);
 
         ArrayList<SubOrder> subOrderList = new ArrayList<>();
 
         for (CartItem cartItem : cartList) {
             Product product = cartItem.getProduct();
-            subOrderList.add(new SubOrder( product.getName(), product.getApiId(),
+            subOrderList.add(new SubOrder(product.getName(), product.getApiId(),
                     product.getSku(), cartItem.getPrice(), cartItem.getQuantity(),
                     0, 0, 0, 0, false));
         }
@@ -568,6 +598,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         updateCartNotification(cartQuantity);
     }
 
+    /**
+     * updates the price and if there isn't any item shows the empty state
+     * */
     @Override
     public void onItemUpdateListener() {
         updatePriceView();
@@ -621,6 +654,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         }
     }
 
+    /**
+     * updates cart notification count
+     * */
     private void updateCartNotification(int cartQuantity) {
         cartNotification.setText(String.valueOf(cartQuantity));
     }
