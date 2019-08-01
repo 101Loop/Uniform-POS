@@ -1,11 +1,15 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
-//no status, name, items in shelf, last status
+@Entity
 public class BoxItem {
+    @PrimaryKey
     private int id;
     private String status;
     private String name;
@@ -15,6 +19,19 @@ public class BoxItem {
     private int numberOfShelfItems;
     private int boxId;
     private String lastStatus;
+
+    public BoxItem(int id, String status, String name, int product, int numberOfItems,
+                   int numberOfScannedItems, int numberOfShelfItems, int boxId, String lastStatus) {
+        this.id = id;
+        this.status = status;
+        this.name = name;
+        this.product = product;
+        this.numberOfItems = numberOfItems;
+        this.numberOfScannedItems = numberOfScannedItems;
+        this.numberOfShelfItems = numberOfShelfItems;
+        this.boxId = boxId;
+        this.lastStatus = lastStatus;
+    }
 
     public BoxItem(JSONObject jsonObject) {
         this.id = jsonObject.optInt(APIStatic.Key.id);

@@ -127,7 +127,7 @@
                     android:background="@drawable/cart_notification"
                     android:gravity="center"
                     android:minWidth="18dp"
-                    android:text="1"
+                    android:text="0"
                     android:textColor="@color/white1"
                     android:textSize="12sp"
                     android:visibility="visible" />
@@ -193,6 +193,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cartSeparator"
                 tools:listitem="@layout/discount_item_layout" />
+            
+            <TextView
+                android:id="@+id/noDiscountText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="No discounts available"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cartSeparator"/>
 
             <LinearLayout
                 android:id="@+id/bottomLayout"

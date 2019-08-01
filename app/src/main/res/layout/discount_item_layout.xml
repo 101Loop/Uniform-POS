@@ -27,7 +27,7 @@
                 android:src="@drawable/ic_tag" />
 
             <TextView
-                android:id="@+id/offerText1"
+                android:id="@+id/extraOfferText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
@@ -38,7 +38,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/offerText2"
+                android:id="@+id/valueOfferText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
