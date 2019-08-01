@@ -58,6 +58,13 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         holder.receivedDate.setText(indent.getDateTime());
         holder.shippingLocation.setText(indent.getShippingFrom());
 
+        //showing the first one as selected
+        if (listener != null) {
+            listener.onClickListener(selectedIndent.getId(), selectedIndent.getName());
+        }
+
+        //do nothing if the indent is already selected
+        //change bg accordingly for other cases
         holder.rootLayout.setOnClickListener(view -> {
 
             selectedIndent = indentList.get(position);
@@ -86,6 +93,11 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         });
     }
 
+    /**
+     * Method to set blue bg and other colors as well
+     *
+     * @param holder reference of ViewHolder to update changes
+     */
     private void setBackgroundBlue(ViewHolder holder) {
         holder.rootLayout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.blueButton));
         holder.indentNameView.setTextColor(context.getResources().getColor(R.color.white1));
@@ -101,6 +113,11 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         holder.shippingLocation.setTextColor(context.getResources().getColor(R.color.white1));
     }
 
+    /**
+     * Method to set white bg and other colors as well
+     *
+     * @param holder reference of ViewHolder to update changes
+     */
     private void setBackgroundWhite(ViewHolder holder) {
         holder.rootLayout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white1));
         holder.indentNameView.setTextColor(context.getResources().getColor(R.color.black));
@@ -142,15 +159,26 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         }
     }
 
+    /**
+     * interface for Indent click
+     */
     public interface OnIndentClickListener {
         void onClickListener(long indentId, String indentName);
     }
 
+    /**
+     * Method to set click listener
+     *
+     * @param listener OnIndentClickListener interface's reference
+     */
     public void setOnIndentClickListener(OnIndentClickListener listener) {
         this.listener = listener;
     }
 
-    public void selectFirstIndent(){
+    /**
+     * Method to select the first indent by default, set as soon as indents are fetched
+     */
+    public void selectFirstIndent() {
         if (indentList.size() > 0) {
             selectedIndent = indentList.get(0);
             lastIndent = selectedIndent;

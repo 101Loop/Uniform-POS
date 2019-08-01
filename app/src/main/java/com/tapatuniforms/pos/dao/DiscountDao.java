@@ -1,0 +1,27 @@
+package com.tapatuniforms.pos.dao;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+
+import com.tapatuniforms.pos.model.Discount;
+
+import java.util.List;
+
+@Dao
+public interface DiscountDao {
+    @Query("SELECT * FROM Discount")
+    List<Discount> getAll();
+
+    @Query("SELECT * FROM Discount WHERE id = :id")
+    Discount getDiscount(long id);
+
+    @Query("SELECT * FROM Discount WHERE id = :id")
+    Discount getDiscountByOutlet(long id);
+
+    @Insert
+    void insertAll(List<Discount> DiscountList);
+
+    @Insert
+    long insert(Discount Discount);
+}

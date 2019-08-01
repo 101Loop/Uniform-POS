@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,8 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockBoxAdapter;
 import com.tapatuniforms.pos.adapter.StockIndentAdapter;
 import com.tapatuniforms.pos.dialog.StockItemDialog;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.Indent;
@@ -36,6 +40,12 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
     private StockIndentAdapter stockIndentAdapter;
     private ArrayList<Indent> indentList;
+    private ArrayList<Indent> allIndentList = new ArrayList<>();
+
+    private EditText searchEditText;
+    private Button searchButton;
+
+    private DatabaseSingleton db;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -53,6 +63,10 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         requestRecyclerView = v.findViewById(R.id.itemRequestRecyclerView);
         noIndentsLayout = v.findViewById(R.id.noIndentsLayout);
         noBoxLayout = v.findViewById(R.id.noBoxLayout);
+        searchEditText = v.findViewById(R.id.searchEditText);
+        searchButton = v.findViewById(R.id.searchButton);
+
+        db = DatabaseHelper.getDatabase(getContext());
 
         indentList = new ArrayList<>();
         stockIndentAdapter = new StockIndentAdapter(getContext(), indentList);
@@ -68,6 +82,22 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         requestRecyclerView.setAdapter(stockBoxAdapter);
         stockBoxAdapter.setOnBoxClickListener(this);
+
+        searchButton.setOnClickListener(view -> {
+            String searchText = searchEditText.getText().toString();
+
+            allIndentList.addAll(indentList);
+            indentList.clear();
+
+            for (Indent indent : allIndentList) {
+                if (searchText.equals(String.valueOf(indent.getId()))) {
+                    indentList.add(indent);
+                }
+            }
+
+            stockIndentAdapter.selectFirstIndent();
+            stockIndentAdapter.notifyDataSetChanged();
+        });
     }
 
     /**
@@ -84,17 +114,24 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
+    /**
+     * Method to get list of indents
+     * */
     private void getIndentList() {
-        StockOrder.getInstance(getContext()).getIndentList(indentList, stockIndentAdapter, this);
+        StockOrder.getInstance(getContext()).getIndentList(indentList, stockIndentAdapter, this, db);
     }
 
+    /**
+     * Method to list of Box
+     * */
     private void getBoxList() {
         if (allBoxList == null) {
             allBoxList = new ArrayList<>();
         } else {
             allBoxList.clear();
         }
-        StockOrder.getInstance(getContext()).getBoxList(boxList, allBoxList, stockBoxAdapter, this);
+
+        StockOrder.getInstance(getContext()).getBoxList(boxList, allBoxList, stockBoxAdapter, this, db);
     }
 
     /**

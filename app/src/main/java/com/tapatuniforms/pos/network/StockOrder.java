@@ -12,6 +12,8 @@ import com.tapatuniforms.pos.dialog.StockItemDialog;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.BoxItem;
@@ -38,7 +40,22 @@ public class StockOrder {
         return instance;
     }
 
-    public void getIndentList(ArrayList<Indent> indentList, StockIndentAdapter adapter, StockEntryFragment instance) {
+    /**
+     * Method to get indent list
+     * stores the data when online and displays them if offline
+     *
+     * @param indentList List of Indent, used to update the fetched data
+     * @param adapter reference to the adapter which is used to notify any changes
+     * @param instance reference of the calling class
+     * @param db DatabaseSingleton reference for db transactions
+     * */
+    public void getIndentList(ArrayList<Indent> indentList, StockIndentAdapter adapter, StockEntryFragment instance, DatabaseSingleton db) {
+        if (!Validator.isNetworkConnected(context)) {
+            indentList.addAll(db.indentDao().getAll());
+            adapter.selectFirstIndent();
+            return;
+        }
+
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET,
                 APIStatic.StockOrder.getIndentUrl,
@@ -53,6 +70,10 @@ public class StockOrder {
                         }
                     }
 
+                    if (indentList.size() != db.indentDao().getAll().size()) {
+                        db.indentDao().insertAll(indentList);
+                    }
+
                     adapter.selectFirstIndent();
                     instance.checkIndentsAvailability();
                     adapter.notifyDataSetChanged();
@@ -65,7 +86,25 @@ public class StockOrder {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
-    public void getBoxList(ArrayList<Box> boxList, ArrayList<Box> allBoxList, StockBoxAdapter adapter, StockEntryFragment instance) {
+    /**
+     * Method to get box list
+     * stores the data when online and displays them if offline
+     *
+     * @param boxList List of Box, used to update the fetched data
+     * @param allBoxList List of Box, this list is used for any changes in the fetched list
+     * @param adapter reference to the adapter which is used to notify any changes
+     * @param instance reference of the calling class
+     * @param db DatabaseSingleton reference for db transactions
+     * */
+    public void getBoxList(ArrayList<Box> boxList, ArrayList<Box> allBoxList, StockBoxAdapter adapter,
+                           StockEntryFragment instance, DatabaseSingleton db) {
+        if (!Validator.isNetworkConnected(context)) {
+            boxList.addAll(db.boxDao().getAll());
+            allBoxList.addAll(db.boxDao().getAll());
+            instance.checkBoxAvailability();
+            return;
+        }
+
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET,
                 APIStatic.StockOrder.getBoxUrl,
@@ -81,6 +120,11 @@ public class StockOrder {
                     }
 
                     allBoxList.addAll(boxList);
+
+                    if (boxList.size() != db.boxDao().getAll().size()) {
+                        db.boxDao().insertAll(boxList);
+                    }
+
                     instance.checkBoxAvailability();
                     adapter.notifyDataSetChanged();
                 },
@@ -92,7 +136,31 @@ public class StockOrder {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
-    public void getBoxItem(ArrayList<BoxItem> boxItemList, StockBoxItemAdapter adapter, long id, StockItemDialog stockItemDialog) {
+    /**
+     * Method to get box item list
+     * stores the data when online and displays them if offline
+     *
+     * @param boxItemList List of BoxItem, used to update the fetched data
+     * @param adapter reference to the adapter which is used to notify any changes
+     * @param id Id of the box, used to show only the relevant box item
+     * @param stockItemDialog reference of the calling class
+     * @param db DatabaseSingleton reference for db transactions
+     * */
+    public void getBoxItem(ArrayList<BoxItem> boxItemList, StockBoxItemAdapter adapter, long id,
+                           StockItemDialog stockItemDialog, DatabaseSingleton db) {
+
+        if (!Validator.isNetworkConnected(context)) {
+
+            for (BoxItem boxItem : db.boxItemDao().getAll()) {
+                if (boxItem.getBoxId() == id) {
+                    boxItemList.add(boxItem);
+                }
+            }
+
+            stockItemDialog.checkAvailability();
+            return;
+        }
+
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET,
                 APIStatic.StockOrder.getBoxItem,
@@ -109,6 +177,10 @@ public class StockOrder {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    if (boxItemList.size() != db.boxItemDao().getAll().size()) {
+                        db.boxItemDao().insertAll(boxItemList);
                     }
 
                     stockItemDialog.checkAvailability();

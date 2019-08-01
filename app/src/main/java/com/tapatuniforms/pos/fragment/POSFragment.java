@@ -31,7 +31,6 @@ import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.DiscountAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
-import com.tapatuniforms.pos.dialog.DiscountDialog;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DataHelper;
@@ -42,28 +41,33 @@ import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.ViewHelper;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Category;
+import com.tapatuniforms.pos.model.Discount;
 import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Product;
 import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.network.Billing;
+import com.tapatuniforms.pos.network.OrderAPI;
 
 import org.json.JSONException;
 
-import java.sql.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener, CartAdapter.UpdateItemListener {
+import static com.tapatuniforms.pos.helper.APIStatic.Constants.AMOUNT;
+import static com.tapatuniforms.pos.helper.APIStatic.Constants.OTHER;
+import static com.tapatuniforms.pos.helper.APIStatic.Constants.PERCENTAGE;
+
+public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener, CartAdapter.UpdateItemListener, DiscountAdapter.DiscountInterface {
     private static final String TAG = "POSFragment";
 
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView, discountRecyclerView;
     private Button paymentButton;
     private Button addDetailsButton;
     private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView,
-            noProductText, categoryText, cartNotification;
+            noProductText, categoryText, cartNotification, discountNotification;
 
     private ArrayList<Category> categoryList;
     private ArrayList<Product> allProducts, productList, maleList, femaleList;
@@ -78,8 +82,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private ImageView discountButton;
     private ImageView cartButton;
 
-    private double subTotal, discount, tax, total;
-    private DiscountDialog.Discount discountType = DiscountDialog.Discount.OTHER;
+    private double subTotal, tax, total;
     private boolean isMaleSelected;
     private boolean notSelectedYet = true;
 
@@ -109,6 +112,11 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private EditText studentIdText;
     private Button submitButton;
     private Student[] studentDetails = new Student[1];
+    private ArrayList<Discount> discountList;
+    private String discountType = OTHER;
+    private int discount;
+    private TextView noDiscountText;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -145,8 +153,10 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         noProductText = view.findViewById(R.id.noProductText);
         categoryText = view.findViewById(R.id.categoryText);
         cartNotification = view.findViewById(R.id.cartNotification);
+        discountNotification = view.findViewById(R.id.discountNotification);
         studentIdText = view.findViewById(R.id.studentIDText);
         submitButton = view.findViewById(R.id.submit);
+        noDiscountText = view.findViewById(R.id.noDiscountText);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -193,9 +203,12 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         cartAdapter.setOnItemUpdateListener(this);
 
         //discount
-        DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), cartList);
+        discountList = new ArrayList<>();
+        DiscountAdapter discountAdapter = new DiscountAdapter(getContext(), discountList);
         discountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         discountRecyclerView.setAdapter(discountAdapter);
+        OrderAPI.getInstance(getContext()).getDiscount(discountList, discountAdapter, this, db);
+        discountAdapter.setOnDiscountClickListener(this);
 
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
@@ -205,10 +218,14 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             discountRecyclerView.setVisibility(View.VISIBLE);
             cartRecyclerView.setVisibility(View.GONE);
             emptyCartView.setVisibility(View.GONE);
+
+            updateDiscountNotification(discountList.size());
+            checkDiscountAvailability();
         });
 
         cartButton.setOnClickListener(view -> {
             discountRecyclerView.setVisibility(View.GONE);
+            noDiscountText.setVisibility(View.GONE);
 
             if (cartList.size() > 0) {
                 cartRecyclerView.setVisibility(View.VISIBLE);
@@ -308,7 +325,20 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     }
 
     /**
-     * This method simply creates add details progressDialog
+     * Method to check the availability of the discounts
+     */
+    private void checkDiscountAvailability() {
+        if (discountList != null && discountList.size() > 0) {
+            noDiscountText.setVisibility(View.GONE);
+            discountRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            noDiscountText.setVisibility(View.VISIBLE);
+            discountRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Method to create add details progressDialog
      */
     private void showAddDetailsDialog() {
 
@@ -390,7 +420,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     }
 
     /**
-     * basically used to add client side input verification
+     * Method to add client side input verification
      *
      * @return return true if all the inputs are valid else false
      */
@@ -470,8 +500,10 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     }
 
     /**
-     * lists the products of the selected categories
-     * */
+     * Method to list the products of the selected categories
+     *
+     * @param category selected category
+     */
     @Override
     public void onCategorySelected(Category category) {
         productList.clear();
@@ -561,9 +593,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * Helper method to calculate and update price on the UI
      */
     private void updatePriceView() {
-        double subTotal = 0;
+        int subTotal = 0;
         int cartQuantity = 0;
-        double calculatedDiscount = 0;
+        int calculatedDiscount = 0;
 
         DecimalFormat decimalFormatter = new DecimalFormat("₹#,##,###.##");
 
@@ -573,7 +605,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         }
 
         switch (discountType) {
-            case MONEY:
+            case AMOUNT:
                 calculatedDiscount = discount;
                 break;
             case PERCENTAGE:
@@ -600,7 +632,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     /**
      * updates the price and if there isn't any item shows the empty state
-     * */
+     */
     @Override
     public void onItemUpdateListener() {
         updatePriceView();
@@ -608,6 +640,27 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         if (cartList != null && cartList.size() == 0) {
             emptyCartView.setVisibility(View.VISIBLE);
             cartRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Method to listen discount click
+     *
+     * @param discount     value of discount
+     * @param discountType type of discount
+     */
+    @Override
+    public void onDiscountClickListener(int discount, String discountType) {
+
+        if (cartList.size() > 0) {
+            discountButton.setClickable(false);
+
+            discountRecyclerView.setVisibility(View.GONE);
+            cartRecyclerView.setVisibility(View.VISIBLE);
+
+            this.discount = discount;
+            this.discountType = discountType;
+            updatePriceView();
         }
     }
 
@@ -656,11 +709,21 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     /**
      * updates cart notification count
-     * */
+     */
     private void updateCartNotification(int cartQuantity) {
         cartNotification.setText(String.valueOf(cartQuantity));
     }
 
+    /**
+     * updates discount notification count
+     */
+    public void updateDiscountNotification(int discountQuantity) {
+        discountNotification.setText(String.valueOf(discountQuantity));
+    }
+
+    /**
+     * Method to show progress dialog
+     */
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getContext());
@@ -672,6 +735,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         progressDialog.show();
     }
 
+    /**
+     * Method to dismiss progress dialog
+     */
     private void dismissDialog() {
         if (progressDialog != null) {
             progressDialog.dismiss();

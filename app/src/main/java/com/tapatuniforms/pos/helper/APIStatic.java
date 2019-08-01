@@ -28,6 +28,7 @@ public interface APIStatic {
         String orderUrl = baseURL + endPoint;
         String subOrderUrl = baseURL + endPoint + "subOrder/";
         String transactionUrl = baseURL + endPoint + "transaction/";
+        String discountUrl = baseURL + endPoint + "discount/";
     }
 
     interface School {
@@ -96,10 +97,16 @@ public interface APIStatic {
         String numberOfItems = "num_of_item";
         String numberOfScannedItems = "item_scanned";
         String box = "box";
+        String productQuantity = "product_quantity";
+        String discountType = "discount_type";
+        String value = "value";
     }
 
     interface Constants {
         String MALE = "M";
         String FEMALE = "F";
+        String PERCENTAGE = "P";
+        String AMOUNT = "A";
+        String OTHER = "O";
     }
 }

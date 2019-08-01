@@ -14,12 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockBoxItemAdapter;
-import com.tapatuniforms.pos.helper.APIStatic;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.network.StockOrder;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -35,6 +34,7 @@ public class StockItemDialog extends AlertDialog {
     private StockBoxItemAdapter adapter;
     private LinearLayout boxItemLayout;
     private TextView noBoxItemText;
+    private DatabaseSingleton db;
 
     public StockItemDialog(Context context, Box box) {
         super(context);
@@ -55,6 +55,8 @@ public class StockItemDialog extends AlertDialog {
         boxItemLayout = findViewById(R.id.boxItemLayout);
         noBoxItemText = findViewById(R.id.noBoxItemText);
 
+        db = DatabaseHelper.getDatabase(getContext());
+
         boxNameView.setText(box.getName());
         indentNameView.setText(box.getIndentName());
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -73,7 +75,7 @@ public class StockItemDialog extends AlertDialog {
     }
 
     private void getBoxItemList() {
-        StockOrder.getInstance(getContext()).getBoxItem(boxItemList, adapter, box.getId(), this);
+        StockOrder.getInstance(getContext()).getBoxItem(boxItemList, adapter, box.getId(), this, db);
     }
 
     public void checkAvailability() {

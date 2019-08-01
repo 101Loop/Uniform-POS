@@ -1,10 +1,15 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
+@Entity
 public class Indent {
+    @PrimaryKey
     private long id;
     private String name;
     private String dateTime;
@@ -13,10 +18,10 @@ public class Indent {
     private double boxValue;
     private int numberOfItems;
     private boolean isSelected;
-    private Box box;
+//    private Box box;
     private String shippingFrom;
 
-    public Indent(long id, String name, String dateTime, String dispatchPerson, int numberOfBoxes, double boxValue, int numberOfItems, Box box, String shippingFrom) {
+    public Indent(long id, String name, String dateTime, String dispatchPerson, int numberOfBoxes, double boxValue, int numberOfItems, /*Box box,*/ String shippingFrom) {
         this.id = id;
         this.name = name;
         this.dateTime = dateTime;
@@ -25,7 +30,7 @@ public class Indent {
         this.boxValue = boxValue;
         this.numberOfItems = numberOfItems;
         this.isSelected = false;
-        this.box = box;
+//        this.box = box;
         this.shippingFrom = shippingFrom;
     }
 
@@ -38,7 +43,7 @@ public class Indent {
         this.boxValue = 0;
         this.numberOfItems = 0;
         this.isSelected = false;
-        this.box = null; //this is to be fetched from another API
+//        this.box = null; //this is to be fetched from another API
         this.shippingFrom = jsonObject.optString(APIStatic.Key.shippingFrom);
     }
 
@@ -106,13 +111,13 @@ public class Indent {
         isSelected = selected;
     }
 
-    public Box getBox() {
-        return box;
-    }
-
-    public void setBox(Box box) {
-        this.box = box;
-    }
+//    public Box getBox() {
+//        return box;
+//    }
+//
+//    public void setBox(Box box) {
+//        this.box = box;
+//    }
 
     public String getShippingFrom() {
         return shippingFrom;

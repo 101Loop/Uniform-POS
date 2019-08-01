@@ -1,10 +1,15 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
+@Entity
 public class Box {
+    @PrimaryKey
     private long id;
     private String name;
     private String serialNumber;
