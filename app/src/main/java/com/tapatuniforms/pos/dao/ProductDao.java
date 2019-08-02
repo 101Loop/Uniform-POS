@@ -13,8 +13,8 @@ public interface ProductDao {
     @Query("SELECT * FROM Product")
     List<Product> getAll();
 
-    @Query("SELECT * FROM Product WHERE id = :id")
-    Product getProduct(long id);
+    @Query("SELECT * FROM Product WHERE apiId = :apiId")
+    Product getProduct(long apiId);
 
     @Insert
     void insertAll(List<Product> productList);

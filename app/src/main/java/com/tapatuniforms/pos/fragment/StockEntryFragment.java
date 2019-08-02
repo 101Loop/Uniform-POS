@@ -24,7 +24,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.Indent;
-import com.tapatuniforms.pos.network.StockOrder;
+import com.tapatuniforms.pos.network.StockOrderAPI;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -118,7 +118,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
      * Method to get list of indents
      * */
     private void getIndentList() {
-        StockOrder.getInstance(getContext()).getIndentList(indentList, stockIndentAdapter, this, db);
+        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, stockIndentAdapter, this, db);
     }
 
     /**
@@ -131,7 +131,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
             allBoxList.clear();
         }
 
-        StockOrder.getInstance(getContext()).getBoxList(boxList, allBoxList, stockBoxAdapter, this, db);
+        StockOrderAPI.getInstance(getContext()).getBoxList(boxList, allBoxList, stockBoxAdapter, this, db);
     }
 
     /**

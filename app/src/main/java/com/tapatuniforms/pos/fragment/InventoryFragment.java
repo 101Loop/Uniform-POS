@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,19 +20,33 @@ import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.InventoryAdapter;
 import com.tapatuniforms.pos.adapter.InventoryOrderAdapter;
 import com.tapatuniforms.pos.dialog.InventoryDialog;
-import com.tapatuniforms.pos.helper.DataHelper;
+import com.tapatuniforms.pos.helper.APIStatic;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Category;
-import com.tapatuniforms.pos.model.InventoryItem;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener {
+public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener, CategoryAdapter.CategoryClickListener {
     private RecyclerView inventoryRecyclerView, recommendedRecyclerView;
-    private InventoryAdapter adapter;
+    private InventoryAdapter inventoryAdapter;
     private ArrayList<Category> categoryList;
     private CategoryAdapter categoryAdapter;
     private RecyclerView categoryRecyclerView;
+    private ArrayList<Product> allProducts;
+    private ArrayList<Product> productList;
+    private DatabaseSingleton db;
+    private TextView maleView;
+    private TextView femaleView;
+    private boolean isMaleSelected;
+    private boolean notSelectedYet = true;
+    private ArrayList<Product> maleList;
+    private ArrayList<Product> femaleList;
+    private TextView noProductText;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,67 +57,161 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     }
 
     private void init(View view) {
+        db = DatabaseHelper.getDatabase(getContext());
+
         categoryList = new ArrayList<>();
         categoryRecyclerView = view.findViewById(R.id.categoryRecycler);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
         categoryRecyclerView.addItemDecoration(new GridItemDecoration(16, 16));
         categoryRecyclerView.setAdapter(categoryAdapter);
+        categoryAdapter.setOnCategorySelectedListener(this);
 
+        allProducts = new ArrayList<>();
+        productList = new ArrayList<>();
         inventoryRecyclerView = view.findViewById(R.id.inventoryRecyclerView);
         inventoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         inventoryRecyclerView.addItemDecoration(new GridItemDecoration(12, 12));
-        adapter = new InventoryAdapter(getContext(), getItemList());
-        inventoryRecyclerView.setAdapter(adapter);
+        inventoryAdapter = new InventoryAdapter(getContext(), productList);
+        inventoryRecyclerView.setAdapter(inventoryAdapter);
 
         recommendedRecyclerView = view.findViewById(R.id.recommendedRecyclerView);
         recommendedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         recommendedRecyclerView.setAdapter(new InventoryOrderAdapter());
 
-        adapter.setOnClickListener(this);
+        inventoryAdapter.setOnClickListener(this);
 
-        DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
-        setData();
-    }
+        maleView = view.findViewById(R.id.maleButton);
+        femaleView = view.findViewById(R.id.femaleButton);
+        noProductText = view.findViewById(R.id.noProductText);
+        maleList = new ArrayList<>();
+        femaleList = new ArrayList<>();
 
-    private void setData() {
-        adapter.setOnClickListener(inventoryItem -> {
-            InventoryDialog dialog = new InventoryDialog(getContext());
+        //gender_type button
+        maleView.setOnClickListener(v -> {
 
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            if (!isMaleSelected || notSelectedYet) {
+
+                isMaleSelected = true;
+                notSelectedYet = false;
+
+                categoryAdapter.clearBackground();
+                //change button views
+                maleView.setBackgroundColor(getResources().getColor(R.color.denim1));
+                maleView.setTextColor(getResources().getColor(R.color.white1));
+
+                femaleView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                femaleView.setTextColor(getResources().getColor(R.color.black1));
+
+                //apply changes to products
+                if (productList != null && productList.size() > 0) {
+                    productList.clear();
+                }
+                maleList.clear();
+
+                for (Product currentProduct : allProducts) {
+                    if (currentProduct.getGender().equals(APIStatic.Constants.MALE)) {
+                        productList.add(currentProduct);
+                        maleList.add(currentProduct);
+                    }
+                }
+
+                checkAvailability();
+                inventoryAdapter.notifyDataSetChanged();
             }
-
-            dialog.show();
         });
+
+        femaleView.setOnClickListener(v -> {
+
+            if (isMaleSelected || notSelectedYet) {
+
+                isMaleSelected = false;
+                notSelectedYet = false;
+                categoryAdapter.clearBackground();
+                femaleView.setBackgroundColor(getResources().getColor(R.color.denim1));
+                femaleView.setTextColor(getResources().getColor(R.color.white1));
+
+                maleView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                maleView.setTextColor(getResources().getColor(R.color.black1));
+
+                //apply changes to products
+                if (productList != null && productList.size() > 0) {
+                    productList.clear();
+                }
+                femaleList.clear();
+
+                for (Product currentProduct : allProducts) {
+                    if (currentProduct.getGender().equals(APIStatic.Constants.FEMALE)) {
+                        productList.add(currentProduct);
+                        femaleList.add(currentProduct);
+                    }
+                }
+
+                checkAvailability();
+                inventoryAdapter.notifyDataSetChanged();
+            }
+        });
+
+        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter);
+        ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db);
     }
 
-    private ArrayList<InventoryItem> getItemList() {
-        ArrayList<InventoryItem> list = new ArrayList<>();
+    /**
+     * if no products are available, show an empty state text
+     */
+    private void checkAvailability() {
+        if (productList != null) {
+            if (productList.size() == 0) {
+                noProductText.setVisibility(View.VISIBLE);
+                inventoryRecyclerView.setVisibility(View.GONE);
+            } else {
+                noProductText.setVisibility(View.GONE);
+                inventoryRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
-        list.add(new InventoryItem(1, "Shirt Type 1", "12123342", 50, 2));
-        list.add(new InventoryItem(2, "Shirt Type 2", "12123342", 60, 20));
-        list.add(new InventoryItem(3, "Shirt Type 3", "12123342", 80, 7));
-        list.add(new InventoryItem(4, "Shirt Type 4", "12123342", 70, 10));
-        list.add(new InventoryItem(5, "Shirt Type 5", "12123342", 50, 5));
-        list.add(new InventoryItem(6, "Shirt Type 6", "12123342", 40, 10));
-        list.add(new InventoryItem(7, "Shirt Type 7", "12123342", 10, 0));
-        list.add(new InventoryItem(8, "Shirt Type 8", "12123342", 20, 8));
-        list.add(new InventoryItem(9, "Shirt Type 9", "12123342", 50, 4));
-        list.add(new InventoryItem(10, "Shirt Type 10", "12123342", 70, 10));
+    /**
+     * Method to list the products of the selected categories
+     *
+     * @param category selected category
+     */
+    @Override
+    public void onCategorySelected(Category category) {
+        productList.clear();
 
-        return list;
+        ArrayList<Product> tempList;
+        if (notSelectedYet) {
+            tempList = allProducts;
+        } else if (isMaleSelected) {
+            tempList = maleList;
+        } else {
+            tempList = femaleList;
+        }
+
+        for (Product product : tempList) {
+            if (product.getCategory() == category.getApiId()) {
+                productList.add(product);
+            }
+        }
+
+        checkAvailability();
+        inventoryAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onTransferButtonClick(InventoryItem item) {
-        InventoryDialog dialog = new InventoryDialog(getContext());
+    public void onTransferButtonClick(Product product, String title) {
+        InventoryDialog dialog = new InventoryDialog(getContext(), product, title);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
         dialog.show();
+
+        Objects.requireNonNull(dialog.getWindow()).clearFlags(
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 }

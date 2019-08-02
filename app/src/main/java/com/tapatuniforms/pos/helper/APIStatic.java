@@ -100,6 +100,8 @@ public interface APIStatic {
         String productQuantity = "product_quantity";
         String discountType = "discount_type";
         String value = "value";
+        String warehouseStock = "warehouse_stock";
+        String displayStock = "display_stock";
     }
 
     interface Constants {

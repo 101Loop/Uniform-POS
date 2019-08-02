@@ -18,7 +18,7 @@ import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.BoxItem;
-import com.tapatuniforms.pos.network.StockOrder;
+import com.tapatuniforms.pos.network.StockOrderAPI;
 
 import java.util.ArrayList;
 
@@ -75,7 +75,7 @@ public class StockItemDialog extends AlertDialog {
     }
 
     private void getBoxItemList() {
-        StockOrder.getInstance(getContext()).getBoxItem(boxItemList, adapter, box.getId(), this, db);
+        StockOrderAPI.getInstance(getContext()).getBoxItem(boxItemList, adapter, box.getId(), this, db);
     }
 
     public void checkAvailability() {

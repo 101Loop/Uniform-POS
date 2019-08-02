@@ -1,5 +1,9 @@
 package com.tapatuniforms.pos.model;
 
+import com.tapatuniforms.pos.helper.APIStatic;
+
+import org.json.JSONObject;
+
 public class Student {
     private String studentId;
     private String name;
@@ -21,6 +25,18 @@ public class Student {
         this.school = school;
         this.email = email;
         this.mobile = mobile;
+    }
+
+    public Student(JSONObject jsonObject) {
+        this.studentId = jsonObject.optString(APIStatic.Key.studentId);
+        this.name = jsonObject.optString(APIStatic.Key.name);
+        this.standard = jsonObject.optString(APIStatic.Key.standard);
+        this.section = jsonObject.optString(APIStatic.Key.section);
+        this.fatherName = jsonObject.optString(APIStatic.Key.fatherName);
+        this.gender = jsonObject.optString(APIStatic.Key.gender);
+        this.email = jsonObject.optString("email");
+        this.mobile = jsonObject.optString("mobile");
+        this.school = jsonObject.optInt("school");
     }
 
     public String getStudentId() {

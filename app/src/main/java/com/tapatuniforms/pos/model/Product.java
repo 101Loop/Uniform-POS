@@ -22,6 +22,8 @@ public class Product {
     private String image;
     private ArrayList<String> sizeList = new ArrayList<>();
     private ArrayList<String> priceList = new ArrayList<>();
+    private ArrayList<String> warehouseStockList = new ArrayList<>();
+    private ArrayList<String> displayStockList = new ArrayList<>();
     private int category;
     private int outlet;
     private String color;
@@ -32,7 +34,7 @@ public class Product {
     private boolean isSizeAlreadyOpen = false;
 
     public Product(int id, int apiId, String name, String sku, String image, ArrayList<String> priceList,
-                   ArrayList<String> sizeList, int category, int outlet, String color) {
+                   ArrayList<String> sizeList, ArrayList<String> warehouseStockList, ArrayList<String> displayStockList, int category, int outlet, String color) {
         this.id = id;
         this.apiId = apiId;
         this.name = name;
@@ -40,6 +42,8 @@ public class Product {
         this.image = image;
         this.priceList.addAll(priceList);
         this.sizeList.addAll(sizeList);
+        this.warehouseStockList.addAll(warehouseStockList);
+        this.displayStockList.addAll(displayStockList);
         this.category = category;
         this.outlet = outlet;
         this.color = color;
@@ -55,6 +59,8 @@ public class Product {
             currentObject = subProductArray.getJSONObject(i);
             sizeList.add(currentObject.getString(APIStatic.Key.size));
             priceList.add(currentObject.getString(APIStatic.Key.price));
+            warehouseStockList.add(currentObject.optString(APIStatic.Key.warehouseStock));
+            displayStockList.add(currentObject.optString(APIStatic.Key.displayStock));
         }
 
         this.id = 0;
@@ -172,6 +178,22 @@ public class Product {
 
     public void setPriceList(ArrayList<String> priceList) {
         this.priceList = priceList;
+    }
+
+    public ArrayList<String> getWarehouseStockList() {
+        return warehouseStockList;
+    }
+
+    public void setWarehouseStockList(ArrayList<String> warehouseStockList) {
+        this.warehouseStockList = warehouseStockList;
+    }
+
+    public ArrayList<String> getDisplayStockList() {
+        return displayStockList;
+    }
+
+    public void setDisplayStockList(ArrayList<String> displayStockList) {
+        this.displayStockList = displayStockList;
     }
 
     public boolean isSizeAlreadyOpen() {

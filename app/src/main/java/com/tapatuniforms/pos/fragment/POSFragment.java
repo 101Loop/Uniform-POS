@@ -33,7 +33,8 @@ import com.tapatuniforms.pos.adapter.DiscountAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.helper.APIStatic;
-import com.tapatuniforms.pos.helper.DataHelper;
+import com.tapatuniforms.pos.model.Stock;
+import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
@@ -47,7 +48,7 @@ import com.tapatuniforms.pos.model.Product;
 import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
-import com.tapatuniforms.pos.network.Billing;
+import com.tapatuniforms.pos.network.SchoolAPI;
 import com.tapatuniforms.pos.network.OrderAPI;
 
 import org.json.JSONException;
@@ -168,7 +169,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         sizeList = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(), productList, sizeList);
         cartList = new ArrayList<>();
-        cartAdapter = new CartAdapter(cartList);
+        cartAdapter = new CartAdapter(getContext(), cartList);
 
         db = DatabaseHelper.getDatabase(getContext());
 
@@ -242,7 +243,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
             if (!studentId.isEmpty()) {
                 try {
-                    Billing.getInstance(getContext()).getStudentDetails(Integer.parseInt(studentId), studentDetails);
+                    SchoolAPI.getInstance(getContext()).getStudentDetails(Integer.parseInt(studentId), studentDetails);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -320,8 +321,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         });
 
         // Fetch Data
-        DataHelper.fetchCategories(getContext(), categoryList, categoryAdapter);
-        DataHelper.fetchProducts(getContext(), allProducts, productList, productAdapter, db);
+        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter);
+        ProductAPI.fetchProducts(getContext(), allProducts, productList, productAdapter, null, db);
     }
 
     /**
@@ -399,7 +400,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 //input validation
                 if (isInputValid()) {
                     try {
-                        Billing.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, classStr, section, gender, fatherName, dialog);
+                        SchoolAPI.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, classStr, section, gender, fatherName, dialog);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -555,6 +556,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * This method will save order to database and call sync function
      */
     private void orderCompleted(ArrayList<Transaction> transactionList) {
+        //TODO: remove static data and make this purely based on API
         String customerName = "Vivek";
         String customerMobile = "8826317151";
         String customerEmail = "me@vivekkaushik.com";
@@ -577,7 +579,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                     0, 0, 0, 0, false));
         }
 
-        DataHelper.saveAndSyncOrder(getContext(), db, order, subOrderList, transactionList);
+        ProductAPI.saveAndSyncOrder(getContext(), db, order, subOrderList, transactionList);
 
         Toast.makeText(getContext(), "Order completed", Toast.LENGTH_SHORT).show();
         cartList.clear();
@@ -680,6 +682,21 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             for (CartItem cartItem : cartList) {
                 if (cartItem.getProduct().getApiId() == product.getApiId()) {
                     if (cartItem.getSize().equals(size)) {
+//                        Stock stock = db.stockDao().getStock(cartItem.getProduct().getApiId());
+
+//                        if (stock != null) {
+//                            ArrayList<String> displayStockList = stock.getDisplayStockList();
+
+//                            int displayStockCount = Integer.parseInt(displayStockList.get(pos));
+
+                            int displayStockCount = Integer.parseInt(cartItem.getProduct().getDisplayStockList().get(pos));
+
+                            if (cartItem.getQuantity() > displayStockCount - 1) {
+                                Toast.makeText(getContext(), "Not enough items in display", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+//                        }
+
                         cartItem.setQuantity(cartItem.getQuantity() + 1);
                         cartAdapter.notifyDataSetChanged();
                         updatePriceView();
