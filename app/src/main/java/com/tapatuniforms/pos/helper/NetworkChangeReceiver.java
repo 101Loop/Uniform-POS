@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.tapatuniforms.pos.model.Order;
+import com.tapatuniforms.pos.network.ProductAPI;
 
 import org.json.JSONException;
 
@@ -29,7 +30,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
                     if (order.isSynced()) {
                         try {
-                            DataHelper.syncOrder(context, db, order);
+                            ProductAPI.syncOrder(context, db, order);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

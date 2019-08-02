@@ -27,7 +27,7 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/textView31"
+                    android:id="@+id/titleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -93,6 +93,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/stockWarehouseLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -108,7 +109,10 @@
                         android:id="@+id/warehouseQuantityView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="25dp"
                         android:background="@drawable/rounded_blue"
+                        android:minWidth="25dp"
+                        android:gravity="center"
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
                         android:text="30" />
@@ -132,6 +136,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_blue"
+                        android:minWidth="25dp"
+                        android:minHeight="25dp"
+                        android:gravity="center"
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
                         android:text="10" />
@@ -202,7 +209,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/itemListRecyclerView"
-                    android:layout_height="300dp"
+                    android:layout_height="wrap_content"
                     tools:listitem="@layout/inventory_popup_table_layout" />
             </TableLayout>
 
@@ -233,7 +240,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/stroke_around_rect"
                     android:gravity="center"
-                    android:text="03"
+                    android:text="0"
                     android:textSize="18sp" />
             </LinearLayout>
 

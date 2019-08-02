@@ -16,28 +16,26 @@ import com.tapatuniforms.pos.model.Student;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Billing {
+public class SchoolAPI {
 
     private static final String TAG = "Billing";
-    private static Billing instance;
+    private static SchoolAPI instance;
     private Context context;
-    private Student studentDetails;
 
-    private Billing(Context context) {
+    private SchoolAPI(Context context) {
         this.context = context;
-//        instance = this;
     }
 
-    public static synchronized Billing getInstance(Context context) {
+    public static synchronized SchoolAPI getInstance(Context context) {
         if (instance == null) {
-            instance = new Billing(context);
+            instance = new SchoolAPI(context);
         }
         return instance;
     }
 
     /**
      * Method to make an API call to add student details in server
-     * */
+     */
     public void addStudentDetails(String studentId, String name, int school, String email, String mobile,
                                   String standard, String section, String gender, String fatherName,
                                   AlertDialog dialog) throws JSONException {
@@ -64,7 +62,7 @@ public class Billing {
                     @Override
                     public void onBadRequestError(JSONObject response) {
                         super.onBadRequestError(response);
-                        Log.d(TAG, "error:" + response);
+                        Log.e(TAG, "error:" + response);
                     }
                 }, context);
 
@@ -73,27 +71,21 @@ public class Billing {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
+    /**
+     * Method to get student details by id
+     *
+     * @param id             unique id of the student
+     * @param studentDetails array of Student of size 1,
+     */
     public void getStudentDetails(int id, Student[] studentDetails) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(APIStatic.Key.id, id);
 
         DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                 Request.Method.GET,
-                APIStatic.School.addDetailsUrl + id  + "/",
+                APIStatic.School.addDetailsUrl + id + "/",
                 jsonObject,
-                response -> {
-                    String studentId = response.optString(APIStatic.Key.studentId);
-                    String name = response.optString(APIStatic.Key.name);
-                    String standard = response.optString(APIStatic.Key.standard);
-                    String section = response.optString(APIStatic.Key.section);
-                    String fatherName = response.optString(APIStatic.Key.fatherName);
-                    String gender = response.optString(APIStatic.Key.gender);
-                    int school = response.optInt("school");
-                    String email = response.optString("email");
-                    String mobile = response.optString("mobile");
-
-                    studentDetails[0] = new Student(studentId, name, standard,section,fatherName, gender, school, email, mobile);
-                },
+                response -> studentDetails[0] = new Student(response),
                 new APIErrorListener(context),
                 context
         );

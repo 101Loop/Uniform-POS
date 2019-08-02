@@ -1,4 +1,4 @@
-package com.tapatuniforms.pos.helper;
+package com.tapatuniforms.pos.network;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -9,10 +9,17 @@ import com.civilmachines.drfapi.DjangoJSONArrayResponseRequest;
 import com.civilmachines.drfapi.DjangoJSONObjectRequest;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
+import com.tapatuniforms.pos.adapter.InventoryAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
+import com.tapatuniforms.pos.helper.APIErrorListener;
+import com.tapatuniforms.pos.helper.APIStatic;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.Validator;
+import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 
@@ -21,8 +28,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class DataHelper {
-    private static final String TAG = "DataHelper";
+public class ProductAPI {
+    private static final String TAG = "ProductAPI";
 
     public static ArrayList<Category> getCategories(Context context, DatabaseSingleton db) {
         return null;
@@ -31,10 +38,10 @@ public class DataHelper {
     /**
      * Method to fetch the categories from server
      *
-     * @param context Context of calling activity
+     * @param context      Context of calling activity
      * @param categoryList list of categories
-     * @param adapter reference to CategoryAdapter
-     * */
+     * @param adapter      reference to CategoryAdapter
+     */
     public static void fetchCategories(Context context, ArrayList<Category> categoryList,
                                        CategoryAdapter adapter) {
         if (!Validator.isNetworkConnected(context)) {
@@ -68,14 +75,14 @@ public class DataHelper {
     /**
      * Method to fetch products from server
      *
-     * @param context Context of calling activity
-     * @param allProducts list of products, this list is never changes
-     * @param productList list of products, changes according to the requirement
+     * @param context        Context of calling activity
+     * @param allProducts    list of products, this list is never changes
+     * @param productList    list of products, changes according to the requirement
      * @param productAdapter reference of product adapter to notify changes
-     * @param db DatabaseSingleton reference to store and fetch from database
-     * */
+     * @param db             DatabaseSingleton reference to store and fetch from database
+     */
     public static void fetchProducts(Context context, ArrayList<Product> allProducts,
-                                     ArrayList<Product> productList, ProductAdapter productAdapter, DatabaseSingleton db) {
+                                     ArrayList<Product> productList, ProductAdapter productAdapter, InventoryAdapter inventoryAdapter, DatabaseSingleton db) {
 
         ArrayList<Product> localProductList = (ArrayList<Product>) db.productDao().getAll();
         if (!Validator.isNetworkConnected(context)) {
@@ -85,6 +92,16 @@ public class DataHelper {
 
             allProducts.clear();
             allProducts.addAll(localProductList);
+
+            if (productList.size() != localProductList.size()) {
+                for (Product product : localProductList) {
+                    int productId = product.getApiId();
+                    ArrayList<String> displayStock = product.getDisplayStockList();
+                    ArrayList<String> warehouseStock = product.getWarehouseStockList();
+
+                    db.stockDao().insert(new Stock(productId, displayStock, warehouseStock));
+                }
+            }
             return;
         }
 
@@ -102,11 +119,27 @@ public class DataHelper {
                                     .show();
                             e.printStackTrace();
                         }
+                    }
 
+                    if (productList.size() != localProductList.size()) {
+                        for (Product product : productList) {
+                            int productId = product.getApiId();
+                            ArrayList<String> displayStock = product.getDisplayStockList();
+                            ArrayList<String> warehouseStock = product.getWarehouseStockList();
+
+                            db.stockDao().insert(new Stock(productId, displayStock, warehouseStock));
+                        }
+                    }
+
+                    if (inventoryAdapter != null) {
+                        inventoryAdapter.notifyDataSetChanged();
+                    }
+
+                    if (productAdapter != null) {
                         productAdapter.notifyDataSetChanged();
                     }
 
-                    if (localProductList.size() != productList.size()) {
+                    if (productList != null && localProductList.size() != productList.size()) {
                         db.productDao().deleteAll();
                         db.productDao().insertAll(productList);
                     }
@@ -121,12 +154,12 @@ public class DataHelper {
     /**
      * Method to save and sync the order
      *
-     * @param context Context of the calling activity
-     * @param db DatabaseSingleton reference to store the data in the database
-     * @param order Order, which is to be saved and synced
-     * @param subOrderList list of SubOrder
+     * @param context         Context of the calling activity
+     * @param db              DatabaseSingleton reference to store the data in the database
+     * @param order           Order, which is to be saved and synced
+     * @param subOrderList    list of SubOrder
      * @param transactionList list of Transaction
-     * */
+     */
     public static void saveAndSyncOrder(Context context, DatabaseSingleton db, Order order,
                                         ArrayList<SubOrder> subOrderList,
                                         ArrayList<Transaction> transactionList) {
@@ -162,9 +195,9 @@ public class DataHelper {
      * Method to save the order if not connected to the internet, otherwise make an API call
      *
      * @param context Context of the calling activity
-     * @param db DatabaseSingleton reference to save order from database
-     * @param order Order
-     * */
+     * @param db      DatabaseSingleton reference to save order from database
+     * @param order   Order
+     */
     public static void syncOrder(Context context, DatabaseSingleton db, Order order) throws JSONException {
 
         if (!Validator.isNetworkConnected(context)) {
@@ -211,8 +244,8 @@ public class DataHelper {
      *
      * @param context Context of calling activity
      * @param orderId id of the order to which, the SubOrder is related to
-     * @param db DatabaseSingleton reference to save SubOrder in db
-     * */
+     * @param db      DatabaseSingleton reference to save SubOrder in db
+     */
     private static void syncSubOrder(Context context, long orderId, long apiOrderId,
                                      DatabaseSingleton db) throws JSONException {
         if (!Validator.isNetworkConnected(context)) {
@@ -231,6 +264,32 @@ public class DataHelper {
             object.put(APIStatic.Key.price, subOrder.getPrice());
             object.put(APIStatic.Key.qunatity, subOrder.getQuantity());
 
+            /*Product product = db.productDao().getProduct(subOrder.getProductApiId());
+            Stock stock = db.stockDao().getStock(subOrder.getProductApiId());
+
+            int pos = -1;
+            for (String price : product.getPriceList()) {
+                pos++;
+                if (price.equals(String.valueOf(subOrder.getPrice()))) {
+                    return;
+                }
+            }
+
+            ArrayList<String> displayList = stock.getDisplayStockList();
+            int displayStock = Integer.parseInt(displayList.get(pos));
+            displayStock -= subOrder.getQuantity();
+
+            displayList.clear();
+
+            for (int i = 0; i < stock.getDisplayStockList().size(); i++) {
+                if (i == pos) {
+                    displayList.add(String.valueOf(displayStock));
+                } else {
+                    displayList.add(stock.getDisplayStockList().get(i));
+                }
+            }
+            db.stockDao().updateDisplayStockList(displayList, product.getApiId());*/
+
             DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                     Request.Method.POST, APIStatic.Order.subOrderUrl, object,
                     response -> {
@@ -245,11 +304,11 @@ public class DataHelper {
     /**
      * Method to either save Transaction or make API call
      *
-     * @param context Context of the calling activity
-     * @param orderId id of the order to which, the transaction is related to
+     * @param context    Context of the calling activity
+     * @param orderId    id of the order to which, the transaction is related to
      * @param apiOrderId API's order id TODO: this is to be fetched from server, currently it is static
-     * @param db DatabaseSingleton reference to save the transaction in db
-     * */
+     * @param db         DatabaseSingleton reference to save the transaction in db
+     */
     private static void syncTransaction(Context context, long orderId, long apiOrderId,
                                         DatabaseSingleton db) throws JSONException {
         if (!Validator.isNetworkConnected(context)) {

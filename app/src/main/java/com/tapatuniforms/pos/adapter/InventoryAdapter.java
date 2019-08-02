@@ -1,33 +1,35 @@
 package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.model.InventoryItem;
+import com.tapatuniforms.pos.helper.RoundedCornerLayout;
+import com.tapatuniforms.pos.model.Product;
 
 import java.util.ArrayList;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
-    private ArrayList<InventoryItem> itemList;
+    private ArrayList<Product> itemList;
     private ButtonClickListener listener;
     private ArrayList<String> sizeList;
     private Context context;
 
     public interface ButtonClickListener {
-        void onTransferButtonClick(InventoryItem item);
+        void onTransferButtonClick(Product item, String title);
     }
 
-    public InventoryAdapter(Context context, ArrayList<InventoryItem> itemList) {
+    public InventoryAdapter(Context context, ArrayList<Product> itemList) {
         this.itemList = itemList;
         this.context = context;
         sizeList = new ArrayList<>();
@@ -43,22 +45,44 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final InventoryItem item = itemList.get(position);
+        final Product item = itemList.get(position);
 
         holder.itemNameView.setText(item.getName());
 
-        sizeList.clear();
-        sizeList.add("24");
-        sizeList.add("26");
-        sizeList.add("28");
-        sizeList.add("30");
-        SizeAdapter sizeAdapter = new SizeAdapter(context, sizeList);
+        holder.colorName.setText(item.getColor());
+        holder.colorImage.setBackgroundColor(Color.parseColor(item.getColorCode()));
+
+        int totalWarehouseStock = 0;
+        for (String currentStock : item.getWarehouseStockList()) {
+            totalWarehouseStock += Integer.parseInt(currentStock);
+        }
+        holder.itemWarehouseCount.setText(String.valueOf(totalWarehouseStock));
+
+        int totalDisplayStock = 0;
+        for (String currentStock : item.getDisplayStockList()) {
+            totalDisplayStock += Integer.parseInt(currentStock);
+        }
+        holder.itemDisplayCount.setText(String.valueOf(totalDisplayStock));
+
+        String type = item.getProductType();
+        if (type == null || type.isEmpty() || type.equalsIgnoreCase("null")) {
+            type = "";
+        }
+        holder.productType.setText(type);
+
+        SizeAdapter sizeAdapter = new SizeAdapter(context, item.getSizeList());
         holder.sizeRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         holder.sizeRecyclerView.setAdapter(sizeAdapter);
 
         holder.transferButton.setOnClickListener(view -> {
             if (listener != null) {
-                listener.onTransferButtonClick(item);
+                listener.onTransferButtonClick(item, "Transfer");
+            }
+        });
+
+        holder.addToOrderButton.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onTransferButtonClick(item, "Add to Order");
             }
         });
     }
@@ -73,8 +97,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemNameView, addToOrderButton, itemWarehouseCount, itemDisplayCount;
-//        Button transferButton;
+        TextView itemNameView, addToOrderButton, productType, itemWarehouseCount, itemDisplayCount, colorName;
+        RoundedCornerLayout colorImage;
         RecyclerView sizeRecyclerView;
         LinearLayout transferButton;
 
@@ -84,6 +108,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             addToOrderButton = itemView.findViewById(R.id.addToOrderButton);
             sizeRecyclerView = itemView.findViewById(R.id.sizeRecyclerView);
             transferButton = itemView.findViewById(R.id.transferButton);
+            colorImage = itemView.findViewById(R.id.colorImage);
+            colorName = itemView.findViewById(R.id.colorName);
+            itemDisplayCount = itemView.findViewById(R.id.displayItemsCount);
+            itemWarehouseCount = itemView.findViewById(R.id.warehouseQuantityText);
+            productType = itemView.findViewById(R.id.productType);
         }
     }
 }

@@ -24,17 +24,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class StockOrder {
+public class StockOrderAPI {
     private Context context;
-    private static StockOrder instance;
+    private static StockOrderAPI instance;
 
-    private StockOrder(Context context) {
+    private StockOrderAPI(Context context) {
         this.context = context;
     }
 
-    public static synchronized StockOrder getInstance(Context context) {
+    public static synchronized StockOrderAPI getInstance(Context context) {
         if (instance == null) {
-            instance = new StockOrder(context);
+            instance = new StockOrderAPI(context);
         }
 
         return instance;

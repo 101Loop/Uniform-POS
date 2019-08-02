@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="02" />
+                android:text="0" />
 
             <TextView
                 android:id="@+id/plusButton"
@@ -75,7 +75,7 @@
             android:background="@drawable/stroke_around_rect"
             android:inputType="number"
             android:gravity="center"
-            android:text="02" />
+            android:text="0" />
     </LinearLayout>
 
 </TableRow>
