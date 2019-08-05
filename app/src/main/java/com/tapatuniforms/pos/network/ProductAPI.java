@@ -18,8 +18,8 @@ import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.Order;
-import com.tapatuniforms.pos.model.Product;
-import com.tapatuniforms.pos.model.Stock;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 
@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductAPI {
     private static final String TAG = "ProductAPI";
@@ -81,11 +82,11 @@ public class ProductAPI {
      * @param productAdapter reference of product adapter to notify changes
      * @param db             DatabaseSingleton reference to store and fetch from database
      */
-    public static void fetchProducts(Context context, ArrayList<Product> allProducts,
-                                     ArrayList<Product> productList, ProductAdapter productAdapter, InventoryAdapter inventoryAdapter, DatabaseSingleton db) {
+    public static void fetchProducts(Context context, ArrayList<ProductHeader> allProducts,
+                                     ArrayList<ProductHeader> productList, ProductAdapter productAdapter, InventoryAdapter inventoryAdapter, DatabaseSingleton db) {
 
-        ArrayList<Product> localProductList = (ArrayList<Product>) db.productDao().getAll();
-        if (!Validator.isNetworkConnected(context)) {
+        List<ProductHeader> localProductList = db.productHeaderDao().getAllProductHeader();
+        /*if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             productList.clear();
             productList.addAll(localProductList);
@@ -103,7 +104,7 @@ public class ProductAPI {
                 }
             }
             return;
-        }
+        }*/
 
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET, APIStatic.Outlet.productUrl, null,
@@ -112,8 +113,8 @@ public class ProductAPI {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject productJSON = response.getJSONObject(i);
-                            productList.add(new Product(productJSON));
-                            allProducts.add(new Product(productJSON));
+                            productList.add(new ProductHeader(productJSON));
+                            allProducts.add(new ProductHeader(productJSON));
                         } catch (JSONException e) {
                             Toast.makeText(context, "Product Parse Error", Toast.LENGTH_SHORT)
                                     .show();
@@ -122,13 +123,20 @@ public class ProductAPI {
                     }
 
                     if (productList.size() != localProductList.size()) {
-                        for (Product product : productList) {
-                            int productId = product.getApiId();
-                            ArrayList<String> displayStock = product.getDisplayStockList();
-                            ArrayList<String> warehouseStock = product.getWarehouseStockList();
+                        ArrayList<ProductHeader> productHeaderList = new ArrayList<>();
+                        ArrayList<ProductVariant> productVariantList = new ArrayList<>();
+                        for (int i = 0; i < productList.size(); i++) {
+                            ProductHeader productHeader = new ProductHeader(response.optJSONObject(i));
+                            productHeaderList.add(productHeader);
 
-                            db.stockDao().insert(new Stock(productId, displayStock, warehouseStock));
+                            for (int j = 0; j < productHeader.getVariantSize(); j++) {
+                                productVariantList.add(new ProductVariant(response.optJSONObject(i), j));
+                            }
                         }
+                        db.productHeaderDao().deleteAllProductHeaders();
+                        db.productVariantDao().deleteAllProductVariants();
+                        db.productHeaderDao().insertAllProductHeader(productHeaderList);
+                        db.productVariantDao().insertAllProductVariants(productVariantList);
                     }
 
                     if (inventoryAdapter != null) {
@@ -137,11 +145,6 @@ public class ProductAPI {
 
                     if (productAdapter != null) {
                         productAdapter.notifyDataSetChanged();
-                    }
-
-                    if (productList != null && localProductList.size() != productList.size()) {
-                        db.productDao().deleteAll();
-                        db.productDao().insertAll(productList);
                     }
 
                 }, new APIErrorListener(context), context);
@@ -264,35 +267,22 @@ public class ProductAPI {
             object.put(APIStatic.Key.price, subOrder.getPrice());
             object.put(APIStatic.Key.qunatity, subOrder.getQuantity());
 
-            /*Product product = db.productDao().getProduct(subOrder.getProductApiId());
-            Stock stock = db.stockDao().getStock(subOrder.getProductApiId());
-
-            int pos = -1;
-            for (String price : product.getPriceList()) {
-                pos++;
-                if (price.equals(String.valueOf(subOrder.getPrice()))) {
-                    return;
+            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById((int) subOrder.getProductApiId());
+            ProductVariant productVariant = null;
+            for (ProductVariant currentVariant : productVariantList) {
+                if (currentVariant.getPrice() == subOrder.getPrice()) {
+                    productVariant = currentVariant;
                 }
             }
 
-            ArrayList<String> displayList = stock.getDisplayStockList();
-            int displayStock = Integer.parseInt(displayList.get(pos));
-            displayStock -= subOrder.getQuantity();
-
-            displayList.clear();
-
-            for (int i = 0; i < stock.getDisplayStockList().size(); i++) {
-                if (i == pos) {
-                    displayList.add(String.valueOf(displayStock));
-                } else {
-                    displayList.add(stock.getDisplayStockList().get(i));
-                }
-            }
-            db.stockDao().updateDisplayStockList(displayList, product.getApiId());*/
-
+            ProductVariant finalProductVariant = productVariant;
             DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                     Request.Method.POST, APIStatic.Order.subOrderUrl, object,
                     response -> {
+                        if (finalProductVariant != null) {
+
+                            db.productVariantDao().updateDisplayStock(finalProductVariant.getDisplayStock() - subOrder.getQuantity(), finalProductVariant.getId());
+                        }
                     }, new APIErrorListener(context), context);
 
             request.setRetryPolicy(new DefaultRetryPolicy(0, -1,

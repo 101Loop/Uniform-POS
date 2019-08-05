@@ -23,7 +23,7 @@ import com.tapatuniforms.pos.dialog.InventoryDialog;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
-import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Category;
@@ -37,15 +37,15 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     private ArrayList<Category> categoryList;
     private CategoryAdapter categoryAdapter;
     private RecyclerView categoryRecyclerView;
-    private ArrayList<Product> allProducts;
-    private ArrayList<Product> productList;
+    private ArrayList<ProductHeader> allProducts;
+    private ArrayList<ProductHeader> productList;
     private DatabaseSingleton db;
     private TextView maleView;
     private TextView femaleView;
     private boolean isMaleSelected;
     private boolean notSelectedYet = true;
-    private ArrayList<Product> maleList;
-    private ArrayList<Product> femaleList;
+    private ArrayList<ProductHeader> maleList;
+    private ArrayList<ProductHeader> femaleList;
     private TextView noProductText;
 
     @Override
@@ -110,7 +110,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
                 }
                 maleList.clear();
 
-                for (Product currentProduct : allProducts) {
+                for (ProductHeader currentProduct : allProducts) {
                     if (currentProduct.getGender().equals(APIStatic.Constants.MALE)) {
                         productList.add(currentProduct);
                         maleList.add(currentProduct);
@@ -141,7 +141,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
                 }
                 femaleList.clear();
 
-                for (Product currentProduct : allProducts) {
+                for (ProductHeader currentProduct : allProducts) {
                     if (currentProduct.getGender().equals(APIStatic.Constants.FEMALE)) {
                         productList.add(currentProduct);
                         femaleList.add(currentProduct);
@@ -179,9 +179,10 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
      */
     @Override
     public void onCategorySelected(Category category) {
+
         productList.clear();
 
-        ArrayList<Product> tempList;
+        ArrayList<ProductHeader> tempList;
         if (notSelectedYet) {
             tempList = allProducts;
         } else if (isMaleSelected) {
@@ -190,7 +191,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
             tempList = femaleList;
         }
 
-        for (Product product : tempList) {
+        for (ProductHeader product : tempList) {
             if (product.getCategory() == category.getApiId()) {
                 productList.add(product);
             }
@@ -201,7 +202,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     }
 
     @Override
-    public void onTransferButtonClick(Product product, String title) {
+    public void onTransferButtonClick(ProductHeader product, String title) {
         InventoryDialog dialog = new InventoryDialog(getContext(), product, title);
 
         if (dialog.getWindow() != null) {

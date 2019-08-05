@@ -33,8 +33,6 @@ import com.tapatuniforms.pos.adapter.DiscountAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.helper.APIStatic;
-import com.tapatuniforms.pos.model.Stock;
-import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
@@ -44,17 +42,20 @@ import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.Discount;
 import com.tapatuniforms.pos.model.Order;
-import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
-import com.tapatuniforms.pos.network.SchoolAPI;
 import com.tapatuniforms.pos.network.OrderAPI;
+import com.tapatuniforms.pos.network.ProductAPI;
+import com.tapatuniforms.pos.network.SchoolAPI;
 
 import org.json.JSONException;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.tapatuniforms.pos.helper.APIStatic.Constants.AMOUNT;
@@ -71,7 +72,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             noProductText, categoryText, cartNotification, discountNotification;
 
     private ArrayList<Category> categoryList;
-    private ArrayList<Product> allProducts, productList, maleList, femaleList;
+    private ArrayList<ProductHeader> maleList;
+    private ArrayList<ProductHeader> femaleList;
+    private ArrayList<ProductHeader> allProducts, productList;
     private ArrayList<CartItem> cartList;
     private ArrayList<String> sizeList;
     private CategoryAdapter categoryAdapter;
@@ -86,9 +89,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private double subTotal, tax, total;
     private boolean isMaleSelected;
     private boolean notSelectedYet = true;
-
-    private int position;
-//    private int cartQuantity = 0;
 
     private TextInputLayout studentIDLayout;
     private TextInputLayout studentNameLayout;
@@ -164,10 +164,10 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
         productList = new ArrayList<>();
         allProducts = new ArrayList<>();
-        maleList = new ArrayList<>();
-        femaleList = new ArrayList<>();
+        maleList = new ArrayList<ProductHeader>();
+        femaleList = new ArrayList<ProductHeader>();
         sizeList = new ArrayList<>();
-        productAdapter = new ProductAdapter(getContext(), productList, sizeList);
+        productAdapter = new ProductAdapter(getContext(), productList);
         cartList = new ArrayList<>();
         cartAdapter = new CartAdapter(getContext(), cartList);
 
@@ -181,9 +181,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * This method will set data or initial value
      */
     private void setView() {
-        // Empty Cart Icon
-//        emptyCartIcon.setOnClickListener((v) -> clearCartData());
-
         // Category Views
         categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         cartRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
@@ -276,7 +273,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
                 maleList.clear();
 
-                for (Product currentProduct : allProducts) {
+                for (ProductHeader currentProduct : allProducts) {
                     if (currentProduct.getGender().equals(APIStatic.Constants.MALE)) {
                         productList.add(currentProduct);
                         maleList.add(currentProduct);
@@ -308,7 +305,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
                 femaleList.clear();
 
-                for (Product currentProduct : allProducts) {
+                for (ProductHeader currentProduct : allProducts) {
                     if (currentProduct.getGender().equals(APIStatic.Constants.FEMALE)) {
                         productList.add(currentProduct);
                         femaleList.add(currentProduct);
@@ -509,7 +506,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     public void onCategorySelected(Category category) {
         productList.clear();
 
-        ArrayList<Product> tempList;
+        ArrayList<ProductHeader> tempList;
         if (notSelectedYet) {
             tempList = allProducts;
         } else if (isMaleSelected) {
@@ -518,7 +515,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             tempList = femaleList;
         }
 
-        for (Product product : tempList) {
+        for (ProductHeader product : tempList) {
             if (product.getCategory() == category.getApiId()) {
                 productList.add(product);
             }
@@ -573,8 +570,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         ArrayList<SubOrder> subOrderList = new ArrayList<>();
 
         for (CartItem cartItem : cartList) {
-            Product product = cartItem.getProduct();
-            subOrderList.add(new SubOrder(product.getName(), product.getApiId(),
+            ProductHeader product = cartItem.getProductHeader();
+            subOrderList.add(new SubOrder(product.getName(), product.getId(),
                     product.getSku(), cartItem.getPrice(), cartItem.getQuantity(),
                     0, 0, 0, 0, false));
         }
@@ -634,9 +631,11 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
     /**
      * updates the price and if there isn't any item shows the empty state
+     *
+     * @param cartItem
      */
     @Override
-    public void onItemUpdateListener() {
+    public void onItemUpdateListener(CartItem cartItem) {
         updatePriceView();
 
         if (cartList != null && cartList.size() == 0) {
@@ -672,31 +671,15 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      */
     class ProductItemListener implements ProductAdapter.ProductClickListener {
         @Override
-        public void onProductClicked(Product product, int pos, String size) {
+        public void onProductClicked(ProductHeader product, String size) {
 
-            position = pos;
             ViewHelper.hideView(emptyCartView);
             ViewHelper.showView(cartRecyclerView);
             ViewHelper.hideView(discountRecyclerView);
 
             for (CartItem cartItem : cartList) {
-                if (cartItem.getProduct().getApiId() == product.getApiId()) {
+                if (cartItem.getProductHeader().getId() == product.getId()) {
                     if (cartItem.getSize().equals(size)) {
-//                        Stock stock = db.stockDao().getStock(cartItem.getProduct().getApiId());
-
-//                        if (stock != null) {
-//                            ArrayList<String> displayStockList = stock.getDisplayStockList();
-
-//                            int displayStockCount = Integer.parseInt(displayStockList.get(pos));
-
-                            int displayStockCount = Integer.parseInt(cartItem.getProduct().getDisplayStockList().get(pos));
-
-                            if (cartItem.getQuantity() > displayStockCount - 1) {
-                                Toast.makeText(getContext(), "Not enough items in display", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-//                        }
-
                         cartItem.setQuantity(cartItem.getQuantity() + 1);
                         cartAdapter.notifyDataSetChanged();
                         updatePriceView();
@@ -705,7 +688,16 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
             }
 
-            cartList.add(new CartItem(product.getApiId(), 1, product, pos, size, Double.parseDouble(product.getPriceList().get(pos))));
+            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(product.getId());
+
+            double price = 0;
+            for (ProductVariant currentVariant : productVariantList) {
+                if (size.equals(currentVariant.getSize())) {
+                    price = currentVariant.getPrice();
+                }
+            }
+
+            cartList.add(new CartItem(product.getId(), 1, product, size, price));
             cartAdapter.notifyDataSetChanged();
             updatePriceView();
         }

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,26 +17,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
-import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private static final String TAG = "ProductAdapter";
 
-    private ArrayList<Product> productList;
+    private ArrayList<ProductHeader> productList;
     private ArrayList<String> sizeList;
     private Context context;
 
     private ProductClickListener listener;
 
     private SizeAdapter sizeAdapter;
+    private DatabaseSingleton db;
 
-    public ProductAdapter(Context context, ArrayList<Product> productList, ArrayList<String> sizeList) {
+    public ProductAdapter(Context context, ArrayList<ProductHeader> productList) {
         this.context = context;
         this.productList = productList;
-        this.sizeList = sizeList;
+        sizeList = new ArrayList<>();
+        db = DatabaseHelper.getDatabase(context);
     }
 
     @NonNull
@@ -48,7 +55,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = productList.get(position);
+        ProductHeader product = productList.get(position);
+        List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(product.getId());
 
         holder.sizeLayout.setVisibility(View.GONE);
         holder.productName.setText(product.getName());
@@ -79,41 +87,52 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 .into(holder.productImage);
 
         holder.closeButton.setOnClickListener(view -> {
-            product.setSizeAlreadyOpen(false);
+            product.setSizeAlreadyOpened(false);
             holder.sizeLayout.setVisibility(View.GONE);
         });
 
         holder.addToCartButton.setOnClickListener(view -> {
-            holder.sizeLayout.setVisibility(View.VISIBLE);
 
-            sizeList = getSizes(product);
-            holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
-            sizeAdapter = new SizeAdapter(this.context, sizeList);
-            holder.sizeRecyclerView.setAdapter(sizeAdapter);
+            if (!product.isSizeAlreadyOpened()) {
+                holder.sizeLayout.setVisibility(View.VISIBLE);
+                product.setSizeAlreadyOpened(true);
 
-            sizeAdapter.setOnSizeClickListener((pos, size) -> {
-                if (listener != null) {
-                    listener.onProductClicked(product, pos, size);
-
-                    holder.sizeLayout.setVisibility(View.GONE);
+                sizeList.clear();
+                for (ProductVariant currentVariant : productVariantList) {
+                    sizeList.add(currentVariant.getSize());
                 }
-            });
+
+                holder.sizeRecyclerView.setLayoutManager(new GridLayoutManager(this.context, 5));
+                sizeAdapter = new SizeAdapter(this.context, sizeList);
+                holder.sizeRecyclerView.setAdapter(sizeAdapter);
+
+                sizeAdapter.setOnSizeClickListener((pos, size) -> {
+                    ProductVariant productVariant = null;
+                    for (ProductVariant currentVariant : productVariantList) {
+                        if (currentVariant.getSize().equals(size)) {
+                            productVariant = currentVariant;
+                        }
+                    }
+
+                    assert productVariant != null;
+                    if (productVariant.getDisplayStock() < 1) {
+                        Toast.makeText(context, "Not enough items in display", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (listener != null) {
+                        listener.onProductClicked(product, size);
+
+                        holder.sizeLayout.setVisibility(View.GONE);
+                    }
+                });
+            }
         });
-    }
-
-    private ArrayList<String> getSizes(Product product) {
-
-        return product.getSizeList();
     }
 
     @Override
     public int getItemCount() {
         return productList.size();
-    }
-
-    public void loadNewData(ArrayList<Product> productList) {
-        this.productList = productList;
-        notifyDataSetChanged();
     }
 
     /**
@@ -134,7 +153,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
          *
          * @param product Product that was clicked
          */
-        void onProductClicked(Product product, int position, String size);
+        void onProductClicked(ProductHeader product, String size);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

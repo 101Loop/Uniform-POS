@@ -9,30 +9,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
-import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
-    private ArrayList<Product> itemList;
+    private ArrayList<ProductHeader> itemList;
     private ButtonClickListener listener;
     private ArrayList<String> sizeList;
     private Context context;
+    private DatabaseSingleton db;
 
     public interface ButtonClickListener {
-        void onTransferButtonClick(Product item, String title);
+        void onTransferButtonClick(ProductHeader item, String title);
     }
 
-    public InventoryAdapter(Context context, ArrayList<Product> itemList) {
+    public InventoryAdapter(Context context, ArrayList<ProductHeader> itemList) {
         this.itemList = itemList;
         this.context = context;
         sizeList = new ArrayList<>();
+        db = DatabaseHelper.getDatabase(context);
     }
 
     @NonNull
@@ -45,23 +50,24 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Product item = itemList.get(position);
+        final ProductHeader item = itemList.get(position);
+        List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
 
         holder.itemNameView.setText(item.getName());
 
         holder.colorName.setText(item.getColor());
         holder.colorImage.setBackgroundColor(Color.parseColor(item.getColorCode()));
 
+        ArrayList<String> sizeList = new ArrayList<>();
         int totalWarehouseStock = 0;
-        for (String currentStock : item.getWarehouseStockList()) {
-            totalWarehouseStock += Integer.parseInt(currentStock);
+        int totalDisplayStock = 0;
+        for (ProductVariant currentVariant : productVariantList) {
+            totalWarehouseStock += currentVariant.getWarehouseStock();
+            totalDisplayStock += currentVariant.getDisplayStock();
+            sizeList.add(currentVariant.getSize());
         }
         holder.itemWarehouseCount.setText(String.valueOf(totalWarehouseStock));
 
-        int totalDisplayStock = 0;
-        for (String currentStock : item.getDisplayStockList()) {
-            totalDisplayStock += Integer.parseInt(currentStock);
-        }
         holder.itemDisplayCount.setText(String.valueOf(totalDisplayStock));
 
         String type = item.getProductType();
@@ -70,7 +76,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         }
         holder.productType.setText(type);
 
-        SizeAdapter sizeAdapter = new SizeAdapter(context, item.getSizeList());
+        SizeAdapter sizeAdapter = new SizeAdapter(context, sizeList);
         holder.sizeRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         holder.sizeRecyclerView.setAdapter(sizeAdapter);
 
