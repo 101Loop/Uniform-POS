@@ -15,8 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.InventoryPopupListAdapter;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
-import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
+
+import java.util.List;
 
 public class InventoryDialog extends AlertDialog implements InventoryPopupListAdapter.ItemCountChangeListener {
     private final static String TAG = "InventoryDialog";
@@ -26,14 +31,17 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
     private String title;
     private TextView titleText, itemName, itemType, itemColorView, warehouseQuantityView, displayQuantityView, stockItemsView, totalTransferView;
     private RoundedCornerLayout colorImage;
-    private Product item;
+    private ProductHeader item;
     private LinearLayout stockWarehouseLayout;
+    private DatabaseSingleton db;
+    private List<ProductVariant> productVariantList;
 
-    public InventoryDialog(Context context, Product item, String title) {
+    public InventoryDialog(Context context, ProductHeader item, String title) {
         super(context);
 
         this.item = item;
         this.title = title;
+        db = DatabaseHelper.getDatabase(context);
     }
 
     @Override
@@ -55,7 +63,9 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         closeButton = findViewById(R.id.closeButton);
         itemRecyclerView = findViewById(R.id.itemListRecyclerView);
 
+
         InventoryPopupListAdapter inventoryPopupListAdapter = new InventoryPopupListAdapter(getContext(), item);
+        productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         itemRecyclerView.setAdapter(inventoryPopupListAdapter);
         inventoryPopupListAdapter.setOnItemCountChangeListener(this);
@@ -64,8 +74,8 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         transferButton.setText(title);
 
         int totalStock = 0;
-        for (String currentStock : item.getWarehouseStockList()) {
-            totalStock += Integer.parseInt(currentStock);
+        for (ProductVariant currentVariant : productVariantList) {
+            totalStock += currentVariant.getWarehouseStock();
         }
         stockItemsView.setText(totalStock + " in Stock");
 

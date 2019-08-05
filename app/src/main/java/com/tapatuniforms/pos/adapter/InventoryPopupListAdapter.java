@@ -1,6 +1,5 @@
 package com.tapatuniforms.pos.adapter;
 
-import android.content.ContentProvider;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +11,34 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
-import com.tapatuniforms.pos.model.Product;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPopupListAdapter.ViewHolder> {
     private Context context;
-    private Product item;
+    private ProductHeader item;
     private ArrayList<String> sizeList;
+    private ArrayList<String> warehouseStockList;
     private ItemCountChangeListener listener;
+    private DatabaseSingleton db;
 
-    public InventoryPopupListAdapter(Context context, Product item) {
+    public InventoryPopupListAdapter(Context context, ProductHeader item) {
         this.context = context;
         this.item = item;
         sizeList = new ArrayList<>();
-        sizeList.addAll(item.getSizeList());
+        warehouseStockList = new ArrayList<>();
+        db = DatabaseHelper.getDatabase(context);
+
+        List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
+        for (ProductVariant currentVariant : productVariantList) {
+            sizeList.add(currentVariant.getSize());
+            warehouseStockList.add(String.valueOf(currentVariant.getWarehouseStock()));
+        }
     }
 
     public interface ItemCountChangeListener{
@@ -44,8 +56,8 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.sizeView.setText(item.getSizeList().get(position));
-        holder.stockView.setText(item.getWarehouseStockList().get(position));
+        holder.sizeView.setText(sizeList.get(position));
+        holder.stockView.setText(warehouseStockList.get(position));
 
         holder.plusButton.setOnClickListener(view -> {
             int count = Integer.parseInt(holder.quantityEditText.getText().toString());

@@ -2,11 +2,9 @@ package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +16,12 @@ import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.CartItem;
-import com.tapatuniforms.pos.model.Stock;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private static final String TAG = "CartAdapter";
@@ -48,21 +48,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final CartItem cartItem = cartList.get(position);
-        int productId = cartItem.getProduct().getApiId();
+        ProductHeader productHeader = cartItem.getProductHeader();
 
         //name + size
-        holder.itemName.setText(cartItem.getProduct().getName() + " (Size: " + cartItem.getSize() + ")");
+        holder.itemName.setText(productHeader.getName() + " (Size: " + cartItem.getSize() + ")");
 
         //item type
-        String itemType = cartItem.getProduct().getProductType();
+        String itemType = productHeader.getProductType();
         if (itemType != null && !itemType.isEmpty() && !itemType.equals("null")) {
             holder.itemType.setText(itemType);
         }
 
         //color name and image
-        String color = cartItem.getProduct().getColor();
+        String color = productHeader.getColor();
         holder.itemColor.setText(color);
-        holder.itemColorImage.setBackgroundColor(Color.parseColor(cartItem.getProduct().getColorCode()));
+        holder.itemColorImage.setBackgroundColor(Color.parseColor(productHeader.getColorCode()));
 
         //quantity
         holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
@@ -72,27 +72,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.itemPrice.setText(decimalFormatter.format(cartItem.getPrice() * cartItem.getQuantity()));
 
         holder.addButton.setOnClickListener(v -> {
-//            Stock stock = db.stockDao().getStock(productId);
 
-//            if (stock != null) {
-//                ArrayList<String> displayStockList = stock.getDisplayStockList();
-
-                int pos = cartItem.getPosition();
-                int displayStockCount = Integer.parseInt(/*displayStockList.get(pos)*/cartItem.getProduct().getDisplayStockList().get(pos));
-
-                if (cartItem.getQuantity() > displayStockCount - 1) {
-                    Toast.makeText(context, "Not enough items in display", Toast.LENGTH_SHORT).show();
-                    return;
+            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(productHeader.getId());
+            ProductVariant productVariant = null;
+            for (ProductVariant currentVariant : productVariantList) {
+                if (currentVariant.getSize().equals(cartItem.getSize())) {
+                    productVariant = currentVariant;
                 }
-//            }
+            }
+
+            assert productVariant != null;
+            if (productVariant.getDisplayStock() - cartItem.getQuantity() < 1) {
+                Toast.makeText(context, "Not enough items in display", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (listener != null) {
+                listener.onItemUpdateListener(cartItem);
+            }
 
             cartItem.setQuantity(cartItem.getQuantity() + 1);
             holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
             holder.itemPrice.setText(decimalFormatter.format(cartItem.getPrice() * cartItem.getQuantity()));
-
-            if (listener != null) {
-                listener.onItemUpdateListener();
-            }
         });
 
         holder.minusButton.setOnClickListener(v -> {
@@ -102,7 +103,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 holder.itemPrice.setText(decimalFormatter.format(cartItem.getPrice() * cartItem.getQuantity()));
 
                 if (listener != null) {
-                    listener.onItemUpdateListener();
+                    listener.onItemUpdateListener(cartItem);
                 }
             }
         });
@@ -112,7 +113,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             notifyDataSetChanged();
 
             if (listener != null) {
-                listener.onItemUpdateListener();
+                listener.onItemUpdateListener(cartItem);
             }
         });
     }
@@ -123,7 +124,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public interface UpdateItemListener {
-        void onItemUpdateListener();
+        void onItemUpdateListener(CartItem cartItem);
     }
 
     public void setOnItemUpdateListener(UpdateItemListener listener) {

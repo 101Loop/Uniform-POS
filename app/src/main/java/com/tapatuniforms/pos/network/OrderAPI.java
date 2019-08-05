@@ -35,6 +35,7 @@ public class OrderAPI {
         return instance;
     }
 
+    //TODO: make this documented
     public void getDiscount(ArrayList<Discount> discountList, DiscountAdapter adapter, POSFragment posFragment, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
             discountList.addAll(db.discountDao().getAll());

@@ -4,16 +4,14 @@ package com.tapatuniforms.pos.model;
 public class CartItem {
     private int id;
     private int quantity;
-    private Product product;
-    private int position;
+    private ProductHeader productHeader;
     private String size;
     private double price;
 
-    public CartItem(int id, int quantity, Product product, int position, String size, double price) {
+    public CartItem(int id, int quantity, ProductHeader productHeader, String size, double price) {
         this.id = id;
         this.quantity = quantity;
-        this.product = product;
-        this.position = position;
+        this.productHeader = productHeader;
         this.size = size;
         this.price = price;
     }
@@ -34,20 +32,12 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
-        return product;
+    public ProductHeader getProductHeader() {
+        return productHeader;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
+    public void setProductHeader(ProductHeader productHeader) {
+        this.productHeader = productHeader;
     }
 
     public String getSize() {
