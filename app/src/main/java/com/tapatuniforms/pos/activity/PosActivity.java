@@ -106,12 +106,12 @@ public class PosActivity extends AppCompatActivity implements
             case R.id.posScreen:
                 fragment = new POSFragment();
                 break;
-            case R.id.orderScreen:
+            /*case R.id.orderScreen:
                 fragment = new OrderFragment();
-                break;
-            case R.id.saleScreen:
+                break;*/
+            /*case R.id.saleScreen:
                 fragment = new SaleReportFragment();
-                break;
+                break;*/
             case R.id.stockScreen:
                 fragment = new StockEntryFragment();
                 break;

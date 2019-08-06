@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
+//TODO: this class is to be deleted
 @Entity
 public class Product {
     @PrimaryKey(autoGenerate = true)

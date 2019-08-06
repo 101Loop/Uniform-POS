@@ -58,6 +58,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         ProductHeader product = productList.get(position);
         List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(product.getId());
 
+        product.setSizeAlreadyOpened(false);
+
         holder.sizeLayout.setVisibility(View.GONE);
         holder.productName.setText(product.getName());
         holder.colorText.setText(product.getColor());
@@ -107,6 +109,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 holder.sizeRecyclerView.setAdapter(sizeAdapter);
 
                 sizeAdapter.setOnSizeClickListener((pos, size) -> {
+                    product.setSizeAlreadyOpened(false);
                     ProductVariant productVariant = null;
                     for (ProductVariant currentVariant : productVariantList) {
                         if (currentVariant.getSize().equals(size)) {

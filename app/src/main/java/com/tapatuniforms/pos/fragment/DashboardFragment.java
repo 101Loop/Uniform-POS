@@ -47,8 +47,8 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
         ArrayList<DashboardItem> itemList = new ArrayList<>();
 
         itemList.add(new DashboardItem(R.drawable.ic_bill, "Billing", R.id.posScreen));
-        itemList.add(new DashboardItem(R.drawable.ic_box, "Order History", R.id.orderScreen));
-        itemList.add(new DashboardItem(R.drawable.ic_diagram, "Reports", R.id.saleScreen));
+//        itemList.add(new DashboardItem(R.drawable.ic_box, "Order History", R.id.orderScreen));
+//        itemList.add(new DashboardItem(R.drawable.ic_diagram, "Reports", R.id.saleScreen));
         itemList.add(new DashboardItem(R.drawable.ic_inventory, "Stock Entry", R.id.stockScreen));
         itemList.add(new DashboardItem(R.drawable.ic_storage, "Inventory",R.id.inventoryScreen));
 
@@ -64,12 +64,12 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
             case R.id.posScreen:
                 fragment = new POSFragment();
                 break;
-            case R.id.orderScreen:
+            /*case R.id.orderScreen:
                 fragment = new OrderFragment();
-                break;
-            case R.id.saleScreen:
+                break;*/
+            /*case R.id.saleScreen:
                 fragment = new SaleReportFragment();
-                break;
+                break;*/
             case R.id.stockScreen:
                 fragment = new StockEntryFragment();
                 break;

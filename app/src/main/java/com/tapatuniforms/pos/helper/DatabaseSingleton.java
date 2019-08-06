@@ -10,10 +10,8 @@ import com.tapatuniforms.pos.dao.CategoryDao;
 import com.tapatuniforms.pos.dao.DiscountDao;
 import com.tapatuniforms.pos.dao.IndentDao;
 import com.tapatuniforms.pos.dao.OrderDao;
-import com.tapatuniforms.pos.dao.ProductDao;
 import com.tapatuniforms.pos.dao.ProductHeaderDao;
 import com.tapatuniforms.pos.dao.ProductVariantDao;
-import com.tapatuniforms.pos.dao.StockDao;
 import com.tapatuniforms.pos.dao.StockItemDao;
 import com.tapatuniforms.pos.dao.SubOrderDao;
 import com.tapatuniforms.pos.dao.TransactionDao;
@@ -24,18 +22,16 @@ import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.Discount;
 import com.tapatuniforms.pos.model.Indent;
 import com.tapatuniforms.pos.model.Order;
-import com.tapatuniforms.pos.model.Product;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
-import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.StockItem;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.model.User;
 
-@Database(version = 8, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
-        Transaction.class, Category.class, Product.class, Discount.class, Box.class, BoxItem.class,
-        Indent.class, Stock.class, ProductHeader.class, ProductVariant.class}, exportSchema = false)
+@Database(version = 9, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
+        Transaction.class, Category.class, Discount.class, Box.class, BoxItem.class,
+        Indent.class, ProductHeader.class, ProductVariant.class}, exportSchema = false)
 
 @TypeConverters({Converter.class})
 public abstract class DatabaseSingleton extends RoomDatabase {
@@ -51,8 +47,6 @@ public abstract class DatabaseSingleton extends RoomDatabase {
 
     abstract public CategoryDao categoryDao();
 
-    abstract public ProductDao productDao();
-
     abstract public DiscountDao discountDao();
 
     abstract public BoxDao boxDao();
@@ -60,8 +54,6 @@ public abstract class DatabaseSingleton extends RoomDatabase {
     abstract public BoxItemDao boxItemDao();
 
     abstract public IndentDao indentDao();
-
-    abstract public StockDao stockDao();
 
     abstract public ProductHeaderDao productHeaderDao();
 
