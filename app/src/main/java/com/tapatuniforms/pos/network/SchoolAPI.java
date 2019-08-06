@@ -85,7 +85,10 @@ public class SchoolAPI {
                 Request.Method.GET,
                 APIStatic.School.addDetailsUrl + id + "/",
                 jsonObject,
-                response -> studentDetails[0] = new Student(response),
+                response -> {
+                    studentDetails[0] = new Student(response);
+                    Toast.makeText(context, "Order will be placed for: " + response.optString(APIStatic.Key.name), Toast.LENGTH_SHORT).show();
+                },
                 new APIErrorListener(context),
                 context
         );

@@ -59,9 +59,9 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         holder.shippingLocation.setText(indent.getShippingFrom());
 
         //showing the first one as selected
-        if (listener != null) {
+        /*if (listener != null) {
             listener.onClickListener(selectedIndent.getId(), selectedIndent.getName());
-        }
+        }*/
 
         //do nothing if the indent is already selected
         //change bg accordingly for other cases
@@ -178,10 +178,10 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
     /**
      * Method to select the first indent by default, set as soon as indents are fetched
      */
-    public void selectFirstIndent() {
+    /*public void selectFirstIndent() {
         if (indentList.size() > 0) {
             selectedIndent = indentList.get(0);
             lastIndent = selectedIndent;
         }
-    }
+    }*/
 }

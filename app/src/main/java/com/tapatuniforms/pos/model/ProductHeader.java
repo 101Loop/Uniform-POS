@@ -24,9 +24,11 @@ public class ProductHeader {
     private boolean isSynced;
     private String sku;
     private boolean isSizeAlreadyOpened;
+    private int totalWarehouseStock;
 
     public ProductHeader(int id, String name, String gender, String productType, String color,
-                         String colorCode, String image, int outletId, int category, int variantSize, boolean isSynced, String sku, boolean isSizeAlreadyOpened) {
+                         String colorCode, String image, int outletId, int category, int variantSize,
+                         boolean isSynced, String sku, boolean isSizeAlreadyOpened, int totalWarehouseStock) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -40,6 +42,7 @@ public class ProductHeader {
         this.isSynced = isSynced;
         this.sku = sku;
         this.isSizeAlreadyOpened = isSizeAlreadyOpened;
+        this.totalWarehouseStock = totalWarehouseStock;
     }
 
     public ProductHeader(JSONObject jsonObject) {
@@ -59,6 +62,7 @@ public class ProductHeader {
         this.isSynced = false;
         this.sku = productJson.optString(APIStatic.Key.sku);
         this.isSizeAlreadyOpened = false;
+        this.totalWarehouseStock = 0;
     }
 
     public int getId() {
@@ -163,5 +167,13 @@ public class ProductHeader {
 
     public void setSizeAlreadyOpened(boolean sizeAlreadyOpened) {
         isSizeAlreadyOpened = sizeAlreadyOpened;
+    }
+
+    public int getTotalWarehouseStock() {
+        return totalWarehouseStock;
+    }
+
+    public void setTotalWarehouseStock(int totalWarehouseStock) {
+        this.totalWarehouseStock = totalWarehouseStock;
     }
 }

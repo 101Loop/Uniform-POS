@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,6 +19,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.network.StockOrderAPI;
 
 import java.util.List;
 
@@ -35,6 +35,7 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
     private LinearLayout stockWarehouseLayout;
     private DatabaseSingleton db;
     private List<ProductVariant> productVariantList;
+    private int totalCount = 0;
 
     public InventoryDialog(Context context, ProductHeader item, String title) {
         super(context);
@@ -62,7 +63,6 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         transferButton = findViewById(R.id.transferButton);
         closeButton = findViewById(R.id.closeButton);
         itemRecyclerView = findViewById(R.id.itemListRecyclerView);
-
 
         InventoryPopupListAdapter inventoryPopupListAdapter = new InventoryPopupListAdapter(getContext(), item);
         productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
@@ -95,13 +95,21 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         colorImage.setBackgroundColor(Color.parseColor(item.getColorCode()));
         itemColorView.setText(item.getColor());
 
-        transferButton.setOnClickListener(view -> Log.d(TAG, "transfer clicked"));
+        transferButton.setOnClickListener(view -> {
+            //TODO: indent request API call is to be made here
+            /*id, product, quantity, indentRequest*/
+            int productId = item.getId();
+            int quantity = Integer.parseInt(totalTransferView.getText().toString());
+            int indentRequest = 1;
+            StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, indentRequest, this);
+        });
 
         closeButton.setOnClickListener(view -> dismiss());
     }
 
     @Override
     public void onItemChangeListener(int count) {
-        totalTransferView.setText(String.valueOf(count));
+        totalCount += count;
+        totalTransferView.setText(String.valueOf(totalCount));
     }
 }

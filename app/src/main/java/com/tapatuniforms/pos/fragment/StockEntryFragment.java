@@ -95,7 +95,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
                 }
             }
 
-            stockIndentAdapter.selectFirstIndent();
+//            stockIndentAdapter.selectFirstIndent();
             stockIndentAdapter.notifyDataSetChanged();
         });
     }

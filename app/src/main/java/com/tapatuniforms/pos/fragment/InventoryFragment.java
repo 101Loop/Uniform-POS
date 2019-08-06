@@ -23,17 +23,22 @@ import com.tapatuniforms.pos.dialog.InventoryDialog;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
-import com.tapatuniforms.pos.model.ProductHeader;
-import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Category;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.network.ProductAPI;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener, CategoryAdapter.CategoryClickListener {
+public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener, InventoryOrderAdapter.ButtonClickListener, CategoryAdapter.CategoryClickListener {
+    private static final String TAG = "InventoryFragment";
     private RecyclerView inventoryRecyclerView, recommendedRecyclerView;
     private InventoryAdapter inventoryAdapter;
+    private InventoryOrderAdapter inventoryOrderAdapter;
     private ArrayList<Category> categoryList;
     private CategoryAdapter categoryAdapter;
     private RecyclerView categoryRecyclerView;
@@ -47,6 +52,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     private ArrayList<ProductHeader> maleList;
     private ArrayList<ProductHeader> femaleList;
     private TextView noProductText;
+    private ArrayList<ProductHeader> recommendedProductList;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -78,7 +84,10 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         recommendedRecyclerView = view.findViewById(R.id.recommendedRecyclerView);
         recommendedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
-        recommendedRecyclerView.setAdapter(new InventoryOrderAdapter());
+        recommendedProductList = new ArrayList<>();
+        inventoryOrderAdapter = new InventoryOrderAdapter(getContext(), recommendedProductList);
+        inventoryOrderAdapter.setOnButtonClickListener(this);
+        recommendedRecyclerView.setAdapter(inventoryOrderAdapter);
 
         inventoryAdapter.setOnClickListener(this);
 
@@ -154,7 +163,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         });
 
         ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter);
-        ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db);
+        ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db, inventoryOrderAdapter, this);
     }
 
     /**
@@ -210,9 +219,25 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         }
 
         dialog.show();
+    }
 
-        Objects.requireNonNull(dialog.getWindow()).clearFlags(
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    public void getRecommendedProductList() {
+        recommendedProductList.clear();
+
+        for (ProductHeader productHeader : allProducts) {
+            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(productHeader.getId());
+
+            int stock = 0;
+            for (ProductVariant currentVariant : productVariantList) {
+                stock += currentVariant.getWarehouseStock();
+            }
+            productHeader.setTotalWarehouseStock(stock);
+        }
+
+        Collections.sort(allProducts, (productHeader, t1) -> productHeader.getTotalWarehouseStock() - t1.getTotalWarehouseStock());
+
+        for (int i = 0; i < 5; i++) {
+            recommendedProductList.add(allProducts.get(i));
+        }
     }
 }

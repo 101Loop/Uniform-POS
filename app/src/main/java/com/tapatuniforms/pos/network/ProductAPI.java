@@ -10,7 +10,9 @@ import com.civilmachines.drfapi.DjangoJSONObjectRequest;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.InventoryAdapter;
+import com.tapatuniforms.pos.adapter.InventoryOrderAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
+import com.tapatuniforms.pos.fragment.InventoryFragment;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
@@ -75,15 +77,17 @@ public class ProductAPI {
 
     /**
      * Method to fetch products from server
-     *
      * @param context        Context of calling activity
      * @param allProducts    list of products, this list is never changes
      * @param productList    list of products, changes according to the requirement
      * @param productAdapter reference of product adapter to notify changes
      * @param db             DatabaseSingleton reference to store and fetch from database
+     * @param inventoryOrderAdapter
+     * @param inventoryFragment
      */
     public static void fetchProducts(Context context, ArrayList<ProductHeader> allProducts,
-                                     ArrayList<ProductHeader> productList, ProductAdapter productAdapter, InventoryAdapter inventoryAdapter, DatabaseSingleton db) {
+                                     ArrayList<ProductHeader> productList, ProductAdapter productAdapter,
+                                     InventoryAdapter inventoryAdapter, DatabaseSingleton db, InventoryOrderAdapter inventoryOrderAdapter, InventoryFragment inventoryFragment) {
 
         List<ProductHeader> localProductList = db.productHeaderDao().getAllProductHeader();
         /*if (!Validator.isNetworkConnected(context)) {
@@ -141,6 +145,14 @@ public class ProductAPI {
 
                     if (inventoryAdapter != null) {
                         inventoryAdapter.notifyDataSetChanged();
+                    }
+
+                    if (inventoryFragment != null) {
+                        inventoryFragment.getRecommendedProductList();
+                    }
+
+                    if (inventoryOrderAdapter != null) {
+                        inventoryOrderAdapter.notifyDataSetChanged();
                     }
 
                     if (productAdapter != null) {

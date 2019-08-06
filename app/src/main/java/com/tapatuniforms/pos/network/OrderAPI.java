@@ -35,7 +35,14 @@ public class OrderAPI {
         return instance;
     }
 
-    //TODO: make this documented
+    /**
+     * Method to get discount list
+     *
+     * @param discountList List of discounts
+     * @param adapter      Reference of adapter to update changes
+     * @param posFragment  Reference to update notification count accordingly
+     * @param db           Reference of db for db transaction
+     */
     public void getDiscount(ArrayList<Discount> discountList, DiscountAdapter adapter, POSFragment posFragment, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
             discountList.addAll(db.discountDao().getAll());

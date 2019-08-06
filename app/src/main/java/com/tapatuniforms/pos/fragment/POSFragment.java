@@ -319,7 +319,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         // Fetch Data
         ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter);
-        ProductAPI.fetchProducts(getContext(), allProducts, productList, productAdapter, null, db);
+        ProductAPI.fetchProducts(getContext(), allProducts, productList, productAdapter, null, db, null, null);
     }
 
     /**
@@ -531,6 +531,12 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * Handle click for the payment button
      */
     private void onPaymentButtonClicked() {
+        if (studentDetails[0] == null) {
+            Toast.makeText(getContext(), "Enter Student ID first", Toast.LENGTH_SHORT).show();
+            studentIdText.requestFocus();
+            return;
+        }
+
         final PaymentDialog dialog = new PaymentDialog(getContext(), total);
         dialog.show();
         dialog.setOnOrderCompleteListener(transactionList -> {
@@ -553,16 +559,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * This method will save order to database and call sync function
      */
     private void orderCompleted(ArrayList<Transaction> transactionList) {
-        //TODO: remove static data and make this purely based on API
-        String customerName = "Vivek";
-        String customerMobile = "8826317151";
-        String customerEmail = "me@vivekkaushik.com";
-
-        if (studentDetails[0] != null) {
-            customerName = studentDetails[0].getName();
-            customerMobile = studentDetails[0].getMobile();
-            customerEmail = studentDetails[0].getEmail();
-        }
+        String customerName = studentDetails[0].getName();
+        String customerMobile = studentDetails[0].getMobile();
+        String customerEmail = studentDetails[0].getEmail();
         Order order = new Order(-1, customerName, customerMobile, customerEmail
                 , "",
                 total, discount, false);

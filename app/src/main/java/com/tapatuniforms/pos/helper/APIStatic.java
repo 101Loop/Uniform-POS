@@ -36,8 +36,10 @@ public interface APIStatic {
         String addDetailsUrl = baseURL + endPoint + "student/";
     }
 
-    interface StockOrder{
+    interface StockOrder {
         String endPoint = "stockOrder/";
+        String indentRequest = baseURL + endPoint + "indentRequest/";
+        String indentRequestDetails = indentRequest + "indentRequestDetails/";
         String getIndentUrl = baseURL + endPoint;
         String getBoxUrl = baseURL + endPoint + "box/";
         String getBoxItem = getBoxUrl + "boxItem/";
@@ -61,7 +63,7 @@ public interface APIStatic {
         String mobile = "mobile";
         String email = "email";
         String isLogin = "is_login";
-        String verifyOtp= "verify_otp";
+        String verifyOtp = "verify_otp";
         String token = "token";
         String product = "product";
         String outletSubproductSet = "outletsubproduct_set";
@@ -92,6 +94,7 @@ public interface APIStatic {
         String boxCode = "box_code";
         String totalItems = "total_item";
         String indent = "indent";
+        String indentRequest = "indent_request";
         String numberOfMaleItems = "male_items";
         String numberOfFemaleItems = "female_items";
         String numberOfItems = "num_of_item";

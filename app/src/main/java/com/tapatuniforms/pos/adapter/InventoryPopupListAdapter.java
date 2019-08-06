@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +40,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         }
     }
 
-    public interface ItemCountChangeListener{
+    public interface ItemCountChangeListener {
         void onItemChangeListener(int count);
     }
 
@@ -66,21 +65,22 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
             holder.quantityTextView.setText(String.valueOf(count));
 
             if (listener != null) {
-                listener.onItemChangeListener(count);
+                listener.onItemChangeListener(1);
             }
         });
 
         holder.minusButton.setOnClickListener(view -> {
             int count = Integer.parseInt(holder.quantityEditText.getText().toString());
 
-            if (count > 1) {
+            if (count > 0) {
                 --count;
                 holder.quantityEditText.setText(String.valueOf(count));
                 holder.quantityTextView.setText(String.valueOf(count));
-            }
 
-            if (listener != null) {
-                listener.onItemChangeListener(count);
+
+                if (listener != null) {
+                    listener.onItemChangeListener(-1);
+                }
             }
         });
     }
@@ -91,8 +91,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView sizeView, stockView, minusButton, plusButton, quantityTextView;
-        EditText quantityEditText;
+        TextView sizeView, stockView, minusButton, plusButton, quantityTextView, quantityEditText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

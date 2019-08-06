@@ -1,13 +1,18 @@
 package com.tapatuniforms.pos.network;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.civilmachines.drfapi.DjangoJSONArrayResponseRequest;
+import com.civilmachines.drfapi.DjangoJSONObjectRequest;
+import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockBoxAdapter;
 import com.tapatuniforms.pos.adapter.StockBoxItemAdapter;
 import com.tapatuniforms.pos.adapter.StockIndentAdapter;
+import com.tapatuniforms.pos.dialog.InventoryDialog;
 import com.tapatuniforms.pos.dialog.StockItemDialog;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
 import com.tapatuniforms.pos.helper.APIErrorListener;
@@ -25,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class StockOrderAPI {
+    private static final String TAG = "StockOrderAPI";
     private Context context;
     private static StockOrderAPI instance;
 
@@ -52,7 +58,7 @@ public class StockOrderAPI {
     public void getIndentList(ArrayList<Indent> indentList, StockIndentAdapter adapter, StockEntryFragment instance, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
             indentList.addAll(db.indentDao().getAll());
-            adapter.selectFirstIndent();
+//            adapter.selectFirstIndent();
             return;
         }
 
@@ -74,7 +80,7 @@ public class StockOrderAPI {
                         db.indentDao().insertAll(indentList);
                     }
 
-                    adapter.selectFirstIndent();
+//                    adapter.selectFirstIndent();
                     instance.checkIndentsAvailability();
                     adapter.notifyDataSetChanged();
                 },
@@ -185,6 +191,42 @@ public class StockOrderAPI {
 
                     stockItemDialog.checkAvailability();
                     adapter.notifyDataSetChanged();
+                },
+                new APIErrorListener(context),
+                context);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    /**
+     * Method to get indent list
+     * stores the data when online and displays them if offline
+     *
+     * */
+    public void indentRequestDetails(int productId, int quantity, int indentRequestId, InventoryDialog inventoryDialog) {
+        if (!Validator.isNetworkConnected(context)) {
+            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        JSONObject jsonRequest = new JSONObject();
+        try {
+            jsonRequest.put(APIStatic.Key.product, productId);
+            jsonRequest.put(APIStatic.Key.qunatity, quantity);
+            jsonRequest.put(APIStatic.Key.indentRequest, indentRequestId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
+                Request.Method.POST,
+                APIStatic.StockOrder.indentRequestDetails,
+                jsonRequest,
+                response -> {
+                    inventoryDialog.dismiss();
+                    Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
                 },
                 new APIErrorListener(context),
                 context);

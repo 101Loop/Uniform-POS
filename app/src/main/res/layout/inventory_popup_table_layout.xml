@@ -26,6 +26,7 @@
         android:textSize="16sp" />
 
     <LinearLayout
+        android:id="@+id/randomLayout"
         android:layout_height="38dp"
         android:background="@drawable/stroke_rectangle_light"
         android:orientation="horizontal">
@@ -66,14 +67,14 @@
                 android:textColor="@color/black" />
         </LinearLayout>
 
-        <EditText
+        <TextView
             android:id="@+id/itemQuantityEditText"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/stroke_around_rect"
-            android:inputType="number"
+            android:focusableInTouchMode="true"
             android:gravity="center"
             android:text="0" />
     </LinearLayout>
