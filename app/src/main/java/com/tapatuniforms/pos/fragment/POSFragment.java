@@ -318,7 +318,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         });
 
         // Fetch Data
-        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter);
+        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
         ProductAPI.fetchProducts(getContext(), allProducts, productList, productAdapter, null, db, null, null);
     }
 

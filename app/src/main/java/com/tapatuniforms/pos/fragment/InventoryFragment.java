@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,9 +31,9 @@ import com.tapatuniforms.pos.network.ProductAPI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener, InventoryOrderAdapter.ButtonClickListener, CategoryAdapter.CategoryClickListener {
+public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener,
+        InventoryOrderAdapter.ButtonClickListener, CategoryAdapter.CategoryClickListener, InventoryDialog.DialogDismissedListener {
     private static final String TAG = "InventoryFragment";
     private RecyclerView inventoryRecyclerView, recommendedRecyclerView;
     private InventoryAdapter inventoryAdapter;
@@ -162,7 +161,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
             }
         });
 
-        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter);
+        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
         ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db, inventoryOrderAdapter, this);
     }
 
@@ -210,6 +209,12 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         inventoryAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Method to show dialog
+     *
+     * @param product Product for which the dialog is opened
+     * @param title   Title to differentiate their intentions
+     */
     @Override
     public void onTransferButtonClick(ProductHeader product, String title) {
         InventoryDialog dialog = new InventoryDialog(getContext(), product, title);
@@ -218,9 +223,14 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
+        dialog.setOnDialogDismissListener(this);
+
         dialog.show();
     }
 
+    /**
+     * Method to get recommended products
+     */
     public void getRecommendedProductList() {
         recommendedProductList.clear();
 
@@ -239,5 +249,15 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         for (int i = 0; i < 5; i++) {
             recommendedProductList.add(allProducts.get(i));
         }
+    }
+
+    /**
+     * Method to handle events when the inventory dialog is dismissed
+     */
+    @Override
+    public void onDialogDismissListener() {
+        getRecommendedProductList();
+        inventoryAdapter.notifyDataSetChanged();
+        inventoryOrderAdapter.notifyDataSetChanged();
     }
 }

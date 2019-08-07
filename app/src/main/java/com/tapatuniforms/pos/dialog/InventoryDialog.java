@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,13 +30,18 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
     private Button closeButton;
     private Button transferButton;
     private String title;
-    private TextView titleText, itemName, itemType, itemColorView, warehouseQuantityView, displayQuantityView, stockItemsView, totalTransferView;
+    private TextView titleText, itemName, itemType, itemColorView, warehouseQuantityView, displayQuantityView, stockItemsView, totalTransferView, countTitle;
     private RoundedCornerLayout colorImage;
     private ProductHeader item;
     private LinearLayout stockWarehouseLayout;
     private DatabaseSingleton db;
     private List<ProductVariant> productVariantList;
     private int totalCount = 0;
+    private DialogDismissedListener listener;
+
+    public interface DialogDismissedListener {
+        void onDialogDismissListener();
+    }
 
     public InventoryDialog(Context context, ProductHeader item, String title) {
         super(context);
@@ -50,6 +56,7 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inventory_dialog);
 
+        //setting views
         titleText = findViewById(R.id.titleText);
         itemName = findViewById(R.id.itemName);
         itemType = findViewById(R.id.itemTypeView);
@@ -63,8 +70,10 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         transferButton = findViewById(R.id.transferButton);
         closeButton = findViewById(R.id.closeButton);
         itemRecyclerView = findViewById(R.id.itemListRecyclerView);
+        countTitle = findViewById(R.id.countTitle);
 
-        InventoryPopupListAdapter inventoryPopupListAdapter = new InventoryPopupListAdapter(getContext(), item);
+        //initializing entities
+        InventoryPopupListAdapter inventoryPopupListAdapter = new InventoryPopupListAdapter(getContext(), item, title);
         productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         itemRecyclerView.setAdapter(inventoryPopupListAdapter);
@@ -72,12 +81,20 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
 
         titleText.setText(title);
         transferButton.setText(title);
+        countTitle.setText(title);
 
+        //calculating total warehouse and display stock
         int totalStock = 0;
+        int totalDisplayStock = 0;
+
         for (ProductVariant currentVariant : productVariantList) {
             totalStock += currentVariant.getWarehouseStock();
+            totalDisplayStock += currentVariant.getDisplayStock();
         }
+
         stockItemsView.setText(totalStock + " in Stock");
+        warehouseQuantityView.setText(String.valueOf(totalStock));
+        displayQuantityView.setText(String.valueOf(totalDisplayStock));
 
         if (!title.equalsIgnoreCase("transfer")) {
             stockWarehouseLayout.setVisibility(View.GONE);
@@ -85,31 +102,104 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
             stockWarehouseLayout.setVisibility(View.VISIBLE);
         }
 
+        //product type
         String type = item.getProductType();
         if (type == null || type.isEmpty() || type.equalsIgnoreCase("null")) {
             type = "";
         }
         itemType.setText(type);
 
+        //name
         itemName.setText(item.getName());
+
+        //color image and code
         colorImage.setBackgroundColor(Color.parseColor(item.getColorCode()));
         itemColorView.setText(item.getColor());
 
         transferButton.setOnClickListener(view -> {
-            //TODO: indent request API call is to be made here
-            /*id, product, quantity, indentRequest*/
-            int productId = item.getId();
             int quantity = Integer.parseInt(totalTransferView.getText().toString());
-            int indentRequest = 1;
-            StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, indentRequest, this);
+
+            if (quantity > 0) {
+                if (!title.equalsIgnoreCase("transfer")) {
+
+                    //TODO: indent request API call is to be made here
+                    int productId = item.getId();
+                    int indentRequest = 1;
+                    StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, indentRequest, this);
+
+                } else {
+                    List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
+
+                    for (ProductVariant currentVariant : productVariantList) {
+                        int transferOrderCount = currentVariant.getTransferOrderCount();
+                        int warehouseStock = currentVariant.getWarehouseStock();
+                        int displayStock = currentVariant.getDisplayStock();
+
+                        db.productVariantDao().updateWarehouseStock(warehouseStock - transferOrderCount, currentVariant.getId());
+                        db.productVariantDao().updateDisplayStock(displayStock + transferOrderCount, currentVariant.getId());
+                        db.productVariantDao().updateTransferOrderCount(0, currentVariant.getId());
+                        Toast.makeText(getContext(), "Items transferred", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    }
+                }
+            } else {
+                String message = "No items ";
+
+                if (title.equalsIgnoreCase("transfer")) {
+                    message += "to transfer";
+                } else {
+                    message += "for order";
+                }
+
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
         });
 
-        closeButton.setOnClickListener(view -> dismiss());
+        closeButton.setOnClickListener(view -> {
+            clearTransferOrderCount();
+            dismiss();
+        });
     }
 
+    /**
+     * Overridden method to notify changes on dialog dismiss
+     */
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        clearTransferOrderCount();
+
+        if (listener != null) {
+            listener.onDialogDismissListener();
+        }
+    }
+
+    /**
+     * Method to update total count
+     *
+     * @param count Count to be added (+1 for adding, -1 for subtracting)
+     */
     @Override
     public void onItemChangeListener(int count) {
         totalCount += count;
         totalTransferView.setText(String.valueOf(totalCount));
+    }
+
+    /**
+     * Method to make transfer order count 0
+     */
+    private void clearTransferOrderCount() {
+        List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
+
+        for (ProductVariant currentVariant : productVariantList) {
+            db.productVariantDao().updateTransferOrderCount(0, currentVariant.getId());
+        }
+    }
+
+    /**
+     * Method to set dialog dismiss listener
+     */
+    public void setOnDialogDismissListener(DialogDismissedListener listener) {
+        this.listener = listener;
     }
 }

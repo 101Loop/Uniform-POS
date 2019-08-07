@@ -34,10 +34,6 @@ import java.util.List;
 public class ProductAPI {
     private static final String TAG = "ProductAPI";
 
-    public static ArrayList<Category> getCategories(Context context, DatabaseSingleton db) {
-        return null;
-    }
-
     /**
      * Method to fetch the categories from server
      *
@@ -46,9 +42,16 @@ public class ProductAPI {
      * @param adapter      reference to CategoryAdapter
      */
     public static void fetchCategories(Context context, ArrayList<Category> categoryList,
-                                       CategoryAdapter adapter) {
+                                       CategoryAdapter adapter, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+
+            categoryList.addAll(db.categoryDao().getAll());
+
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+
             return;
         }
 
@@ -68,6 +71,7 @@ public class ProductAPI {
 
                         adapter.notifyDataSetChanged();
                     }
+                    db.categoryDao().insertAll(categoryList);
                 }, new APIErrorListener(context), context);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
@@ -77,20 +81,21 @@ public class ProductAPI {
 
     /**
      * Method to fetch products from server
-     * @param context        Context of calling activity
-     * @param allProducts    list of products, this list is never changes
-     * @param productList    list of products, changes according to the requirement
-     * @param productAdapter reference of product adapter to notify changes
-     * @param db             DatabaseSingleton reference to store and fetch from database
-     * @param inventoryOrderAdapter
-     * @param inventoryFragment
+     *
+     * @param context               Context of calling activity
+     * @param allProducts           list of products, this list is never changes
+     * @param productList           list of products, changes according to the requirement
+     * @param productAdapter        reference of product adapter to notify changes
+     * @param db                    DatabaseSingleton reference to store and fetch from database
+     * @param inventoryOrderAdapter Reference of adapter to update changes
+     * @param inventoryFragment     Reference of fragment to update the list of products
      */
     public static void fetchProducts(Context context, ArrayList<ProductHeader> allProducts,
                                      ArrayList<ProductHeader> productList, ProductAdapter productAdapter,
                                      InventoryAdapter inventoryAdapter, DatabaseSingleton db, InventoryOrderAdapter inventoryOrderAdapter, InventoryFragment inventoryFragment) {
 
         List<ProductHeader> localProductList = db.productHeaderDao().getAllProductHeader();
-        /*if (!Validator.isNetworkConnected(context)) {
+        if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             productList.clear();
             productList.addAll(localProductList);
@@ -98,17 +103,16 @@ public class ProductAPI {
             allProducts.clear();
             allProducts.addAll(localProductList);
 
-            if (productList.size() != localProductList.size()) {
-                for (Product product : localProductList) {
-                    int productId = product.getApiId();
-                    ArrayList<String> displayStock = product.getDisplayStockList();
-                    ArrayList<String> warehouseStock = product.getWarehouseStockList();
-
-                    db.stockDao().insert(new Stock(productId, displayStock, warehouseStock));
-                }
+            if (inventoryFragment != null) {
+                inventoryFragment.getRecommendedProductList();
             }
+
+            if (inventoryOrderAdapter != null) {
+                inventoryOrderAdapter.notifyDataSetChanged();
+            }
+
             return;
-        }*/
+        }
 
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET, APIStatic.Outlet.productUrl, null,
