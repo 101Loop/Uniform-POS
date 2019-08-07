@@ -24,14 +24,16 @@ public class ProductVariant {
     private double price;
     private int warehouseStock;
     private int displayStock;
+    private int transferOrderCount;
 
-    public ProductVariant(int id, int productId, String size, double price, int warehouseStock, int displayStock) {
+    public ProductVariant(int id, int productId, String size, double price, int warehouseStock, int displayStock, int transferOrderCount) {
         this.id = id;
         this.productId = productId;
         this.size = size;
         this.price = price;
         this.warehouseStock = warehouseStock;
         this.displayStock = displayStock;
+        this.transferOrderCount = transferOrderCount;
     }
 
     public ProductVariant(JSONObject jsonObject, int position) {
@@ -43,6 +45,7 @@ public class ProductVariant {
         this.price = currentSubProduct.optDouble(APIStatic.Key.price);
         this.warehouseStock = currentSubProduct.optInt(APIStatic.Key.warehouseStock);
         this.displayStock = currentSubProduct.optInt(APIStatic.Key.displayStock);
+        this.transferOrderCount = 0;
     }
 
     public int getId() {
@@ -91,5 +94,13 @@ public class ProductVariant {
 
     public void setDisplayStock(int displayStock) {
         this.displayStock = displayStock;
+    }
+
+    public int getTransferOrderCount() {
+        return transferOrderCount;
+    }
+
+    public void setTransferOrderCount(int transferOrderCount) {
+        this.transferOrderCount = transferOrderCount;
     }
 }

@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:cardElevation="8dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        app:cardElevation="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,8 +78,8 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center"
-                    android:background="@color/colorPrimary"
-                    android:layout_marginEnd="10dp" />
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/itemColorView"
@@ -109,10 +109,10 @@
                         android:id="@+id/warehouseQuantityView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="25dp"
                         android:background="@drawable/rounded_blue"
-                        android:minWidth="25dp"
                         android:gravity="center"
+                        android:minWidth="25dp"
+                        android:minHeight="25dp"
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
                         android:text="30" />
@@ -136,9 +136,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_blue"
+                        android:gravity="center"
                         android:minWidth="25dp"
                         android:minHeight="25dp"
-                        android:gravity="center"
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
                         android:text="10" />
@@ -176,8 +176,7 @@
                 android:showDividers="middle"
                 android:stretchColumns="2">
 
-                <TableRow
-                    android:background="@drawable/stroke_rectangle_light">
+                <TableRow android:background="@drawable/stroke_rectangle_light">
 
                     <TextView
                         android:layout_width="120dp"
@@ -198,10 +197,11 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/countTitle"
                         android:layout_width="200dp"
+                        android:layout_marginEnd="2dp"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:layout_marginEnd="2dp"
                         android:text="Transfer"
                         android:textColor="@color/black1"
                         android:textSize="16sp" />

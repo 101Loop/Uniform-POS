@@ -8,19 +8,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAdapter.ViewHolder>{
+public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAdapter.ViewHolder> {
     private Context context;
     private ArrayList<ProductHeader> recommendedProductList;
     private ButtonClickListener listener;
+    private DatabaseSingleton db;
 
     public interface ButtonClickListener {
         void onTransferButtonClick(ProductHeader item, String title);
@@ -29,6 +33,7 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
     public InventoryOrderAdapter(Context context, ArrayList<ProductHeader> recommendedProductList) {
         this.context = context;
         this.recommendedProductList = recommendedProductList;
+        db = DatabaseHelper.getDatabase(context);
     }
 
     @NonNull
@@ -42,15 +47,24 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductHeader product = recommendedProductList.get(position);
+        List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
+
+        String image = getCategoryImage(product.getCategory());
 
         //image
         Glide.with(context)
-                .load(product.getImage())
+                .load(image)
                 .centerCrop()
                 .into(holder.itemImageView);
 
         holder.itemNameView.setText(product.getName());
-        holder.warehouseCount.setText(String.valueOf(product.getTotalWarehouseStock()));
+
+        int totalWarehouseCount = 0;
+        for (ProductVariant currentVariant : variantList) {
+            totalWarehouseCount += currentVariant.getWarehouseStock();
+        }
+
+        holder.warehouseCount.setText(String.valueOf(totalWarehouseCount));
 
         holder.orderNowButton.setOnClickListener(view -> {
             if (listener != null) {
@@ -80,7 +94,20 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
         }
     }
 
+    /**
+     * Method to set button click listener
+     */
     public void setOnButtonClickListener(ButtonClickListener listener) {
         this.listener = listener;
+    }
+
+    /**
+     * Method to get category image
+     *
+     * @param category Category id
+     * @return Returns image url
+     */
+    private String getCategoryImage(int category) {
+        return db.categoryDao().getCategory(category).getImage();
     }
 }

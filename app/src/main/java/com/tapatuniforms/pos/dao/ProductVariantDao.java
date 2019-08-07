@@ -19,6 +19,12 @@ public interface ProductVariantDao {
     @Query("UPDATE ProductVariant SET displayStock=:displayStock WHERE id=:id")
     void updateDisplayStock(int displayStock, int id);
 
+    @Query("UPDATE ProductVariant SET warehouseStock=:warehouseStock WHERE id=:id")
+    void updateWarehouseStock(int warehouseStock, int id);
+
+    @Query("UPDATE ProductVariant SET transferOrderCount=:transferOrderCount WHERE id=:id")
+    void updateTransferOrderCount(int transferOrderCount, int id);
+
     @Insert
     void insertProductVariant(ProductVariant productVariant);
 
