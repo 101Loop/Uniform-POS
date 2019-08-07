@@ -1,7 +1,11 @@
 package com.tapatuniforms.pos.model;
 
+import android.renderscript.Script;
+
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.tapatuniforms.pos.helper.APIStatic;
@@ -11,7 +15,7 @@ import org.json.JSONObject;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = @ForeignKey(entity = ProductHeader.class,
+@Entity(indices = {@Index("productId")},foreignKeys = @ForeignKey(entity = ProductHeader.class,
         parentColumns = "id",
         childColumns = "productId",
         onDelete = CASCADE))
@@ -19,6 +23,7 @@ import static androidx.room.ForeignKey.CASCADE;
 public class ProductVariant {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "productId")
     private int productId;
     private String size;
     private double price;
@@ -39,8 +44,9 @@ public class ProductVariant {
     public ProductVariant(JSONObject jsonObject, int position) {
         JSONArray subProductSet = jsonObject.optJSONArray(APIStatic.Key.outletSubproductSet);
         JSONObject currentSubProduct = subProductSet.optJSONObject(position);
+        JSONObject productJson = jsonObject.optJSONObject(APIStatic.Key.product);
 
-        this.productId = jsonObject.optInt(APIStatic.Key.id);
+        this.productId = productJson.optInt(APIStatic.Key.id);
         this.size = currentSubProduct.optString(APIStatic.Key.size);
         this.price = currentSubProduct.optDouble(APIStatic.Key.price);
         this.warehouseStock = currentSubProduct.optInt(APIStatic.Key.warehouseStock);
