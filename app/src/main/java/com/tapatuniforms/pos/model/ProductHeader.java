@@ -49,7 +49,7 @@ public class ProductHeader {
         JSONObject productJson = jsonObject.optJSONObject(APIStatic.Key.product);
         JSONArray subProductSet = jsonObject.optJSONArray(APIStatic.Key.outletSubproductSet);
 
-        this.id = jsonObject.optInt(APIStatic.Key.id);
+        this.id = productJson.optInt(APIStatic.Key.id);
         this.name = productJson.optString(APIStatic.Key.name);
         this.gender = productJson.optString(APIStatic.Key.gender_type);
         this.productType = productJson.optString(APIStatic.Key.productType);

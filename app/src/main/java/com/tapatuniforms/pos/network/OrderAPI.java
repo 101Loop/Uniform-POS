@@ -64,6 +64,7 @@ public class OrderAPI {
                     }
 
                     if (discountList.size() != db.discountDao().getAll().size()) {
+                        db.discountDao().deleteAll();
                         db.discountDao().insertAll(discountList);
                     }
 

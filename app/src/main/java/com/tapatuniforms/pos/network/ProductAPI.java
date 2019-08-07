@@ -43,10 +43,13 @@ public class ProductAPI {
      */
     public static void fetchCategories(Context context, ArrayList<Category> categoryList,
                                        CategoryAdapter adapter, DatabaseSingleton db) {
+
+        List<Category> categories = db.categoryDao().getAll();
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
 
-            categoryList.addAll(db.categoryDao().getAll());
+            categoryList.clear();
+            categoryList.addAll(categories);
 
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
@@ -71,7 +74,12 @@ public class ProductAPI {
 
                         adapter.notifyDataSetChanged();
                     }
-                    db.categoryDao().insertAll(categoryList);
+
+                    if (categoryList.size() != categories.size()) {
+                        db.categoryDao().deleteAll();
+                        db.categoryDao().insertAll(categoryList);
+                    }
+
                 }, new APIErrorListener(context), context);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
@@ -92,7 +100,8 @@ public class ProductAPI {
      */
     public static void fetchProducts(Context context, ArrayList<ProductHeader> allProducts,
                                      ArrayList<ProductHeader> productList, ProductAdapter productAdapter,
-                                     InventoryAdapter inventoryAdapter, DatabaseSingleton db, InventoryOrderAdapter inventoryOrderAdapter, InventoryFragment inventoryFragment) {
+                                     InventoryAdapter inventoryAdapter, DatabaseSingleton db,
+                                     InventoryOrderAdapter inventoryOrderAdapter, InventoryFragment inventoryFragment) {
 
         List<ProductHeader> localProductList = db.productHeaderDao().getAllProductHeader();
         if (!Validator.isNetworkConnected(context)) {

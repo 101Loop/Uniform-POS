@@ -25,7 +25,6 @@ import java.util.List;
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
     private ArrayList<ProductHeader> itemList;
     private ButtonClickListener listener;
-    private ArrayList<String> sizeList;
     private Context context;
     private DatabaseSingleton db;
 
@@ -36,7 +35,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     public InventoryAdapter(Context context, ArrayList<ProductHeader> itemList) {
         this.itemList = itemList;
         this.context = context;
-        sizeList = new ArrayList<>();
         db = DatabaseHelper.getDatabase(context);
     }
 

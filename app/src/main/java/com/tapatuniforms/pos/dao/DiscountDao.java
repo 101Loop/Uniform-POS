@@ -22,6 +22,9 @@ public interface DiscountDao {
     @Insert
     void insertAll(List<Discount> DiscountList);
 
+    @Query("DELETE FROM Discount")
+    void deleteAll();
+
     @Insert
     long insert(Discount Discount);
 }
