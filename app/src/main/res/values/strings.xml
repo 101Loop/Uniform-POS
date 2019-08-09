@@ -54,4 +54,14 @@
     <string name="dialog_message">Loading</string>
     <string name="otp">OTP</string>
     <string name="no_box_items">Box items not available</string>
+    <string name="complete_order">Complete Order</string>
+    <string name="student_id_colan">Student ID :</string>
+    <string name="student_name_colan">Student Name :</string>
+    <string name="class_colan">Class :</string>
+    <string name="phone_number_colan">Phone Number :</string>
+    <string name="email_id_colan">Email ID :</string>
+    <string name="father_name_colan">Father Name :</string>
+    <string name="cash">Cash</string>
+    <string name="paytm">PayTM</string>
+    <string name="card">Card</string>
 </resources>

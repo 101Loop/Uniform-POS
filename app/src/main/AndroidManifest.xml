@@ -34,11 +34,6 @@
             android:screenOrientation="landscape"
             android:theme="@style/FullScreen" />
         <activity
-            android:name=".activity.DayClosingActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/FullScreen"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".activity.PosActivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreen" />
