@@ -531,22 +531,28 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * Handle click for the payment button
      */
     private void onPaymentButtonClicked() {
+        if (cartList == null || cartList.size() < 1) {
+            Toast.makeText(getContext(), "Your cart is empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (studentDetails[0] == null) {
             Toast.makeText(getContext(), "Enter Student ID first", Toast.LENGTH_SHORT).show();
             studentIdText.requestFocus();
             return;
         }
 
-        final PaymentDialog dialog = new PaymentDialog(getContext(), total);
+        final PaymentDialog dialog = new PaymentDialog(getContext(), total, studentDetails[0]);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        dialog.setCancelable(false);
         dialog.show();
         dialog.setOnOrderCompleteListener(transactionList -> {
-
-            if (cartList != null && cartList.size() > 0) {
-                showProgressDialog();
-                orderCompleted(transactionList);
-            } else {
-                Toast.makeText(getContext(), "Your cart is empty", Toast.LENGTH_SHORT).show();
-            }
+            showProgressDialog();
+            orderCompleted(transactionList);
 
             dialog.dismiss();
         });

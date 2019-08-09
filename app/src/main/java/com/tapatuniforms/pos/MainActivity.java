@@ -5,10 +5,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.tapatuniforms.pos.activity.DayClosingActivity;
 import com.tapatuniforms.pos.activity.LoginActivity;
 import com.tapatuniforms.pos.activity.PinLoginActivity;
-import com.tapatuniforms.pos.activity.PosActivity;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.User;

@@ -87,11 +87,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 return;
             }
 
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+
             if (listener != null) {
                 listener.onItemUpdateListener(cartItem);
             }
 
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
             holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
             holder.itemPrice.setText(decimalFormatter.format(cartItem.getPrice() * cartItem.getQuantity()));
         });
@@ -129,16 +130,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     public void setOnItemUpdateListener(UpdateItemListener listener) {
         this.listener = listener;
-    }
-
-    /**
-     * This method will notify data set changed and will update the view
-     *
-     * @param cartList ArrayList of CartItem
-     */
-    public void loadNewData(ArrayList<CartItem> cartList) {
-        this.cartList = cartList;
-        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
