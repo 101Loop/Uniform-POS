@@ -12,17 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.BoxItem;
+import com.tapatuniforms.pos.model.ProductHeader;
 
 import java.util.ArrayList;
 
 public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapter.ViewHolder> {
     private Context context;
     private ArrayList<BoxItem> boxItemList;
+    private DatabaseSingleton db;
 
     public StockBoxItemAdapter(Context context, ArrayList<BoxItem> boxItemList) {
         this.context = context;
         this.boxItemList = boxItemList;
+
+        db = DatabaseHelper.getDatabase(context);
     }
 
     @NonNull
@@ -35,11 +41,15 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BoxItem currentItem = boxItemList.get(position);
+        ProductHeader product = db.productHeaderDao().getProductHeaderById(currentItem.getProductId());
 
-        holder.itemNameView.setText(currentItem.getName());
+        String name = product.getName();
+        holder.itemNameView.setText(name);
         holder.itemSentView.setText(String.valueOf(currentItem.getNumberOfItems()));
         holder.itemScannedView.setText(String.valueOf(currentItem.getNumberOfScannedItems()));
-        holder.itemShelfView.setText(String.valueOf(currentItem.getNumberOfShelfItems()));
+
+//        int itemsInShelf =
+//        holder.itemShelfView.setText(String.valueOf(currentItem.getNumberOfShelfItems()));
     }
 
     @Override

@@ -52,7 +52,7 @@
         android:background="@drawable/stroke_rectangle_light"
         android:gravity="center_vertical"
         android:padding="8dp"
-        android:text="10"
+        android:text="0"
         android:textColor="@color/black1" />
 
     <LinearLayout
@@ -71,7 +71,7 @@
             android:background="@drawable/stroke_around_rect"
             android:gravity="center"
             android:inputType="number"
-            android:text="54"
+            android:text="0"
             android:textColor="@color/black1"
             android:textSize="17sp" />
 

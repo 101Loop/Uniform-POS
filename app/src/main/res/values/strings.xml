@@ -64,4 +64,5 @@
     <string name="cash">Cash</string>
     <string name="paytm">PayTM</string>
     <string name="card">Card</string>
+    <string name="select_indent_to_get_boxes">Select Indent to get boxes</string>
 </resources>

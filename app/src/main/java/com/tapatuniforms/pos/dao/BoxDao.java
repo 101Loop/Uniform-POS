@@ -16,11 +16,17 @@ public interface BoxDao {
     @Query("SELECT * FROM Box WHERE id = :id")
     Box getBox(long id);
 
+    @Query("SELECT * FROM BOX WHERE indentId = :indentId")
+    List<Box> getBoxesByIndent(long indentId);
+
     @Query("SELECT * FROM Box WHERE id = :id")
     Box getBoxByOutlet(long id);
 
     @Insert
     void insertAll(List<Box> BoxList);
+
+    @Query("DELETE FROM Box")
+    void deleteAll();
 
     @Insert
     long insert(Box Box);

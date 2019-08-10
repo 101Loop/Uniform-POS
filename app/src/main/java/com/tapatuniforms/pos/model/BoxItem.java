@@ -1,48 +1,47 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("productId")}, foreignKeys = @ForeignKey(entity = ProductHeader.class,
+        parentColumns = "id",
+        childColumns = "productId",
+        onDelete = CASCADE))
+
 public class BoxItem {
     @PrimaryKey
     private int id;
-    private String status;
-    private String name;
-    private int product;
+    @ColumnInfo(name = "productId")
+    private int productId;
     private int numberOfItems;
     private int numberOfScannedItems;
-    private int numberOfShelfItems;
     private int boxId;
-    private String lastStatus;
 
-    public BoxItem(int id, String status, String name, int product, int numberOfItems,
-                   int numberOfScannedItems, int numberOfShelfItems, int boxId, String lastStatus) {
+    public BoxItem(int id, int productId, int numberOfItems, int numberOfScannedItems, int boxId) {
         this.id = id;
-        this.status = status;
-        this.name = name;
-        this.product = product;
+        this.productId = productId;
         this.numberOfItems = numberOfItems;
         this.numberOfScannedItems = numberOfScannedItems;
-        this.numberOfShelfItems = numberOfShelfItems;
         this.boxId = boxId;
-        this.lastStatus = lastStatus;
     }
 
     public BoxItem(JSONObject jsonObject) {
+        JSONObject productJSON = jsonObject.optJSONObject(APIStatic.Key.product).optJSONObject(APIStatic.Key.outletProduct).optJSONObject(APIStatic.Key.product);
+
         this.id = jsonObject.optInt(APIStatic.Key.id);
-        this.status = "";
-        this.name = "";
-        this.product = jsonObject.optInt(APIStatic.Key.product);
-        this.numberOfItems = jsonObject.optInt(APIStatic.Key.numberOfItems);
+        this.productId = productJSON.optInt(APIStatic.Key.id);
+        this.numberOfItems = jsonObject.optInt(APIStatic.Key.numberOfItem);
         this.numberOfScannedItems = jsonObject.optInt(APIStatic.Key.numberOfScannedItems);
-        this.numberOfShelfItems = 0;
         this.boxId = jsonObject.optInt(APIStatic.Key.box);
-        this.lastStatus = "";
     }
 
     public int getId() {
@@ -51,22 +50,6 @@ public class BoxItem {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getProduct() {
-        return product;
-    }
-
-    public void setProduct(int product) {
-        this.product = product;
     }
 
     public int getNumberOfItems() {
@@ -93,27 +76,11 @@ public class BoxItem {
         this.boxId = boxId;
     }
 
-    public int getNumberOfShelfItems() {
-        return numberOfShelfItems;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setNumberOfShelfItems(int numberOfShelfItems) {
-        this.numberOfShelfItems = numberOfShelfItems;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getLastStatus() {
-        return lastStatus;
-    }
-
-    public void setLastStatus(String lastStatus) {
-        this.lastStatus = lastStatus;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 }

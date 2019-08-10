@@ -1,7 +1,5 @@
 package com.tapatuniforms.pos.model;
 
-import android.renderscript.Script;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -15,7 +13,7 @@ import org.json.JSONObject;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("productId")},foreignKeys = @ForeignKey(entity = ProductHeader.class,
+@Entity(indices = {@Index("productId")}, foreignKeys = @ForeignKey(entity = ProductHeader.class,
         parentColumns = "id",
         childColumns = "productId",
         onDelete = CASCADE))

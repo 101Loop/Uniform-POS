@@ -2,10 +2,12 @@ package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.tapatuniforms.pos.model.Indent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -19,8 +21,11 @@ public interface IndentDao {
     @Query("SELECT * FROM Indent WHERE id = :id")
     Indent getIndentByOutlet(long id);
 
-    @Insert
-    void insertAll(List<Indent> IndentList);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(ArrayList<Indent> IndentList);
+
+    @Query("DELETE FROM Indent")
+    void deleteAll();
 
     @Insert
     long insert(Indent Indent);

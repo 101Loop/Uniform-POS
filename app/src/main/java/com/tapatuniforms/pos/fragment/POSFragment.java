@@ -118,6 +118,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private int discount;
     private TextView noDiscountText;
 
+    private ArrayList<Student> studentList;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -164,8 +166,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
         productList = new ArrayList<>();
         allProducts = new ArrayList<>();
-        maleList = new ArrayList<ProductHeader>();
-        femaleList = new ArrayList<ProductHeader>();
+        studentList = new ArrayList<>();
+        maleList = new ArrayList<>();
+        femaleList = new ArrayList<>();
         sizeList = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(), productList);
         cartList = new ArrayList<>();
@@ -208,6 +211,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         OrderAPI.getInstance(getContext()).getDiscount(discountList, discountAdapter, this, db);
         discountAdapter.setOnDiscountClickListener(this);
 
+        SchoolAPI.getInstance(getActivity()).getStudents(studentList, db);
+
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
 
@@ -240,7 +245,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
             if (!studentId.isEmpty()) {
                 try {
-                    SchoolAPI.getInstance(getContext()).getStudentDetails(Integer.parseInt(studentId), studentDetails);
+                    SchoolAPI.getInstance(getContext()).getStudentDetails(Integer.parseInt(studentId), studentDetails, db);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
