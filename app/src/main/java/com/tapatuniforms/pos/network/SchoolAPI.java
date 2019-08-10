@@ -7,14 +7,20 @@ import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.civilmachines.drfapi.DjangoJSONArrayResponseRequest;
 import com.civilmachines.drfapi.DjangoJSONObjectRequest;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Student;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SchoolAPI {
 
@@ -52,7 +58,7 @@ public class SchoolAPI {
 
         DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                 Request.Method.POST,
-                APIStatic.School.addDetailsUrl,
+                APIStatic.School.studentUrl,
                 jsonObject,
                 response -> {
                     Toast.makeText(context, "Details added successfully!", Toast.LENGTH_SHORT).show();
@@ -77,13 +83,18 @@ public class SchoolAPI {
      * @param id             unique id of the student
      * @param studentDetails array of Student of size 1,
      */
-    public void getStudentDetails(int id, Student[] studentDetails) throws JSONException {
+    public void getStudentDetails(int id, Student[] studentDetails, DatabaseSingleton db) throws JSONException {
+        if (!Validator.isNetworkConnected(context)) {
+            studentDetails[0] = db.studentDao().getStudent(id);
+            return;
+        }
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(APIStatic.Key.id, id);
 
         DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                 Request.Method.GET,
-                APIStatic.School.addDetailsUrl + id + "/",
+                APIStatic.School.studentUrl + id + "/",
                 jsonObject,
                 response -> {
                     studentDetails[0] = new Student(response);
@@ -92,6 +103,43 @@ public class SchoolAPI {
                 new APIErrorListener(context),
                 context
         );
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    /**
+     * Method to get student details by id
+     */
+    public void getStudents(ArrayList<Student> studentList, DatabaseSingleton db) {
+        List<Student> localStudentList = db.studentDao().getAll();
+
+
+        if (!Validator.isNetworkConnected(context)) {
+            studentList.clear();
+            studentList.addAll(localStudentList);
+            return;
+        }
+
+        DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
+                Request.Method.GET,
+                APIStatic.School.studentUrl,
+                null,
+                response -> {
+                    db.studentDao().deleteAll();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject studentJSON = response.getJSONObject(i);
+                            studentList.add(new Student(studentJSON));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    db.studentDao().deleteAll();
+                    db.studentDao().insertAll(studentList);
+                },
+                new APIErrorListener(context), context);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(context).getRequestQueue().add(request);

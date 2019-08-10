@@ -1,7 +1,6 @@
 package com.tapatuniforms.pos.network;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -23,11 +22,13 @@ import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.Indent;
+import com.tapatuniforms.pos.model.School;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StockOrderAPI {
     private static final String TAG = "StockOrderAPI";
@@ -51,14 +52,14 @@ public class StockOrderAPI {
      * stores the data when online and displays them if offline
      *
      * @param indentList List of Indent, used to update the fetched data
-     * @param adapter reference to the adapter which is used to notify any changes
-     * @param instance reference of the calling class
-     * @param db DatabaseSingleton reference for db transactions
-     * */
-    public void getIndentList(ArrayList<Indent> indentList, StockIndentAdapter adapter, StockEntryFragment instance, DatabaseSingleton db) {
+     * @param adapter    reference to the adapter which is used to notify any changes
+     * @param instance   reference of the calling class
+     * @param db         DatabaseSingleton reference for db transactions
+     */
+    public void getIndentList(ArrayList<Indent> indentList, ArrayList<School> schoolList, StockIndentAdapter adapter, StockEntryFragment instance, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
             indentList.addAll(db.indentDao().getAll());
-//            adapter.selectFirstIndent();
+            schoolList.addAll(db.schoolDao().getAll());
             return;
         }
 
@@ -71,16 +72,22 @@ public class StockOrderAPI {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
                             indentList.add(new Indent(jsonObject));
+                            schoolList.add(new School(jsonObject));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
 
+                    if (schoolList.size() != db.schoolDao().getAll().size()) {
+                        db.schoolDao().deleteAll();
+                        db.schoolDao().insertAll(schoolList);
+                    }
+
                     if (indentList.size() != db.indentDao().getAll().size()) {
+                        db.indentDao().deleteAll();
                         db.indentDao().insertAll(indentList);
                     }
 
-//                    adapter.selectFirstIndent();
                     instance.checkIndentsAvailability();
                     adapter.notifyDataSetChanged();
                 },
@@ -96,24 +103,26 @@ public class StockOrderAPI {
      * Method to get box list
      * stores the data when online and displays them if offline
      *
-     * @param boxList List of Box, used to update the fetched data
-     * @param allBoxList List of Box, this list is used for any changes in the fetched list
-     * @param adapter reference to the adapter which is used to notify any changes
+     * @param id
+     * @param boxList  List of Box, used to update the fetched data
+     * @param adapter  reference to the adapter which is used to notify any changes
      * @param instance reference of the calling class
-     * @param db DatabaseSingleton reference for db transactions
-     * */
-    public void getBoxList(ArrayList<Box> boxList, ArrayList<Box> allBoxList, StockBoxAdapter adapter,
+     * @param db       DatabaseSingleton reference for db transactions
+     */
+    public void getBoxList(long id, ArrayList<Box> boxList, StockBoxAdapter adapter,
                            StockEntryFragment instance, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
-            boxList.addAll(db.boxDao().getAll());
-            allBoxList.addAll(db.boxDao().getAll());
+            List<Box> boxes = db.boxDao().getBoxesByIndent(id);
+
+            boxList.clear();
+            boxList.addAll(boxes);
             instance.checkBoxAvailability();
             return;
         }
 
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET,
-                APIStatic.StockOrder.getBoxUrl,
+                APIStatic.StockOrder.getIndentUrl + id + APIStatic.StockOrder.getBoxUrl,
                 null,
                 response -> {
                     for (int i = 0; i < response.length(); i++) {
@@ -125,11 +134,11 @@ public class StockOrderAPI {
                         }
                     }
 
-                    allBoxList.addAll(boxList);
-
-                    if (boxList.size() != db.boxDao().getAll().size()) {
-                        db.boxDao().insertAll(boxList);
-                    }
+                    //TODO: data to be stored on the basis of sync status(for each db instance)
+//                    if (boxList.size() != db.boxDao().getAll().size()) {
+                    db.boxDao().deleteAll();
+                    db.boxDao().insertAll(boxList);
+//                    }
 
                     instance.checkBoxAvailability();
                     adapter.notifyDataSetChanged();
@@ -146,12 +155,12 @@ public class StockOrderAPI {
      * Method to get box item list
      * stores the data when online and displays them if offline
      *
-     * @param boxItemList List of BoxItem, used to update the fetched data
-     * @param adapter reference to the adapter which is used to notify any changes
-     * @param id Id of the box, used to show only the relevant box item
+     * @param boxItemList     List of BoxItem, used to update the fetched data
+     * @param adapter         reference to the adapter which is used to notify any changes
+     * @param id              Id of the box, used to show only the relevant box item
      * @param stockItemDialog reference of the calling class
-     * @param db DatabaseSingleton reference for db transactions
-     * */
+     * @param db              DatabaseSingleton reference for db transactions
+     */
     public void getBoxItem(ArrayList<BoxItem> boxItemList, StockBoxItemAdapter adapter, long id,
                            StockItemDialog stockItemDialog, DatabaseSingleton db) {
 
@@ -169,7 +178,7 @@ public class StockOrderAPI {
 
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET,
-                APIStatic.StockOrder.getBoxItem,
+                APIStatic.StockOrder.boxItemUrl + id + APIStatic.StockOrder.itemsUrl,
                 null,
                 response -> {
                     for (int i = 0; i < response.length(); i++) {
@@ -203,9 +212,8 @@ public class StockOrderAPI {
     /**
      * Method to get indent list
      * stores the data when online and displays them if offline
-     *
-     * */
-    public void indentRequestDetails(int productId, int quantity, int indentRequestId, InventoryDialog inventoryDialog) {
+     */
+    public void indentRequestDetails(int productId, int quantity, int schoolId, InventoryDialog inventoryDialog) {
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             return;
@@ -215,14 +223,14 @@ public class StockOrderAPI {
         try {
             jsonRequest.put(APIStatic.Key.product, productId);
             jsonRequest.put(APIStatic.Key.qunatity, quantity);
-            jsonRequest.put(APIStatic.Key.indentRequest, indentRequestId);
+            jsonRequest.put(APIStatic.Key.school, schoolId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                 Request.Method.POST,
-                APIStatic.StockOrder.indentRequestDetails,
+                APIStatic.StockOrder.indentRequest,
                 jsonRequest,
                 response -> {
                     inventoryDialog.dismiss();

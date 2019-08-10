@@ -128,17 +128,12 @@ public class ProductAPI {
                 response -> {
                     // Response Received
                     for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject productJSON = response.getJSONObject(i);
-                            productList.add(new ProductHeader(productJSON));
-                            allProducts.add(new ProductHeader(productJSON));
-                        } catch (JSONException e) {
-                            Toast.makeText(context, "Product Parse Error", Toast.LENGTH_SHORT)
-                                    .show();
-                            e.printStackTrace();
-                        }
+                        JSONObject productJSON = response.optJSONObject(i);
+                        productList.add(new ProductHeader(productJSON));
+                        allProducts.add(new ProductHeader(productJSON));
                     }
 
+                    //TODO: change this logic, products should be synced on the basis of their sync status, not size
                     if (productList.size() != localProductList.size()) {
                         ArrayList<ProductHeader> productHeaderList = new ArrayList<>();
                         ArrayList<ProductVariant> productVariantList = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.helper;
 
 public interface APIStatic {
     String baseURL = "http://tapatapi.civilmachines.com/api/";
+//    String baseURL = "http://192.168.1.107:8000/api/";
 
     String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss";
     String onlyDateFormat = "yyyyMMdd";
@@ -33,16 +34,16 @@ public interface APIStatic {
 
     interface School {
         String endPoint = "school/";
-        String addDetailsUrl = baseURL + endPoint + "student/";
+        String studentUrl = baseURL + endPoint + "student/";
     }
 
     interface StockOrder {
         String endPoint = "stockOrder/";
         String indentRequest = baseURL + endPoint + "indentRequest/";
-        String indentRequestDetails = indentRequest + "indentRequestDetails/";
-        String getIndentUrl = baseURL + endPoint;
-        String getBoxUrl = baseURL + endPoint + "box/";
-        String getBoxItem = getBoxUrl + "boxItem/";
+        String getIndentUrl = baseURL + endPoint + "indent/";
+        String getBoxUrl = "/boxes/";
+        String boxItemUrl = baseURL + endPoint + "box/";
+        String itemsUrl = "/items/";
     }
 
     interface Key {
@@ -97,7 +98,8 @@ public interface APIStatic {
         String indentRequest = "indent_request";
         String numberOfMaleItems = "male_items";
         String numberOfFemaleItems = "female_items";
-        String numberOfItems = "num_of_item";
+        String numberOfItem = "num_of_item";
+        String numberOfItems = "num_of_items";
         String numberOfScannedItems = "item_scanned";
         String box = "box";
         String productQuantity = "product_quantity";
@@ -105,6 +107,14 @@ public interface APIStatic {
         String value = "value";
         String warehouseStock = "warehouse_stock";
         String displayStock = "display_stock";
+        String address = "address";
+        String latitude = "latitude";
+        String longitude = "longitude";
+        String shippingFromLat = "shipping_from_lat";
+        String shippingFromLong = "shipping_from_long";
+        String shippedOn = "shipped_on";
+        String receivedOn = "received_on";
+        String outletProduct = "outlet_product";
     }
 
     interface Constants {

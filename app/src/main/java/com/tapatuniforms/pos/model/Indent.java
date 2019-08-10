@@ -1,50 +1,69 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = @Index(value = "schoolId"), foreignKeys = @ForeignKey(entity = School.class,
+        parentColumns = "id",
+        childColumns = "schoolId",
+        onDelete = CASCADE))
+
 public class Indent {
     @PrimaryKey
     private long id;
+    @ColumnInfo(name = "schoolId")
+    private int schoolId;
     private String name;
-    private String dateTime;
-    private String dispatchPerson;
-    private int numberOfBoxes;
-    private double boxValue;
-    private int numberOfItems;
-    private boolean isSelected;
-//    private Box box;
+    private String price;
+    private String numberOfBoxes;
+    private String numberOfItems;
     private String shippingFrom;
+    private String shippingFromLat;
+    private String shippingFromLong;
+    private String shippedOn;
+    private String receivedOn;
+    private boolean isSelected;
 
-    public Indent(long id, String name, String dateTime, String dispatchPerson, int numberOfBoxes, double boxValue, int numberOfItems, /*Box box,*/ String shippingFrom) {
+    public Indent(long id, int schoolId, String name, String price, String numberOfBoxes, String numberOfItems,
+                  String shippingFrom, String shippingFromLat, String shippingFromLong, String shippedOn, String receivedOn, boolean isSelected) {
         this.id = id;
+        this.schoolId = schoolId;
         this.name = name;
-        this.dateTime = dateTime;
-        this.dispatchPerson = dispatchPerson;
+        this.price = price;
         this.numberOfBoxes = numberOfBoxes;
-        this.boxValue = boxValue;
         this.numberOfItems = numberOfItems;
-        this.isSelected = false;
-//        this.box = box;
         this.shippingFrom = shippingFrom;
+        this.shippingFromLat = shippingFromLat;
+        this.shippingFromLong = shippingFromLong;
+        this.shippedOn = shippedOn;
+        this.receivedOn = receivedOn;
+        this.isSelected = isSelected;
     }
 
-    public Indent(JSONObject jsonObject){
+    public Indent(JSONObject jsonObject) {
+        JSONObject schoolJSON = jsonObject.optJSONObject(APIStatic.Key.school);
+
         this.id = jsonObject.optInt(APIStatic.Key.id);
+        this.schoolId = schoolJSON.optInt(APIStatic.Key.id);
         this.name = jsonObject.optString(APIStatic.Key.name);
-        this.dateTime = "";
-        this.dispatchPerson = "";
-        this.numberOfBoxes = jsonObject.optInt(APIStatic.Key.numberOfBoxes);
-        this.boxValue = 0;
-        this.numberOfItems = 0;
+        this.price = jsonObject.optString(APIStatic.Key.price);
+        this.numberOfBoxes = jsonObject.optString(APIStatic.Key.numberOfBoxes);
+        this.numberOfItems = jsonObject.optString(APIStatic.Key.numberOfItems);
         this.isSelected = false;
-//        this.box = null; //this is to be fetched from another API
         this.shippingFrom = jsonObject.optString(APIStatic.Key.shippingFrom);
+        this.shippingFromLat = jsonObject.optString(APIStatic.Key.shippingFromLat);
+        this.shippingFromLong = jsonObject.optString(APIStatic.Key.shippingFromLong);
+        this.shippedOn = jsonObject.optString(APIStatic.Key.shippedOn);
+        this.receivedOn = jsonObject.optString(APIStatic.Key.receivedOn);
     }
 
     public long getId() {
@@ -55,6 +74,14 @@ public class Indent {
         this.id = id;
     }
 
+    public int getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(int schoolId) {
+        this.schoolId = schoolId;
+    }
+
     public String getName() {
         return name;
     }
@@ -63,43 +90,19 @@ public class Indent {
         this.name = name;
     }
 
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public String getDispatchPerson() {
-        return dispatchPerson;
-    }
-
-    public void setDispatchPerson(String dispatchPerson) {
-        this.dispatchPerson = dispatchPerson;
-    }
-
-    public int getNumberOfBoxes() {
+    public String getNumberOfBoxes() {
         return numberOfBoxes;
     }
 
-    public void setNumberOfBoxes(int numberOfBoxes) {
+    public void setNumberOfBoxes(String numberOfBoxes) {
         this.numberOfBoxes = numberOfBoxes;
     }
 
-    public double getBoxValue() {
-        return boxValue;
-    }
-
-    public void setBoxValue(double boxValue) {
-        this.boxValue = boxValue;
-    }
-
-    public int getNumberOfItems() {
+    public String getNumberOfItems() {
         return numberOfItems;
     }
 
-    public void setNumberOfItems(int numberOfItems) {
+    public void setNumberOfItems(String numberOfItems) {
         this.numberOfItems = numberOfItems;
     }
 
@@ -111,19 +114,51 @@ public class Indent {
         isSelected = selected;
     }
 
-//    public Box getBox() {
-//        return box;
-//    }
-//
-//    public void setBox(Box box) {
-//        this.box = box;
-//    }
-
     public String getShippingFrom() {
         return shippingFrom;
     }
 
     public void setShippingFrom(String shippingFrom) {
         this.shippingFrom = shippingFrom;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getShippingFromLat() {
+        return shippingFromLat;
+    }
+
+    public void setShippingFromLat(String shippingFromLat) {
+        this.shippingFromLat = shippingFromLat;
+    }
+
+    public String getShippingFromLong() {
+        return shippingFromLong;
+    }
+
+    public void setShippingFromLong(String shippingFromLong) {
+        this.shippingFromLong = shippingFromLong;
+    }
+
+    public String getShippedOn() {
+        return shippedOn;
+    }
+
+    public void setShippedOn(String shippedOn) {
+        this.shippedOn = shippedOn;
+    }
+
+    public String getReceivedOn() {
+        return receivedOn;
+    }
+
+    public void setReceivedOn(String receivedOn) {
+        this.receivedOn = receivedOn;
     }
 }

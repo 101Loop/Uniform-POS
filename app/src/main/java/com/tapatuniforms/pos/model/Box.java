@@ -1,35 +1,45 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("indentId")}, foreignKeys = @ForeignKey(entity = Indent.class,
+        parentColumns = "id",
+        childColumns = "indentId",
+        onDelete = CASCADE))
+
 public class Box {
     @PrimaryKey
     private long id;
+    @ColumnInfo(name = "indentId")
+    private int indentId;
     private String name;
     private String serialNumber;
     private String dateTime;
     private int numberOfItems;
     private int itemsVerified;
-    private String indentId;
     private String numberOfMaleItems;
     private String numberOfFemaleItems;
     private String indentName;
 
-    public Box(long id, String name, String serialNumber, String dateTime, int numberOfItems,
-               int itemsVerified, String indentId, String numberOfMaleItems, String numberOfFemaleItems, String indentName) {
+    public Box(long id, int indentId, String name, String serialNumber, String dateTime, int numberOfItems,
+               int itemsVerified, String numberOfMaleItems, String numberOfFemaleItems, String indentName) {
         this.id = id;
+        this.indentId = indentId;
         this.name = name;
         this.serialNumber = serialNumber;
         this.dateTime = dateTime;
         this.numberOfItems = numberOfItems;
         this.itemsVerified = itemsVerified;
-        this.indentId = indentId;
         this.numberOfMaleItems = numberOfMaleItems;
         this.numberOfFemaleItems = numberOfFemaleItems;
         this.indentName = indentName;
@@ -37,12 +47,12 @@ public class Box {
 
     public Box(JSONObject jsonObject) {
         this.id = jsonObject.optInt(APIStatic.Key.id);
+        this.indentId = jsonObject.optInt(APIStatic.Key.indent);
         this.name = jsonObject.optString(APIStatic.Key.name);
         this.serialNumber = jsonObject.optString(APIStatic.Key.boxCode);    //might need to change this
         this.dateTime = "";
         this.numberOfItems = jsonObject.optInt(APIStatic.Key.totalItems);
         this.itemsVerified = 0;
-        this.indentId = jsonObject.optString(APIStatic.Key.indent);
         this.numberOfMaleItems = jsonObject.optString(APIStatic.Key.numberOfMaleItems);
         this.numberOfFemaleItems = jsonObject.optString(APIStatic.Key.numberOfFemaleItems);
     }
@@ -95,11 +105,11 @@ public class Box {
         this.itemsVerified = itemsVerified;
     }
 
-    public String getIndentId() {
+    public int getIndentId() {
         return indentId;
     }
 
-    public void setIndentId(String indentId) {
+    public void setIndentId(int indentId) {
         this.indentId = indentId;
     }
 

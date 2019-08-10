@@ -246,7 +246,13 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
 
         Collections.sort(allProducts, (productHeader, t1) -> productHeader.getTotalWarehouseStock() - t1.getTotalWarehouseStock());
 
-        for (int i = 0; i < 5; i++) {
+        int recommendedSize = 5;
+
+        if (recommendedSize > allProducts.size()) {
+            recommendedSize = allProducts.size();
+        }
+
+        for (int i = 0; i < recommendedSize; i++) {
             recommendedProductList.add(allProducts.get(i));
         }
     }

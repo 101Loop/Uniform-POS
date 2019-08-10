@@ -12,7 +12,9 @@ import com.tapatuniforms.pos.dao.IndentDao;
 import com.tapatuniforms.pos.dao.OrderDao;
 import com.tapatuniforms.pos.dao.ProductHeaderDao;
 import com.tapatuniforms.pos.dao.ProductVariantDao;
+import com.tapatuniforms.pos.dao.SchoolDao;
 import com.tapatuniforms.pos.dao.StockItemDao;
+import com.tapatuniforms.pos.dao.StudentDao;
 import com.tapatuniforms.pos.dao.SubOrderDao;
 import com.tapatuniforms.pos.dao.TransactionDao;
 import com.tapatuniforms.pos.dao.UserDao;
@@ -24,14 +26,16 @@ import com.tapatuniforms.pos.model.Indent;
 import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.School;
 import com.tapatuniforms.pos.model.StockItem;
+import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.model.User;
 
 @Database(version = 9, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
         Transaction.class, Category.class, Discount.class, Box.class, BoxItem.class,
-        Indent.class, ProductHeader.class, ProductVariant.class}, exportSchema = false)
+        Indent.class, ProductHeader.class, ProductVariant.class, Student.class, School.class}, exportSchema = false)
 
 @TypeConverters({Converter.class})
 public abstract class DatabaseSingleton extends RoomDatabase {
@@ -58,4 +62,8 @@ public abstract class DatabaseSingleton extends RoomDatabase {
     abstract public ProductHeaderDao productHeaderDao();
 
     abstract public ProductVariantDao productVariantDao();
+
+    abstract public StudentDao studentDao();
+
+    abstract public SchoolDao schoolDao();
 }

@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,6 +25,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.Indent;
+import com.tapatuniforms.pos.model.School;
 import com.tapatuniforms.pos.network.StockOrderAPI;
 
 import java.util.ArrayList;
@@ -36,16 +38,18 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
     private StockBoxAdapter stockBoxAdapter;
     private ArrayList<Box> boxList;
-    private ArrayList<Box> allBoxList;
 
     private StockIndentAdapter stockIndentAdapter;
     private ArrayList<Indent> indentList;
+    private ArrayList<School> schoolList;
     private ArrayList<Indent> allIndentList = new ArrayList<>();
 
     private EditText searchEditText;
     private Button searchButton;
 
     private DatabaseSingleton db;
+
+    private TextView boxText;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -65,10 +69,12 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         noBoxLayout = v.findViewById(R.id.noBoxLayout);
         searchEditText = v.findViewById(R.id.searchEditText);
         searchButton = v.findViewById(R.id.searchButton);
+        boxText = v.findViewById(R.id.boxesText);
 
         db = DatabaseHelper.getDatabase(getContext());
 
         indentList = new ArrayList<>();
+        schoolList = new ArrayList<>();
         stockIndentAdapter = new StockIndentAdapter(getContext(), indentList);
         getIndentList();
         indentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -78,7 +84,6 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
         boxList = new ArrayList<>();
         stockBoxAdapter = new StockBoxAdapter(boxList);
-        getBoxList();
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         requestRecyclerView.setAdapter(stockBoxAdapter);
         stockBoxAdapter.setOnBoxClickListener(this);
@@ -95,7 +100,6 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
                 }
             }
 
-//            stockIndentAdapter.selectFirstIndent();
             stockIndentAdapter.notifyDataSetChanged();
         });
     }
@@ -116,22 +120,9 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
     /**
      * Method to get list of indents
-     * */
+     */
     private void getIndentList() {
-        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, stockIndentAdapter, this, db);
-    }
-
-    /**
-     * Method to list of Box
-     * */
-    private void getBoxList() {
-        if (allBoxList == null) {
-            allBoxList = new ArrayList<>();
-        } else {
-            allBoxList.clear();
-        }
-
-        StockOrderAPI.getInstance(getContext()).getBoxList(boxList, allBoxList, stockBoxAdapter, this, db);
+        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, schoolList, stockIndentAdapter, this, db);
     }
 
     /**
@@ -142,14 +133,8 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     public void onClickListener(long indentId, String indentName) {
         boxList.clear();
 
-        for (Box box : allBoxList) {
-            if (box.getIndentId().equals(String.valueOf(indentId))) {
-                box.setIndentName(indentName);
-                boxList.add(box);
-            }
-        }
-
-        stockBoxAdapter.notifyDataSetChanged();
+        StockOrderAPI.getInstance(getContext()).getBoxList(indentId, boxList, stockBoxAdapter, this, db);
+        boxText.setText(Objects.requireNonNull(getContext()).getString(R.string.no_boxes_available));
     }
 
     /**

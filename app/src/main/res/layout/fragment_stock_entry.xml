@@ -72,9 +72,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView24">
 
                 <TextView
+                    android:id="@+id/boxesText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/no_boxes_available"
+                    android:text="@string/select_indent_to_get_boxes"
                     android:textSize="24sp" />
 
             </LinearLayout>

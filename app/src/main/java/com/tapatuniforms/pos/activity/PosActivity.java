@@ -22,9 +22,7 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.fragment.DashboardFragment;
 import com.tapatuniforms.pos.fragment.DayClosingFragment;
 import com.tapatuniforms.pos.fragment.InventoryFragment;
-import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
-import com.tapatuniforms.pos.fragment.SaleReportFragment;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
 import com.tapatuniforms.pos.helper.NetworkChangeReceiver;
 
@@ -37,7 +35,6 @@ public class PosActivity extends AppCompatActivity implements
 
     private DrawerLayout mDrawerLayout;
     private ImageView hamburgerMenuIcon;
-    private TextView closeDayView;
     private ImageView detailIcon;
     private ImageView calendarIcon;
     private ImageView homeIcon;
@@ -82,7 +79,7 @@ public class PosActivity extends AppCompatActivity implements
 
     /**
      * registering a broadcast receiver to listen any connectivity change
-     * */
+     */
     private void registerBroadcastReceiver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -91,7 +88,7 @@ public class PosActivity extends AppCompatActivity implements
 
     /**
      * replacing fragment on navigation selection
-     * */
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Add code here to update the UI based on the item selected
@@ -147,7 +144,7 @@ public class PosActivity extends AppCompatActivity implements
 
     /**
      * opens navigation drawer on clicking hamburger icon
-     * */
+     */
     @Override
     public void onClick(View v) {
         mDrawerLayout.openDrawer(GravityCompat.START);
@@ -155,7 +152,7 @@ public class PosActivity extends AppCompatActivity implements
 
     /**
      * unregistering broadcast receiver
-     * */
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

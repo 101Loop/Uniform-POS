@@ -1,10 +1,17 @@
 package com.tapatuniforms.pos.model;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
+@Entity
 public class Student {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String studentId;
     private String name;
     private String standard;
@@ -15,7 +22,8 @@ public class Student {
     private String email;
     private String mobile;
 
-    public Student(String studentId, String name, String standard, String section, String fatherName, String gender, int school, String email, String mobile) {
+    public Student(int id, String studentId, String name, String standard, String section, String fatherName, String gender, int school, String email, String mobile) {
+        this.id = id;
         this.studentId = studentId;
         this.name = name;
         this.standard = standard;
@@ -27,6 +35,7 @@ public class Student {
         this.mobile = mobile;
     }
 
+    @Ignore
     public Student(JSONObject jsonObject) {
         this.studentId = jsonObject.optString(APIStatic.Key.studentId);
         this.name = jsonObject.optString(APIStatic.Key.name);
@@ -34,9 +43,17 @@ public class Student {
         this.section = jsonObject.optString(APIStatic.Key.section);
         this.fatherName = jsonObject.optString(APIStatic.Key.fatherName);
         this.gender = jsonObject.optString(APIStatic.Key.gender);
-        this.email = jsonObject.optString("email");
-        this.mobile = jsonObject.optString("mobile");
-        this.school = jsonObject.optInt("school");
+        this.email = jsonObject.optString(APIStatic.Key.email);
+        this.mobile = jsonObject.optString(APIStatic.Key.mobile);
+        this.school = jsonObject.optInt(APIStatic.Key.school);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getStudentId() {
