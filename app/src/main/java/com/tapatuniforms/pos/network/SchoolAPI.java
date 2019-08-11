@@ -86,6 +86,7 @@ public class SchoolAPI {
     public void getStudentDetails(int id, Student[] studentDetails, DatabaseSingleton db) throws JSONException {
         if (!Validator.isNetworkConnected(context)) {
             studentDetails[0] = db.studentDao().getStudent(id);
+            Toast.makeText(context, "Order will be placed for: " + studentDetails[0].getName(), Toast.LENGTH_SHORT).show();
             return;
         }
 

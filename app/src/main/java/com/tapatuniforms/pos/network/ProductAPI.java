@@ -129,12 +129,21 @@ public class ProductAPI {
                     // Response Received
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject productJSON = response.optJSONObject(i);
-                        productList.add(new ProductHeader(productJSON));
-                        allProducts.add(new ProductHeader(productJSON));
+                        ProductHeader product = new ProductHeader(productJSON);
+
+                        productList.add(product);
+                        allProducts.add(product);
+
+                        //TODO: check sync status, delete the item and insert it again
+                        /*if (!product.isSynced()) {
+                            db.productHeaderDao().deleteById(product.getId());
+                            db.productHeaderDao().insertProductHeader(product);
+                        }*/
                     }
 
-                    //TODO: change this logic, products should be synced on the basis of their sync status, not size
-                    if (productList.size() != localProductList.size()) {
+                    //TODO: 1. change this logic, products should be synced on the basis of their sync status, not size
+                    //TODO: 2. sync status is to be fetched from the server(for each model in the DB)
+                    if (localProductList == null || localProductList.size() < 1) {
                         ArrayList<ProductHeader> productHeaderList = new ArrayList<>();
                         ArrayList<ProductVariant> productVariantList = new ArrayList<>();
                         for (int i = 0; i < productList.size(); i++) {

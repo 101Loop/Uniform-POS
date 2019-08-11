@@ -28,8 +28,9 @@ public class ProductVariant {
     private int warehouseStock;
     private int displayStock;
     private int transferOrderCount;
+    private boolean isSynced;
 
-    public ProductVariant(int id, int productId, String size, double price, int warehouseStock, int displayStock, int transferOrderCount) {
+    public ProductVariant(int id, int productId, String size, double price, int warehouseStock, int displayStock, int transferOrderCount, boolean isSynced) {
         this.id = id;
         this.productId = productId;
         this.size = size;
@@ -37,6 +38,7 @@ public class ProductVariant {
         this.warehouseStock = warehouseStock;
         this.displayStock = displayStock;
         this.transferOrderCount = transferOrderCount;
+        this.isSynced = isSynced;
     }
 
     public ProductVariant(JSONObject jsonObject, int position) {
@@ -106,5 +108,13 @@ public class ProductVariant {
 
     public void setTransferOrderCount(int transferOrderCount) {
         this.transferOrderCount = transferOrderCount;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
     }
 }

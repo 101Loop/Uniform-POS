@@ -169,4 +169,11 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
     public void setOnIndentClickListener(OnIndentClickListener listener) {
         this.listener = listener;
     }
+
+    public void clearSelectedIndent() {
+        selectedIndent = null;
+        lastIndent = null;
+        lastViewHolder = null;
+        notifyDataSetChanged();
+    }
 }

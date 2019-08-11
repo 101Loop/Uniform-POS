@@ -22,6 +22,8 @@ import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.Indent;
+import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.School;
 
 import org.json.JSONException;
@@ -50,13 +52,16 @@ public class StockOrderAPI {
     /**
      * Method to get indent list
      * stores the data when online and displays them if offline
-     *
      * @param indentList List of Indent, used to update the fetched data
+     * @param allIndentList
+     * @param boxList
+     * @param allBoxList
      * @param adapter    reference to the adapter which is used to notify any changes
      * @param instance   reference of the calling class
      * @param db         DatabaseSingleton reference for db transactions
      */
-    public void getIndentList(ArrayList<Indent> indentList, ArrayList<School> schoolList, StockIndentAdapter adapter, StockEntryFragment instance, DatabaseSingleton db) {
+    public void getIndentList(ArrayList<Indent> indentList, ArrayList<Indent> allIndentList, ArrayList<Box> boxList, ArrayList<Box> allBoxList, ArrayList<School> schoolList,
+                              StockIndentAdapter adapter, StockEntryFragment instance, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
             indentList.addAll(db.indentDao().getAll());
             schoolList.addAll(db.schoolDao().getAll());
@@ -78,6 +83,8 @@ public class StockOrderAPI {
                         }
                     }
 
+                    allIndentList.addAll(indentList);
+
                     if (schoolList.size() != db.schoolDao().getAll().size()) {
                         db.schoolDao().deleteAll();
                         db.schoolDao().insertAll(schoolList);
@@ -88,8 +95,13 @@ public class StockOrderAPI {
                         db.indentDao().insertAll(indentList);
                     }
 
-                    instance.checkIndentsAvailability();
-                    adapter.notifyDataSetChanged();
+                    if (instance != null) {
+                        instance.checkIndentsAvailability();
+                    }
+
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
+                    }
                 },
                 new APIErrorListener(context),
                 context);
@@ -102,21 +114,29 @@ public class StockOrderAPI {
     /**
      * Method to get box list
      * stores the data when online and displays them if offline
-     *
      * @param id
      * @param boxList  List of Box, used to update the fetched data
+     * @param allBoxList
      * @param adapter  reference to the adapter which is used to notify any changes
      * @param instance reference of the calling class
      * @param db       DatabaseSingleton reference for db transactions
      */
-    public void getBoxList(long id, ArrayList<Box> boxList, StockBoxAdapter adapter,
+    public void getBoxList(long id, ArrayList<Box> boxList, ArrayList<Box> allBoxList, StockBoxAdapter adapter,
                            StockEntryFragment instance, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
             List<Box> boxes = db.boxDao().getBoxesByIndent(id);
 
             boxList.clear();
             boxList.addAll(boxes);
-            instance.checkBoxAvailability();
+
+            if (instance != null) {
+                instance.checkBoxAvailability();
+            }
+
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+
             return;
         }
 
@@ -125,23 +145,34 @@ public class StockOrderAPI {
                 APIStatic.StockOrder.getIndentUrl + id + APIStatic.StockOrder.getBoxUrl,
                 null,
                 response -> {
+                    boxList.clear();
+                    allBoxList.clear();
+
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            boxList.add(new Box(jsonObject));
+                            Box box = new Box(jsonObject);
+                            boxList.add(box);
+//                            db.boxDao().insert(box);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
 
+                    allBoxList.addAll(boxList);
                     //TODO: data to be stored on the basis of sync status(for each db instance)
 //                    if (boxList.size() != db.boxDao().getAll().size()) {
-                    db.boxDao().deleteAll();
+//                    db.boxDao().deleteAll();
                     db.boxDao().insertAll(boxList);
 //                    }
 
-                    instance.checkBoxAvailability();
-                    adapter.notifyDataSetChanged();
+                    if (instance != null) {
+                        instance.checkBoxAvailability();
+                    }
+
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
+                    }
                 },
                 new APIErrorListener(context),
                 context);
@@ -194,9 +225,24 @@ public class StockOrderAPI {
                         }
                     }
 
-                    if (boxItemList.size() != db.boxItemDao().getAll().size()) {
-                        db.boxItemDao().insertAll(boxItemList);
-                    }
+//                    if (boxItemList.size() != db.boxItemDao().getAll().size()) {
+                    db.boxItemDao().insertAll(boxItemList);
+
+                        for (BoxItem boxItem : boxItemList) {
+                            ProductHeader product = db.productHeaderDao().getProductHeaderById(boxItem.getProductId());
+
+                                ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
+                            if (!productVariant.isSynced()) {
+                                db.productVariantDao().setSyncStatus(true, productVariant.getId());
+
+                                int warehouseStock = productVariant.getWarehouseStock();
+                                int itemScanned = boxItem.getNumberOfScannedItems();
+
+                                db.productVariantDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
+                            }
+                        }
+
+//                    }
 
                     stockItemDialog.checkAvailability();
                     adapter.notifyDataSetChanged();

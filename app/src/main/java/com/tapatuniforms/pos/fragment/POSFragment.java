@@ -244,11 +244,14 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             String studentId = studentIdText.getText().toString();
 
             if (!studentId.isEmpty()) {
-                try {
-                    SchoolAPI.getInstance(getContext()).getStudentDetails(Integer.parseInt(studentId), studentDetails, db);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                for (Student student : studentList) {
+                    if (student.getStudentId().equals(studentId)) {
+                        studentDetails[0] = student;
+                        Toast.makeText(getContext(), "Order will be placed for: " + student.getName(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+                Toast.makeText(getContext(), "No student found", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -663,16 +666,17 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     @Override
     public void onDiscountClickListener(int discount, String discountType) {
 
-        if (cartList.size() > 0) {
-            discountButton.setClickable(false);
-
-            discountRecyclerView.setVisibility(View.GONE);
-            cartRecyclerView.setVisibility(View.VISIBLE);
-
-            this.discount = discount;
-            this.discountType = discountType;
-            updatePriceView();
+        if (cartList.size() < 1) {
+            Toast.makeText(getContext(), "Your cart is empty", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        discountRecyclerView.setVisibility(View.GONE);
+        cartRecyclerView.setVisibility(View.VISIBLE);
+
+        this.discount = discount;
+        this.discountType = discountType;
+        updatePriceView();
     }
 
     /**

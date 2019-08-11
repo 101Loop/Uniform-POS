@@ -63,7 +63,7 @@
         android:padding="8dp">
 
         <EditText
-            android:id="@+id/itemReceivedView"
+            android:id="@+id/moveText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -76,6 +76,7 @@
             android:textSize="17sp" />
 
         <Button
+            android:id="@+id/moveButton"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
