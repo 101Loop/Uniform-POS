@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.ProductHeader;
+import com.tapatuniforms.pos.model.ProductVariant;
 
 import java.util.ArrayList;
 
@@ -42,14 +45,35 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BoxItem currentItem = boxItemList.get(position);
         ProductHeader product = db.productHeaderDao().getProductHeaderById(currentItem.getProductId());
+        ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
 
         String name = product.getName();
         holder.itemNameView.setText(name);
         holder.itemSentView.setText(String.valueOf(currentItem.getNumberOfItems()));
         holder.itemScannedView.setText(String.valueOf(currentItem.getNumberOfScannedItems()));
+        holder.itemShelfView.setText(String.valueOf(productVariant.getDisplayStock()));
 
-//        int itemsInShelf =
-//        holder.itemShelfView.setText(String.valueOf(currentItem.getNumberOfShelfItems()));
+        holder.moveButton.setOnClickListener(view -> {
+            int moveCount = Integer.parseInt(holder.itemsToMoveText.getText().toString().trim());
+            int scannedCount = Integer.parseInt(holder.itemScannedView.getText().toString().trim());
+
+            if (moveCount > scannedCount) {
+                Toast.makeText(context, "Items can't be greater than scanned items", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int displayCount = productVariant.getDisplayStock();
+            int warehouseCount = productVariant.getWarehouseStock();
+            int shelfCount = displayCount + moveCount;
+
+            holder.itemsToMoveText.setText(null);
+            holder.itemShelfView.setText(String.valueOf(shelfCount));
+
+            db.productVariantDao().updateWarehouseStock(warehouseCount - moveCount, productVariant.getId());
+            db.productVariantDao().updateDisplayStock(displayCount + moveCount, productVariant.getId());
+
+            Toast.makeText(context, "Items transferred successfully", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -59,8 +83,9 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView itemNameView, itemSentView, itemScannedView, itemShelfView;
-        EditText itemReceivedView;
+        EditText itemsToMoveText;
         ImageView itemCheckedStatus;
+        Button moveButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,8 +93,9 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             itemSentView = itemView.findViewById(R.id.itemSentView);
             itemScannedView = itemView.findViewById(R.id.itemScannedView);
             itemShelfView = itemView.findViewById(R.id.itemShelfView);
-            itemReceivedView = itemView.findViewById(R.id.itemReceivedView);
+            itemsToMoveText = itemView.findViewById(R.id.moveText);
             itemCheckedStatus = itemView.findViewById(R.id.itemCheckedStatus);
+            moveButton = itemView.findViewById(R.id.moveButton);
         }
     }
 }

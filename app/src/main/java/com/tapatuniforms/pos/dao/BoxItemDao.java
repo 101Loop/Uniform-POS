@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.tapatuniforms.pos.model.BoxItem;
@@ -19,7 +20,7 @@ public interface BoxItemDao {
     @Query("SELECT * FROM BoxItem WHERE id = :id")
     BoxItem getBoxItemByOutlet(long id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<BoxItem> BoxItemList);
 
     @Insert

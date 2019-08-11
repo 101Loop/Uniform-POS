@@ -29,5 +29,8 @@ public interface ProductHeaderDao {
     void deleteAllProductHeaders();
 
     @Query("UPDATE ProductHeader SET isSynced=:syncStatus WHERE id=:id")
-    void setSyncState(int id, boolean syncStatus);
+    void setSync(int id, boolean syncStatus);
+
+    @Query("DELETE FROM ProductHeader WHERE id = :id")
+    void deleteById(int id);
 }

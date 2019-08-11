@@ -38,6 +38,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
     private StockBoxAdapter stockBoxAdapter;
     private ArrayList<Box> boxList;
+    private ArrayList<Box> allBoxList;
 
     private StockIndentAdapter stockIndentAdapter;
     private ArrayList<Indent> indentList;
@@ -76,13 +77,14 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         indentList = new ArrayList<>();
         schoolList = new ArrayList<>();
         stockIndentAdapter = new StockIndentAdapter(getContext(), indentList);
+        boxList = new ArrayList<>();
+        allBoxList = new ArrayList<>();
         getIndentList();
         indentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         indentRecyclerView.addItemDecoration(new GridItemDecoration(8, 8));
         indentRecyclerView.setAdapter(stockIndentAdapter);
         stockIndentAdapter.setOnIndentClickListener(this);
 
-        boxList = new ArrayList<>();
         stockBoxAdapter = new StockBoxAdapter(boxList);
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         requestRecyclerView.setAdapter(stockBoxAdapter);
@@ -91,16 +93,23 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         searchButton.setOnClickListener(view -> {
             String searchText = searchEditText.getText().toString();
 
-            allIndentList.addAll(indentList);
-            indentList.clear();
+            if (!searchText.isEmpty()) {
+                indentList.clear();
 
-            for (Indent indent : allIndentList) {
-                if (searchText.equals(String.valueOf(indent.getId()))) {
-                    indentList.add(indent);
+                for (Indent indent : allIndentList) {
+                    if (searchText.equals(String.valueOf(indent.getId())) || searchText.equals(indent.getName())) {
+                        indentList.add(indent);
+                    }
                 }
-            }
 
-            stockIndentAdapter.notifyDataSetChanged();
+                stockIndentAdapter.clearSelectedIndent();
+                boxList.clear();
+                stockBoxAdapter.notifyDataSetChanged();
+
+                boxText.setText(Objects.requireNonNull(getContext()).getString(R.string.select_indent_to_get_boxes));
+                checkBoxAvailability();
+//                stockIndentAdapter.notifyDataSetChanged();
+            }
         });
     }
 
@@ -122,7 +131,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
      * Method to get list of indents
      */
     private void getIndentList() {
-        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, schoolList, stockIndentAdapter, this, db);
+        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, allIndentList, boxList, allBoxList, schoolList, stockIndentAdapter, this, db);
     }
 
     /**
@@ -131,9 +140,9 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
      */
     @Override
     public void onClickListener(long indentId, String indentName) {
-        boxList.clear();
 
-        StockOrderAPI.getInstance(getContext()).getBoxList(indentId, boxList, stockBoxAdapter, this, db);
+        StockOrderAPI.getInstance(getContext()).getBoxList(indentId, boxList, allBoxList, stockBoxAdapter, this, db);
+
         boxText.setText(Objects.requireNonNull(getContext()).getString(R.string.no_boxes_available));
     }
 

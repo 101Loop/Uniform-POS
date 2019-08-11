@@ -29,10 +29,9 @@ public class Box {
     private int itemsVerified;
     private String numberOfMaleItems;
     private String numberOfFemaleItems;
-    private String indentName;
 
     public Box(long id, int indentId, String name, String serialNumber, String dateTime, int numberOfItems,
-               int itemsVerified, String numberOfMaleItems, String numberOfFemaleItems, String indentName) {
+               int itemsVerified, String numberOfMaleItems, String numberOfFemaleItems) {
         this.id = id;
         this.indentId = indentId;
         this.name = name;
@@ -42,7 +41,6 @@ public class Box {
         this.itemsVerified = itemsVerified;
         this.numberOfMaleItems = numberOfMaleItems;
         this.numberOfFemaleItems = numberOfFemaleItems;
-        this.indentName = indentName;
     }
 
     public Box(JSONObject jsonObject) {
@@ -127,13 +125,5 @@ public class Box {
 
     public void setNumberOfFemaleItems(String numberOfFemaleItems) {
         this.numberOfFemaleItems = numberOfFemaleItems;
-    }
-
-    public String getIndentName() {
-        return indentName;
-    }
-
-    public void setIndentName(String indentName) {
-        this.indentName = indentName;
     }
 }

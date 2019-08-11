@@ -36,4 +36,7 @@ public interface ProductVariantDao {
 
     @Query("DELETE FROM ProductVariant")
     void deleteAllProductVariants();
+
+    @Query("UPDATE productvariant SET isSynced = :syncStatus WHERE id = :id")
+    void setSyncStatus(boolean syncStatus, int id);
 }

@@ -18,6 +18,7 @@ import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.BoxItem;
+import com.tapatuniforms.pos.model.Indent;
 import com.tapatuniforms.pos.network.StockOrderAPI;
 
 import java.util.ArrayList;
@@ -58,7 +59,9 @@ public class StockItemDialog extends AlertDialog {
         db = DatabaseHelper.getDatabase(getContext());
 
         boxNameView.setText(box.getName());
-        indentNameView.setText(box.getIndentName());
+
+        Indent indent = db.indentDao().getIndent(box.getIndentId());
+        indentNameView.setText(indent.getName());
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         boxItemList = new ArrayList<>();
