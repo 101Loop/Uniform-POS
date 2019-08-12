@@ -67,16 +67,24 @@
                 android:textColor="@color/black" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/itemQuantityEditText"
+        <LinearLayout
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/stroke_around_rect"
             android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:text="0" />
+            android:layout_marginEnd="20dp">
+
+            <EditText
+                android:id="@+id/itemQuantityEditText"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/stroke_around_rect"
+                android:gravity="center"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:text="0" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </TableRow>

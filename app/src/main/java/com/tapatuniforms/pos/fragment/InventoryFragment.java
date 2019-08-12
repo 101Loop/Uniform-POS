@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.tapatuniforms.pos.network.ProductAPI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener,
         InventoryOrderAdapter.ButtonClickListener, CategoryAdapter.CategoryClickListener, InventoryDialog.DialogDismissedListener {
@@ -226,6 +228,10 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         dialog.setOnDialogDismissListener(this);
 
         dialog.show();
+
+        Objects.requireNonNull(dialog.getWindow()).clearFlags(
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     /**

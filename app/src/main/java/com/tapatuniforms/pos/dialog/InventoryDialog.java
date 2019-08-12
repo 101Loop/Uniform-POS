@@ -135,6 +135,11 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                         int warehouseStock = currentVariant.getWarehouseStock();
                         int displayStock = currentVariant.getDisplayStock();
 
+                        if (transferOrderCount > warehouseStock) {
+                            Toast.makeText(getContext(), "Not enough items in warehouse", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         db.productVariantDao().updateWarehouseStock(warehouseStock - transferOrderCount, currentVariant.getId());
                         db.productVariantDao().updateDisplayStock(displayStock + transferOrderCount, currentVariant.getId());
                         db.productVariantDao().updateTransferOrderCount(0, currentVariant.getId());
@@ -178,9 +183,15 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
      * Method to update total count
      *
      * @param count Count to be added (+1 for adding, -1 for subtracting)
+     * @param isDone 0 if it is not from done click
      */
     @Override
-    public void onItemChangeListener(int count) {
+    public void onItemChangeListener(int count, int isDone) {
+
+        if (isDone == 1) {
+            totalCount = 0;
+        }
+
         totalCount += count;
         totalTransferView.setText(String.valueOf(totalCount));
     }

@@ -67,7 +67,8 @@
                     android:paddingStart="2dp"
                     android:textSize="14sp"
                     android:textColor="@color/black1"
-                    android:theme="@style/EditTextTheme" />
+                    android:theme="@style/EditTextTheme"
+                    android:imeOptions="actionDone"/>
 
                 <Button
                     android:id="@+id/searchButton"
@@ -108,7 +109,8 @@
                     android:paddingEnd="8dp"
                     android:paddingStart="2dp"
                     android:textColor="@color/black1"
-                    android:theme="@style/EditTextTheme" />
+                    android:theme="@style/EditTextTheme"
+                    android:imeOptions="actionDone"/>
 
                 <Button
                     android:layout_width="0dp"

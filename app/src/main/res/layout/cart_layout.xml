@@ -42,7 +42,8 @@
                 android:hint="Student ID"
                 android:inputType="numberDecimal"
                 android:textColor="@color/black1"
-                android:theme="@style/EditTextTheme" />
+                android:theme="@style/EditTextTheme"
+                android:imeOptions="actionDone"/>
 
             <Button
                 android:id="@+id/submit"
@@ -54,7 +55,7 @@
                 android:background="@color/colorPrimary"
                 android:text="Submit"
                 android:textAllCaps="false"
-                android:textColor="@color/white1" />
+                android:textColor="@color/white1"/>
         </LinearLayout>
 
         <Button

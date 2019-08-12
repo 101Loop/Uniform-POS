@@ -28,4 +28,7 @@ public interface BoxItemDao {
 
     @Query("DELETE FROM BoxItem")
     void deleteAll();
+
+    @Query("UPDATE BoxItem SET numberOfScannedItems = :numberOfScannedItems WHERE id = :id")
+    void updateScannedItems(int numberOfScannedItems, int id);
 }
