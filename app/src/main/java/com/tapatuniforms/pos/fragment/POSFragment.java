@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -76,7 +77,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private ArrayList<ProductHeader> femaleList;
     private ArrayList<ProductHeader> allProducts, productList;
     private ArrayList<CartItem> cartList;
-    private ArrayList<String> sizeList;
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
     private CartAdapter cartAdapter;
@@ -86,7 +86,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private ImageView discountButton;
     private ImageView cartButton;
 
-    private double subTotal, tax, total;
+    private double total;
     private boolean isMaleSelected;
     private boolean notSelectedYet = true;
 
@@ -169,7 +169,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         studentList = new ArrayList<>();
         maleList = new ArrayList<>();
         femaleList = new ArrayList<>();
-        sizeList = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(), productList);
         cartList = new ArrayList<>();
         cartAdapter = new CartAdapter(getContext(), cartList);
@@ -239,21 +238,17 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             }
         });
 
-        //fetch student details
-        submitButton.setOnClickListener(view -> {
-            String studentId = studentIdText.getText().toString();
-
-            if (!studentId.isEmpty()) {
-                for (Student student : studentList) {
-                    if (student.getStudentId().equals(studentId)) {
-                        studentDetails[0] = student;
-                        Toast.makeText(getContext(), "Order will be placed for: " + student.getName(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                Toast.makeText(getContext(), "No student found", Toast.LENGTH_SHORT).show();
+        studentIdText.setOnEditorActionListener(((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                onSubmitClick();
+                return true;
             }
-        });
+
+            return false;
+        }));
+
+        //fetch student details
+        submitButton.setOnClickListener(view -> onSubmitClick());
 
         //add details button
         addDetailsButton.setOnClickListener(view -> showAddDetailsDialog());
@@ -328,6 +323,23 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         // Fetch Data
         ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
         ProductAPI.fetchProducts(getContext(), allProducts, productList, productAdapter, null, db, null, null);
+    }
+
+    private void onSubmitClick() {
+        String studentId = studentIdText.getText().toString();
+
+        Validator.hideKeyboard(Objects.requireNonNull(getActivity()));
+
+        if (!studentId.isEmpty()) {
+            for (Student student : studentList) {
+                if (student.getStudentId().equals(studentId)) {
+                    studentDetails[0] = student;
+                    Toast.makeText(getContext(), "Order will be placed for: " + student.getName(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            Toast.makeText(getContext(), "No student found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -550,7 +562,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             return;
         }
 
-        final PaymentDialog dialog = new PaymentDialog(getContext(), total, studentDetails[0]);
+        final PaymentDialog dialog = new PaymentDialog(getActivity(), total, studentDetails[0]);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -36,8 +37,11 @@ public class PaymentDialog extends AlertDialog {
 
     private double cash = 0, payTM = 0, card = 0;
 
+    private Activity activity;
+
     public PaymentDialog(Context context, double total, Student studentDetails) {
         super(context);
+        this.activity = (Activity) context;
         this.total = total;
         this.studentDetails = studentDetails;
     }
@@ -61,157 +65,22 @@ public class PaymentDialog extends AlertDialog {
         totalAmountText.setText("₹ " + total);
 
         //add cash
-        cashAddButton.setOnClickListener(view -> {
-            String cashText = cashEditText.getText().toString().trim();
-
-            if (!cashText.isEmpty()) {
-                double cashAmount = Double.parseDouble(cashText);
-
-                if (cashAmount != 0) {
-                    if (total == paid) {
-                        Toast.makeText(getContext(), "Amount has been fully paid!", Toast.LENGTH_SHORT).show();
-                        cashEditText.setText(null);
-                        return;
-                    }
-
-                    total -= cashAmount;
-
-                    if (paid > total) {
-                        Toast.makeText(getContext(), "Amount should not be greater than the total amount", Toast.LENGTH_SHORT).show();
-                        total += cashAmount;
-                        return;
-                    }
-
-                    cash += cashAmount;
-
-                    if (cashTransaction == null) {
-                        cashTransaction = new Transaction(getContext().getResources().getString(R.string.cash), cashAmount, -1, false);
-                    } else {
-                        double cash = cashTransaction.getAmount();
-                        cashAmount += cash;
-                        cashTransaction.setAmount(cashAmount);
-                    }
-
-                    cashAmountText.setText("₹ " + cashAmount);
-                    totalAmountText.setText("₹ " + total);
-                }
-            }
-        });
-
-        //cancel cash
-        cashCancelButton.setOnClickListener(view -> {
-
-            if (cash > 0) {
-                total += cash;
-                cash = 0;
-                cashEditText.setText(null);
-                cashAmountText.setText("₹ 0");
-                totalAmountText.setText("₹ " + total);
-                cashTransaction = null;
-            }
-        });
+        cashAddButton.setOnClickListener(view -> onAddClick(getContext().getString(R.string.cash), cashEditText, cash, cashTransaction, cashAmountText));
 
         //add paytm
-        paytmAddButton.setOnClickListener(view -> {
-            String paytmText = paytmEditText.getText().toString().trim();
-
-            if (!paytmText.isEmpty()) {
-                double paytmAmount = Double.parseDouble(paytmText);
-
-                if (paytmAmount != 0) {
-                    if (total == paid) {
-                        Toast.makeText(getContext(), "Amount has been fully paid!", Toast.LENGTH_SHORT).show();
-                        paytmEditText.setText(null);
-                        return;
-                    }
-
-                    total -= paytmAmount;
-
-                    if (paid > total) {
-                        Toast.makeText(getContext(), "Amount should not be greater than the total amount", Toast.LENGTH_SHORT).show();
-                        total += paytmAmount;
-                        return;
-                    }
-
-                    payTM += paytmAmount;
-
-                    if (paytmTransaction == null) {
-                        paytmTransaction = new Transaction(getContext().getResources().getString(R.string.paytm), paytmAmount, -1, false);
-                    } else {
-                        double paytm = paytmTransaction.getAmount();
-                        paytmAmount += paytm;
-                        paytmTransaction.setAmount(paytmAmount);
-                    }
-
-                    paytmAmountText.setText("₹ " + paytmAmount);
-                    totalAmountText.setText("₹ " + total);
-                }
-            }
-        });
-
-        //cancel paytm
-        paytmCancelButton.setOnClickListener(view -> {
-
-            if (payTM > 0) {
-                total += payTM;
-                payTM = 0;
-                paytmEditText.setText(null);
-                paytmAmountText.setText("₹ 0");
-                totalAmountText.setText("₹ " + total);
-                paytmTransaction = null;
-            }
-        });
+        paytmAddButton.setOnClickListener(view -> onAddClick(getContext().getString(R.string.paytm), paytmEditText, payTM, paytmTransaction, paytmAmountText));
 
         //add card
-        cardAddButton.setOnClickListener(view -> {
-            String cardText = cardEditText.getText().toString().trim();
+        cardAddButton.setOnClickListener(view -> onAddClick(getContext().getString(R.string.card), cardEditText, card, cardTransaction, cardAmountText));
 
-            if (!cardText.isEmpty()) {
-                double cardAmount = Double.parseDouble(cardText);
+        //cancel cash
+        cashCancelButton.setOnClickListener(view -> onCancelClick(getContext().getString(R.string.cash), cash, cashEditText, cashAmountText));
 
-                if (cardAmount != 0) {
-                    if (total == paid) {
-                        Toast.makeText(getContext(), "Amount has been fully paid!", Toast.LENGTH_SHORT).show();
-                        cardEditText.setText(null);
-                        return;
-                    }
-
-                    total -= cardAmount;
-
-                    if (paid > total) {
-                        Toast.makeText(getContext(), "Amount should not be greater than the total amount", Toast.LENGTH_SHORT).show();
-                        total += cardAmount;
-                        return;
-                    }
-
-                    card += cardAmount;
-
-                    if (cardTransaction == null) {
-                        cardTransaction = new Transaction(getContext().getResources().getString(R.string.card), cardAmount, -1, false);
-                    } else {
-                        double cash = cardTransaction.getAmount();
-                        cardAmount += cash;
-                        cardTransaction.setAmount(cardAmount);
-                    }
-
-                    cardAmountText.setText("₹ " + cardAmount);
-                    totalAmountText.setText("₹ " + total);
-                }
-            }
-        });
+        //cancel paytm
+        paytmCancelButton.setOnClickListener(view -> onCancelClick(getContext().getString(R.string.paytm), payTM, paytmEditText, paytmAmountText));
 
         //cancel card
-        cardCancelButton.setOnClickListener(view -> {
-
-            if (card > 0) {
-                total += card;
-                card = 0;
-                cardEditText.setText(null);
-                cardAmountText.setText("₹ 0");
-                totalAmountText.setText("₹ " + total);
-                cardTransaction = null;
-            }
-        });
+        cardCancelButton.setOnClickListener(view -> onCancelClick(getContext().getString(R.string.card), card, cardEditText, cardAmountText));
 
         //order click
         completeOrderButton.setOnClickListener(v -> {
@@ -266,6 +135,80 @@ public class PaymentDialog extends AlertDialog {
 
         completeOrderButton = findViewById(R.id.completeOrderButton);
         closeButton = findViewById(R.id.closeButton);
+    }
+
+    private void onAddClick(String type, EditText editText, double paidBy, Transaction transactionType, TextView textView) {
+        String amountText = editText.getText().toString().trim();
+
+        if (!amountText.isEmpty()) {
+            double amount = 0;
+
+            try {
+                amount = Double.parseDouble(amountText);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+
+            if (amount != 0) {
+                if (total == paid) {
+                    Toast.makeText(getContext(), "Amount has been fully paid!", Toast.LENGTH_SHORT).show();
+                    editText.setText(null);
+                    return;
+                }
+
+                paid += amount;
+
+                if (paid > total) {
+                    Toast.makeText(getContext(), "Amount should not be greater than the total amount", Toast.LENGTH_SHORT).show();
+                    paid -= amount;
+                    return;
+                }
+
+                paidBy += amount;
+
+                if (transactionType == null) {
+                    transactionType = new Transaction(type, amount, -1, false);
+                } else {
+                    double cash = transactionType.getAmount();
+                    amount += cash;
+                    transactionType.setAmount(amount);
+                }
+
+                if (type.equals(getContext().getString(R.string.cash))) {
+                    cashTransaction = transactionType;
+                    cash = paidBy;
+                } else if (type.equals(getContext().getString(R.string.card))) {
+                    cardTransaction = transactionType;
+                    card = paidBy;
+                } else {
+                    paytmTransaction = transactionType;
+                    payTM = paidBy;
+                }
+
+                textView.setText("₹ " + amount);
+            }
+        }
+    }
+
+    private void onCancelClick(String type, double amount, EditText editText, TextView amountText) {
+
+        if (amount > 0) {
+            paid -= amount;
+            amount = 0;
+            editText.setText(null);
+            amountText.setText("₹ 0");
+
+            if (type.equals(getContext().getString(R.string.cash))) {
+                cashTransaction = null;
+                cash = amount;
+            } else if (type.equals(getContext().getString(R.string.card))) {
+                cardTransaction = null;
+                card = amount;
+            } else {
+                paytmTransaction = null;
+                payTM = amount;
+            }
+        }
     }
 
     /**

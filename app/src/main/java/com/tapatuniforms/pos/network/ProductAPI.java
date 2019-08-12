@@ -1,6 +1,7 @@
 package com.tapatuniforms.pos.network;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -216,6 +217,26 @@ public class ProductAPI {
         // Save transaction items to database
         db.transactionDao().insertAll(transactionList);
 
+        if (subOrderList.size() > 0) {
+            for (SubOrder subOrder : subOrderList) {
+                List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById((int) subOrder.getProductApiId());
+
+                ProductVariant productVariant = null;
+                for (ProductVariant currentVariant : productVariantList) {
+                    if (currentVariant.getPrice() == subOrder.getPrice()) {
+                        productVariant = currentVariant;
+                    }
+                }
+                assert productVariant != null;
+                if (subOrder.getQuantity() > productVariant.getDisplayStock()) {
+                    Log.e(TAG, "Syncing suborder: items count can't be greater than items in the display");
+                    return;
+                }
+
+                db.productVariantDao().updateDisplayStock(productVariant.getDisplayStock() - subOrder.getQuantity(), productVariant.getId());
+            }
+        }
+
         try {
             syncOrder(context, db, order);
         } catch (JSONException e) {
@@ -296,22 +317,27 @@ public class ProductAPI {
             object.put(APIStatic.Key.price, subOrder.getPrice());
             object.put(APIStatic.Key.qunatity, subOrder.getQuantity());
 
-            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById((int) subOrder.getProductApiId());
-            ProductVariant productVariant = null;
+//            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById((int) subOrder.getProductApiId());
+            /*ProductVariant productVariant = null;
             for (ProductVariant currentVariant : productVariantList) {
                 if (currentVariant.getPrice() == subOrder.getPrice()) {
                     productVariant = currentVariant;
                 }
-            }
+            }*/
 
-            ProductVariant finalProductVariant = productVariant;
+//            ProductVariant finalProductVariant = productVariant;
             DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                     Request.Method.POST, APIStatic.Order.subOrderUrl, object,
                     response -> {
-                        if (finalProductVariant != null) {
+                        /*if (finalProductVariant != null) {
 
-                            db.productVariantDao().updateDisplayStock(finalProductVariant.getDisplayStock() - subOrder.getQuantity(), finalProductVariant.getId());
-                        }
+                            *//*if (subOrder.getQuantity() > finalProductVariant.getDisplayStock()) {
+                                Log.e(TAG, "Syncing suborder: items count can't be greater than items in the display");
+                                return;
+                            }*//*
+
+//                            db.productVariantDao().updateDisplayStock(finalProductVariant.getDisplayStock() - subOrder.getQuantity(), finalProductVariant.getId());
+                        }*/
                     }, new APIErrorListener(context), context);
 
             request.setRetryPolicy(new DefaultRetryPolicy(0, -1,

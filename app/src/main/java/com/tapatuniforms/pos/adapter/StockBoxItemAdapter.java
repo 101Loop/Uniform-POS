@@ -57,6 +57,11 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             int moveCount = Integer.parseInt(holder.itemsToMoveText.getText().toString().trim());
             int scannedCount = Integer.parseInt(holder.itemScannedView.getText().toString().trim());
 
+            if (moveCount == 0) {
+                Toast.makeText(context, "Items to be moved should be greater than 0", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (moveCount > scannedCount) {
                 Toast.makeText(context, "Items can't be greater than scanned items", Toast.LENGTH_SHORT).show();
                 return;
@@ -65,12 +70,20 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             int displayCount = productVariant.getDisplayStock();
             int warehouseCount = productVariant.getWarehouseStock();
             int shelfCount = displayCount + moveCount;
+            int finalScannedItems = scannedCount - moveCount;
+
+            if (moveCount > warehouseCount) {
+                Toast.makeText(context, "Not enough items in warehouse", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             holder.itemsToMoveText.setText(null);
             holder.itemShelfView.setText(String.valueOf(shelfCount));
+            holder.itemScannedView.setText(String.valueOf(finalScannedItems));
 
             db.productVariantDao().updateWarehouseStock(warehouseCount - moveCount, productVariant.getId());
             db.productVariantDao().updateDisplayStock(displayCount + moveCount, productVariant.getId());
+            db.boxItemDao().updateScannedItems(finalScannedItems, currentItem.getId());
 
             Toast.makeText(context, "Items transferred successfully", Toast.LENGTH_SHORT).show();
         });

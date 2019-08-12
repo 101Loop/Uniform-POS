@@ -56,7 +56,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductHeader product = productList.get(position);
-        List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(product.getId());
 
         product.setSizeAlreadyOpened(false);
 
@@ -93,6 +92,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.sizeLayout.setVisibility(View.GONE);
         });
 
+        //TODO: items now can be added, without checking display count(bug discovered)
         holder.addToCartButton.setOnClickListener(view -> {
 
             if (!product.isSizeAlreadyOpened()) {
@@ -100,6 +100,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 product.setSizeAlreadyOpened(true);
 
                 sizeList.clear();
+                List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(product.getId());
                 for (ProductVariant currentVariant : productVariantList) {
                     sizeList.add(currentVariant.getSize());
                 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import com.tapatuniforms.pos.dialog.StockItemDialog;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
+import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.Indent;
 import com.tapatuniforms.pos.model.School;
@@ -45,7 +47,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     private ArrayList<School> schoolList;
     private ArrayList<Indent> allIndentList = new ArrayList<>();
 
-    private EditText searchEditText;
+    private EditText searchEditText, barcodeEditText;
     private Button searchButton;
 
     private DatabaseSingleton db;
@@ -69,6 +71,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         noIndentsLayout = v.findViewById(R.id.noIndentsLayout);
         noBoxLayout = v.findViewById(R.id.noBoxLayout);
         searchEditText = v.findViewById(R.id.searchEditText);
+        barcodeEditText = v.findViewById(R.id.barcodeEditText);
         searchButton = v.findViewById(R.id.searchButton);
         boxText = v.findViewById(R.id.boxesText);
 
@@ -90,27 +93,46 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         requestRecyclerView.setAdapter(stockBoxAdapter);
         stockBoxAdapter.setOnBoxClickListener(this);
 
-        searchButton.setOnClickListener(view -> {
-            String searchText = searchEditText.getText().toString();
+        Validator.hideKeyBoardEditText(getActivity(), barcodeEditText);
 
-            if (!searchText.isEmpty()) {
-                indentList.clear();
-
-                for (Indent indent : allIndentList) {
-                    if (searchText.equals(String.valueOf(indent.getId())) || searchText.equals(indent.getName())) {
-                        indentList.add(indent);
-                    }
-                }
-
-                stockIndentAdapter.clearSelectedIndent();
-                boxList.clear();
-                stockBoxAdapter.notifyDataSetChanged();
-
-                boxText.setText(Objects.requireNonNull(getContext()).getString(R.string.select_indent_to_get_boxes));
-                checkBoxAvailability();
-//                stockIndentAdapter.notifyDataSetChanged();
+        searchEditText.setOnEditorActionListener(((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                onSearchClicked();
+                return true;
             }
-        });
+
+            return false;
+        }));
+
+        searchButton.setOnClickListener(view -> onSearchClicked());
+    }
+
+    private void onSearchClicked() {
+        String searchText = searchEditText.getText().toString();
+
+        Validator.hideKeyboard(Objects.requireNonNull(getActivity()));
+
+        if (!searchText.isEmpty()) {
+            indentList.clear();
+
+            for (Indent indent : allIndentList) {
+                if (searchText.equals(String.valueOf(indent.getId())) || searchText.equals(indent.getName())) {
+                    indentList.add(indent);
+                }
+            }
+
+            stockIndentAdapter.clearSelectedIndent();
+            boxList.clear();
+            stockBoxAdapter.notifyDataSetChanged();
+
+            boxText.setText(Objects.requireNonNull(getContext()).getString(R.string.select_indent_to_get_boxes));
+        } else {
+            indentList.clear();
+            indentList.addAll(allIndentList);
+        }
+
+        checkBoxAvailability();
+        checkIndentsAvailability();
     }
 
     /**
