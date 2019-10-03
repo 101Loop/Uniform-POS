@@ -13,6 +13,9 @@ import com.tapatuniforms.pos.model.User;
 
 import java.util.ArrayList;
 
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
+
 public class MainActivity extends AppCompatActivity {
     private DatabaseSingleton db;
 
@@ -20,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!BuildConfig.DEBUG) {
+            Sentry.init(new AndroidSentryClientFactory(this));
+        }
+
         db = DatabaseHelper.getDatabase(this);
         ArrayList<User> userList = (ArrayList<User>) db.userDao().getAll();
 
