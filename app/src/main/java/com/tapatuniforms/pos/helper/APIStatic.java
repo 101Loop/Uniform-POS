@@ -1,7 +1,7 @@
 package com.tapatuniforms.pos.helper;
 
 public interface APIStatic {
-    String baseURL = "http://tapatapi.civilmachines.com/api/";
+    String baseURL = "https://tapatapi.civilmachines.com/api/";
 //    String baseURL = "http://192.168.1.107:8000/api/";
 
     String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss";
