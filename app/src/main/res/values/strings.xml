@@ -68,4 +68,5 @@
     <string name="billing_screen">Billing Screen</string>
     <string name="total_sale">Total Sale</string>
     <string name="stock">Stock</string>
+    <string name="status">Status</string>
 </resources>

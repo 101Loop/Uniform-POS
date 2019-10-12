@@ -26,16 +26,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.formatter.StackedValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
-import com.github.mikephil.charting.utils.MPPointF;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.DashboardAdapter;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
@@ -48,7 +43,6 @@ import com.tapatuniforms.pos.network.ProductAPI;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class DashboardFragment extends Fragment implements DashboardAdapter.OnClickListener, OnChartValueSelectedListener {
@@ -99,10 +93,9 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
     }
 
     private void initBarChart() {
-        barChart.setOnChartValueSelectedListener(this);
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
-        barChart.getDescription().setEnabled(false);
+        barChart.getDescription().setEnabled(true);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -236,7 +229,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
 
         ArrayList<Integer> colors = new ArrayList<>();
 
-        for (PieChartItem pieChartItem: pieChartItems) {
+        for (PieChartItem pieChartItem : pieChartItems) {
             colors.add(Color.parseColor(pieChartItem.getColor()));
         }
 
@@ -291,48 +284,27 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
 
             barChart.getData().notifyDataChanged();
             barChart.notifyDataSetChanged();
-
         } else {
             set1 = new BarDataSet(values1, "Order Received");
-            set1.setDrawIcons(false);
+            set1.setDrawIcons(true);
 
             set2 = new BarDataSet(values2, "Order Not Received");
             set2.setDrawIcons(false);
 
-            int startColor1 = 0;
-            int startColor2 = 0;
-            int startColor3 = 0;
-            int startColor4 = 0;
-            int startColor5 = 0;
-            int endColor1 = 0;
-            int endColor2 = 0;
-            int endColor3 = 0;
-            int endColor4 = 0;
-            int endColor5 = 0;
+            ArrayList<Integer> colors1 = new ArrayList<>();
+            ArrayList<Integer> colors2 = new ArrayList<>();
 
             Context context = getContext();
             if (context != null) {
-                startColor1 = ContextCompat.getColor(context, android.R.color.holo_orange_light);
-                startColor2 = ContextCompat.getColor(context, android.R.color.holo_blue_light);
-                startColor3 = ContextCompat.getColor(context, android.R.color.holo_orange_light);
-                startColor4 = ContextCompat.getColor(context, android.R.color.holo_green_light);
-                startColor5 = ContextCompat.getColor(context, android.R.color.holo_red_light);
-                endColor1 = ContextCompat.getColor(context, android.R.color.holo_blue_dark);
-                endColor2 = ContextCompat.getColor(context, android.R.color.holo_purple);
-                endColor3 = ContextCompat.getColor(context, android.R.color.holo_green_dark);
-                endColor4 = ContextCompat.getColor(context, android.R.color.holo_red_dark);
-                endColor5 = ContextCompat.getColor(context, android.R.color.holo_orange_dark);
+                for (int i=0; i<count; i++){
+                    Random random = new Random();
+                    colors1.add(Color.rgb(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
+                    colors2.add(Color.rgb(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
+                }
             }
 
-            List<GradientColor> gradientColors = new ArrayList<>();
-            gradientColors.add(new GradientColor(startColor1, endColor1));
-            gradientColors.add(new GradientColor(startColor2, endColor2));
-            gradientColors.add(new GradientColor(startColor3, endColor3));
-            gradientColors.add(new GradientColor(startColor4, endColor4));
-            gradientColors.add(new GradientColor(startColor5, endColor5));
-
-            set1.setGradientColors(gradientColors);
-            set2.setGradientColors(gradientColors);
+            set1.setColors(colors1);
+            set2.setColors(colors2);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
@@ -355,7 +327,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
         PieEntry entry = (PieEntry) e.getData();
         String color = null;
 
-        for (int i=0; i<entries.size(); i++){
+        for (int i = 0; i < entries.size(); i++) {
             if (entries.get(i).equals(entry)) {
                 color = pieChartItems.get(i).getColor();
             }
@@ -372,13 +344,13 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
     public void onNothingSelected() {
     }
 
-    private void getEntries(){
+    private void getEntries() {
         //TODO: fetch entries from the server
 
-        PieChartItem pieChartItem1 = new PieChartItem(25,"Stock left", "#49B5E8");
-        PieChartItem pieChartItem2 = new PieChartItem(20,"Sold Out", "#32AD59");
-        PieChartItem pieChartItem3 = new PieChartItem(40,"Not Sold", "#f35352");
-        PieChartItem pieChartItem4 = new PieChartItem(15,"Return", "#F7C21C");
+        PieChartItem pieChartItem1 = new PieChartItem(25, "Stock left", "#49B5E8");
+        PieChartItem pieChartItem2 = new PieChartItem(20, "Sold Out", "#32AD59");
+        PieChartItem pieChartItem3 = new PieChartItem(40, "Not Sold", "#f35352");
+        PieChartItem pieChartItem4 = new PieChartItem(15, "Return", "#F7C21C");
 
         pieChartItems.add(pieChartItem1);
         pieChartItems.add(pieChartItem2);
