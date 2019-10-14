@@ -17,7 +17,6 @@
     <string name="display">Display</string>
     <string name="add_to_order">Add to Order</string>
     <string name="share">Share</string>
-    <string name="next">Next</string>
     <string name="add_student_details">Add Student Details</string>
     <string name="student_id">Student ID</string>
     <string name="student_name">Student Name</string>
@@ -69,4 +68,15 @@
     <string name="total_sale">Total Sale</string>
     <string name="stock">Stock</string>
     <string name="status">Status</string>
+    <string name="all_activities">All Activities</string>
+    <string name="filters_the_activities">Filters the activities</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="address">Address</string>
+    <string name="mother_name">Mother Name</string>
+    <string name="items">Items</string>
+    <string name="first">First</string>
+    <string name="last">Last</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

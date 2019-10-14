@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -30,19 +30,20 @@ import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.model.GradientColor;
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.adapter.ActivitiesAdapter;
 import com.tapatuniforms.pos.adapter.DashboardAdapter;
+import com.tapatuniforms.pos.adapter.IndexAdapter;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
+import com.tapatuniforms.pos.model.Activities;
 import com.tapatuniforms.pos.model.DashboardItem;
 import com.tapatuniforms.pos.model.PieChartItem;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.network.ProductAPI;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class DashboardFragment extends Fragment implements DashboardAdapter.OnClickListener, OnChartValueSelectedListener {
@@ -55,6 +56,12 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
     private BarChart barChart;
     private ArrayList<PieEntry> entries;
     private ArrayList<PieChartItem> pieChartItems;
+    private RecyclerView activitiesRecycler;
+    private ActivitiesAdapter activitiesAdapter;
+    private ArrayList<Activities> activitiesList;
+    private IndexAdapter indexAdapter;
+    private ArrayList<Integer> indexList;
+    private RecyclerView indexRecycler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,11 +76,25 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
 
     private void init(View v) {
         dashRecycler = v.findViewById(R.id.dashRecycler);
-        dashRecycler.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        dashRecycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
         dashRecycler.addItemDecoration(new GridItemDecoration(8, 8));
         dashAdapter = new DashboardAdapter(getDashboardItems());
         dashRecycler.setAdapter(dashAdapter);
         dashAdapter.setOnClickListener(this);
+
+        activitiesList = new ArrayList<>();
+        activitiesRecycler = v.findViewById(R.id.activitiesRecycler);
+        activitiesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        activitiesAdapter = new ActivitiesAdapter(getContext(), activitiesList);
+        activitiesRecycler.setAdapter(activitiesAdapter);
+        getActivities();
+
+        indexList = new ArrayList<>();
+        indexRecycler = v.findViewById(R.id.indexRecycler);
+        indexRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        indexAdapter = new IndexAdapter(getContext(), indexList);
+        indexRecycler.setAdapter(indexAdapter);
+        getIndexes();
 
         entries = new ArrayList<>();
         pieChartItems = new ArrayList<>();
@@ -92,14 +113,34 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
         ProductAPI.fetchProducts(getContext(), allProductList, productList, null, null, db, null, null);
     }
 
+    private void getIndexes() {
+        //TODO: generate indexes on the basis of activities count
+
+        indexList.clear();
+        for (int i = 1; i < 11; i++) {
+            indexList.add(i);
+        }
+        indexAdapter.notifyDataSetChanged();
+    }
+
+    private void getActivities() {
+        Activities activities = new Activities("Sold Out", "Dipanshu", "13251", "14/10/2019", "Faridabad", "XYZ", 10);
+
+        activitiesList.clear();
+        for (int i = 0; i < 3; i++) {
+            activitiesList.add(activities);
+        }
+        activitiesAdapter.notifyDataSetChanged();
+    }
+
     private void initBarChart() {
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
-        barChart.getDescription().setEnabled(true);
+        barChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        barChart.setMaxVisibleValueCount(60);
+        barChart.setMaxVisibleValueCount(65);
 
         // scaling can now only be done on x- and y-axis separately
         barChart.setPinchZoom(true);
@@ -251,7 +292,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
         float barWidth = 0.2f; // x4 DataSet
         // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
 
-        int groupCount = 10;
+        int groupCount = 2;
         int startYear = 1980;
         int endYear = startYear + groupCount;
 
@@ -259,63 +300,76 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
 
         ArrayList<BarEntry> values1 = new ArrayList<>();
         ArrayList<BarEntry> values2 = new ArrayList<>();
+        ArrayList<BarEntry> values3 = new ArrayList<>();
 
         for (int i = (int) start; i < start + count; i++) {
             float val1 = (float) (Math.random() * (range + 1));
             float val2 = (float) (Math.random() * (range + 1));
 
-            if (Math.random() * 100 < 25) {
-                values1.add(new BarEntry(i, val1));
-                values2.add(new BarEntry(i, val2));
-            } else {
-                values1.add(new BarEntry(i, val1));
-                values2.add(new BarEntry(i, val2));
-            }
+            values1.add(new BarEntry(i, val1));
+            values2.add(new BarEntry(i, val2));
+            values3.add(new BarEntry(i, val2));
         }
 
-        BarDataSet set1, set2;
+        BarDataSet set1, set2, set3;
 
         if (barChart.getData() != null &&
                 barChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) barChart.getData().getDataSetByIndex(0);
             set2 = (BarDataSet) barChart.getData().getDataSetByIndex(1);
+            set3 = (BarDataSet) barChart.getData().getDataSetByIndex(1);
             set1.setValues(values1);
             set2.setValues(values2);
+            set3.setValues(values3);
 
             barChart.getData().notifyDataChanged();
             barChart.notifyDataSetChanged();
         } else {
-            set1 = new BarDataSet(values1, "Order Received");
+            set1 = new BarDataSet(values1, "Ordered");
             set1.setDrawIcons(true);
 
-            set2 = new BarDataSet(values2, "Order Not Received");
+            set2 = new BarDataSet(values2, "Received");
             set2.setDrawIcons(false);
+
+            set3 = new BarDataSet(values3, "Not Received");
+            set3.setDrawIcons(false);
 
             ArrayList<Integer> colors1 = new ArrayList<>();
             ArrayList<Integer> colors2 = new ArrayList<>();
+            ArrayList<Integer> colors3 = new ArrayList<>();
 
             Context context = getContext();
             if (context != null) {
-                for (int i=0; i<count; i++){
-                    Random random = new Random();
-                    colors1.add(Color.rgb(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
-                    colors2.add(Color.rgb(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
-                }
+                colors1.add(Color.parseColor("#ffb997"));
+                colors2.add(Color.parseColor("#53d397"));
+                colors3.add(Color.parseColor("#e26241"));
             }
 
             set1.setColors(colors1);
             set2.setColors(colors2);
+            set3.setColors(colors3);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
             dataSets.add(set2);
+            dataSets.add(set3);
 
             BarData data = new BarData(dataSets);
             data.setValueFormatter(new LargeValueFormatter());
+            data.setDrawValues(false);
             data.setValueTextSize(10f);
             data.setBarWidth(0.5f);
-//            barChart.getXAxis().setAxisMaximum(startYear + barChart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
-//            barChart.groupBars(startYear, groupSpace, barSpace);
+
+            Legend l = barChart.getLegend();
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            l.setOrientation(Legend.LegendOrientation.VERTICAL);
+            l.setDrawInside(false);
+            l.setXEntrySpace(7f);
+            l.setYEntrySpace(0f);
+            l.setYOffset(0f);
+
+            barChart.setHighlightFullBarEnabled(false);
             barChart.setData(data);
         }
     }
@@ -324,20 +378,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
     public void onValueSelected(Entry e, Highlight h) {
         pieChart.setCenterTextSize(18f);
 
-        PieEntry entry = (PieEntry) e.getData();
-        String color = null;
-
-        for (int i = 0; i < entries.size(); i++) {
-            if (entries.get(i).equals(entry)) {
-                color = pieChartItems.get(i).getColor();
-            }
-        }
-
-        if (color != null) {
-            pieChart.setCenterTextColor(Color.parseColor(color));
-        }
-
-        pieChart.setCenterText(String.valueOf(e.getY()));
+        pieChart.setCenterText(e.getY() + "%");
     }
 
     @Override
