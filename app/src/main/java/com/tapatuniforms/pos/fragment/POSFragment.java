@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
 import com.tapatuniforms.pos.adapter.DiscountAdapter;
 import com.tapatuniforms.pos.adapter.ProductAdapter;
+import com.tapatuniforms.pos.adapter.ReturnItemAdapter;
 import com.tapatuniforms.pos.dialog.PaymentDialog;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
@@ -434,6 +436,37 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         }
 
         dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    /**
+     * Method to create return item alert dialog
+     */
+    private void showReturnItemDialog() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog dialog = alertDialog.create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.return_popup_layout, null);
+        dialog.setView(view);
+
+        ArrayList<String> itemList = new ArrayList<>();
+
+        final RecyclerView itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
+        final ReturnItemAdapter returnItemAdapter = new ReturnItemAdapter(getContext(), itemList);
+
+        itemRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        itemRecyclerView.setAdapter(returnItemAdapter);
+
+        for (int i=0; i<3; i++){
+            itemList.add("Shirt type: " + i);
+        }
+        returnItemAdapter.notifyDataSetChanged();
+
         dialog.show();
     }
 
