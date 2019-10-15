@@ -84,4 +84,5 @@
     <string name="amount">Amount</string>
     <string name="no_of_items">No of Items</string>
     <string name="no_items_to_return">No items to return</string>
+    <string name="no_new_notifications">No new notifications</string>
 </resources>
