@@ -26,12 +26,27 @@
         app:layout_constraintStart_toStartOf="@+id/productRecycler"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/denim"
+        android:text="@string/return_text"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/productRecycler"
+        app:layout_constraintEnd_toStartOf="@id/cartLayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productRecycler"
         android:layout_width="580dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@color/appBG"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -63,5 +78,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/productRecycler"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
