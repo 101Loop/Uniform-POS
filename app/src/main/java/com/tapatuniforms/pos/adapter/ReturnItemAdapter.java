@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.listener.ReturnItemClickListener;
 
 import java.util.ArrayList;
 
 public class ReturnItemAdapter extends RecyclerView.Adapter<ReturnItemAdapter.ViewHolder> {
     private Context context;
     private ArrayList<String> itemList;
+    private ReturnItemClickListener listener;
 
     public ReturnItemAdapter(Context context, ArrayList<String> itemList) {
         this.context = context;
@@ -37,6 +39,10 @@ public class ReturnItemAdapter extends RecyclerView.Adapter<ReturnItemAdapter.Vi
         holder.closeLayout.setOnClickListener(view -> {
             itemList.remove(position);
             notifyDataSetChanged();
+
+            if (listener != null) {
+                listener.onReturnItemClick();
+            }
         });
     }
 
@@ -57,5 +63,9 @@ public class ReturnItemAdapter extends RecyclerView.Adapter<ReturnItemAdapter.Vi
             itemNameText = itemView.findViewById(R.id.itemNameText);
             closeLayout = itemView.findViewById(R.id.closeButton);
         }
+    }
+
+    public void setOnReturnItemClickListener(ReturnItemClickListener listener){
+        this.listener = listener;
     }
 }

@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +40,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.ViewHelper;
+import com.tapatuniforms.pos.listener.ReturnItemClickListener;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.Discount;
@@ -65,15 +65,13 @@ import static com.tapatuniforms.pos.helper.APIStatic.Constants.AMOUNT;
 import static com.tapatuniforms.pos.helper.APIStatic.Constants.OTHER;
 import static com.tapatuniforms.pos.helper.APIStatic.Constants.PERCENTAGE;
 
-public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener, CartAdapter.UpdateItemListener, DiscountAdapter.DiscountInterface {
+public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener, CartAdapter.UpdateItemListener, DiscountAdapter.DiscountInterface, ReturnItemClickListener {
     private static final String TAG = "POSFragment";
-
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView, discountRecyclerView;
     private Button paymentButton;
     private Button addDetailsButton;
     private TextView subTotalView, discountView, textNumberItems, totalView, maleView, femaleView,
             noProductText, categoryText, cartNotification, discountNotification;
-
     private ArrayList<Category> categoryList;
     private ArrayList<ProductHeader> maleList;
     private ArrayList<ProductHeader> femaleList;
@@ -83,15 +81,12 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private ProductAdapter productAdapter;
     private CartAdapter cartAdapter;
     private DatabaseSingleton db;
-
     private View emptyCartView;
     private ImageView discountButton;
     private ImageView cartButton;
-
     private double total;
     private boolean isMaleSelected;
     private boolean notSelectedYet = true;
-
     private TextInputLayout studentIDLayout;
     private TextInputLayout studentNameLayout;
     private TextInputLayout classLayout;
@@ -100,7 +95,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private TextInputLayout phoneLayout;
     private TextInputLayout emailLayout;
     private TextView genderErrorText;
-
     private String studentID;
     private String studentName;
     private String classStr;
@@ -109,18 +103,19 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private String gender;
     private String phone;
     private String email;
-
     private ProgressDialog progressDialog;
-
     private EditText studentIdText;
     private Button submitButton;
+    private Button returnButton;
     private Student[] studentDetails = new Student[1];
     private ArrayList<Discount> discountList;
     private String discountType = OTHER;
     private int discount;
     private TextView noDiscountText;
-
     private ArrayList<Student> studentList;
+    private ArrayList<String> itemList;
+    private TextView noItemsText;
+    private RecyclerView itemRecyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -161,6 +156,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         discountNotification = view.findViewById(R.id.discountNotification);
         studentIdText = view.findViewById(R.id.studentIDText);
         submitButton = view.findViewById(R.id.submit);
+        returnButton = view.findViewById(R.id.returnButton);
         noDiscountText = view.findViewById(R.id.noDiscountText);
 
         // Initialize Variables
@@ -251,6 +247,9 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         //fetch student details
         submitButton.setOnClickListener(view -> onSubmitClick());
+
+        //return items
+        returnButton.setOnClickListener(view -> showReturnItemDialog());
 
         //add details button
         addDetailsButton.setOnClickListener(view -> showAddDetailsDialog());
@@ -443,6 +442,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
      * Method to create return item alert dialog
      */
     private void showReturnItemDialog() {
+        //TODO: fetch items from server and implement return
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         AlertDialog dialog = alertDialog.create();
@@ -454,20 +454,38 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.return_popup_layout, null);
         dialog.setView(view);
 
-        ArrayList<String> itemList = new ArrayList<>();
+        itemList = new ArrayList<>();
 
-        final RecyclerView itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
+        noItemsText = view.findViewById(R.id.noItemsText);
+        itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
         final ReturnItemAdapter returnItemAdapter = new ReturnItemAdapter(getContext(), itemList);
 
         itemRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         itemRecyclerView.setAdapter(returnItemAdapter);
+        returnItemAdapter.setOnReturnItemClickListener(this);
 
-        for (int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             itemList.add("Shirt type: " + i);
         }
         returnItemAdapter.notifyDataSetChanged();
+        checkItemsAvailability();
 
         dialog.show();
+    }
+
+    /**
+     * Method to check if there are any items to return or not
+     */
+    private void checkItemsAvailability() {
+        if (noItemsText != null && itemList != null && itemRecyclerView != null) {
+            if (itemList.size() < 1) {
+                itemRecyclerView.setVisibility(View.GONE);
+                noItemsText.setVisibility(View.VISIBLE);
+            } else {
+                noItemsText.setVisibility(View.GONE);
+                itemRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
@@ -722,6 +740,11 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         this.discount = discount;
         this.discountType = discountType;
         updatePriceView();
+    }
+
+    @Override
+    public void onReturnItemClick() {
+        checkItemsAvailability();
     }
 
     /**
