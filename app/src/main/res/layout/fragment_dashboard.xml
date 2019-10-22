@@ -13,31 +13,27 @@
         android:layout_height="wrap_content"
         tools:context=".fragment.DashboardFragment">
 
-        <TextView
-            android:id="@+id/textView23"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/calendarCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/dashboard"
-            android:textColor="@color/black1"
-            android:textSize="24sp"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:contentPaddingLeft="8dp"
+            app:contentPaddingRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/view7"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/black2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:drawableEnd="@drawable/ic_calendar"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="Oct 2019" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dashRecycler"
@@ -47,8 +43,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view7"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@id/calendarCard"
+            app:layout_constraintVertical_bias="0.0"
+            tools:itemCount="1"
+            tools:listitem="@layout/dashboard_list_item_layout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/chartLayout"
@@ -200,48 +198,48 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/status"
-                        android:textStyle="bold"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/name"
-                        android:textStyle="bold"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/student_id"
-                        android:textStyle="bold"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="bold"
                         android:text="@string/date"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/address"
-                        android:textStyle="bold"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="bold"
                         android:text="@string/mother_name"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -252,9 +250,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:textStyle="bold"
                         android:text="@string/items"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -306,17 +304,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:padding="5dp"
                 android:layout_marginEnd="0.5dp"
                 android:background="#4f81c7"
+                android:padding="5dp"
                 android:text="@string/previous"
                 android:textColor="@color/white" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/indexRecycler"
                 android:layout_width="wrap_content"
-                tools:itemCount="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:itemCount="1" />
 
             <TextView
                 android:layout_width="wrap_content"
