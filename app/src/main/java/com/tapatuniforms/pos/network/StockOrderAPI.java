@@ -77,7 +77,10 @@ public class StockOrderAPI {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
                             indentList.add(new Indent(jsonObject));
-                            schoolList.add(new School(jsonObject));
+
+                            if (schoolList != null && schoolList.size() < 1) {
+                                schoolList.add(new School(jsonObject));
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -85,7 +88,7 @@ public class StockOrderAPI {
 
                     allIndentList.addAll(indentList);
 
-                    if (schoolList.size() != db.schoolDao().getAll().size()) {
+                    if (schoolList != null && schoolList.size() != db.schoolDao().getAll().size()) {
                         db.schoolDao().deleteAll();
                         db.schoolDao().insertAll(schoolList);
                     }
