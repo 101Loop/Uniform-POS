@@ -144,7 +144,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     }
 
     private void onDoneClick(ViewHolder holder, int position){
-        Validator.hideKeyboard((Activity) context.getApplicationContext());
+        Validator.hideKeyboard((Activity) context);
         holder.quantityEditText.clearFocus();
 
         int count = 0;
