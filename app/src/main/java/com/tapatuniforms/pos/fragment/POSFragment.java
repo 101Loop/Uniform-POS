@@ -712,7 +712,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     /**
      * updates the price and if there isn't any item shows the empty state
      *
-     * @param cartItem
+     * @param cartItem Cart item
      */
     @Override
     public void onItemUpdateListener(CartItem cartItem) {
@@ -762,6 +762,23 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             ViewHelper.hideView(emptyCartView);
             ViewHelper.showView(cartRecyclerView);
             ViewHelper.hideView(discountRecyclerView);
+            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(product.getId());
+
+            if (cartList.size() > 0) {
+                CartItem lastCartItem = cartList.get(cartList.size() - 1);
+
+                ProductVariant productVariant = null;
+                for (ProductVariant currentVariant : productVariantList) {
+                    if (currentVariant.getSize().equals(lastCartItem.getSize())) {
+                        productVariant = currentVariant;
+                    }
+                }
+
+                if (productVariant != null && productVariant.getDisplayStock() - lastCartItem.getQuantity() < 1) {
+                    Toast.makeText(getContext(), "Not enough items in display", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
 
             for (CartItem cartItem : cartList) {
                 if (cartItem.getProductHeader().getId() == product.getId()) {
@@ -773,8 +790,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                     }
                 }
             }
-
-            List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(product.getId());
 
             double price = 0;
             for (ProductVariant currentVariant : productVariantList) {

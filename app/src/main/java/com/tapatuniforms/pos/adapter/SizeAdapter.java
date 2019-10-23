@@ -27,7 +27,7 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
         void onSizeSelected(int pos, String size);
     }
 
-    public SizeAdapter(Context context, ArrayList<String> sizeList) {
+    SizeAdapter(Context context, ArrayList<String> sizeList) {
         this.context = context;
         this.sizeList = sizeList;
     }
@@ -61,7 +61,7 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
      * Method to set listener
      * @param listener SizeSelectedListener
      * */
-    public void setOnSizeClickListener(SizeSelectedListener listener) {
+    void setOnSizeClickListener(SizeSelectedListener listener) {
         this.listener = listener;
     }
 
