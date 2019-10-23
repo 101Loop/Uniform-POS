@@ -5,18 +5,19 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 public class Validator {
     /**
      * Check if Email Address is Valid
+     *
      * @param email email that needs to be checked
      * @return return true if email is valid, else false
      */
@@ -26,6 +27,7 @@ public class Validator {
 
     /**
      * Check if Mobile number is valid
+     *
      * @param phone mobile number that needs to be checked
      * @return return true if number is valid, else false
      */
@@ -35,6 +37,7 @@ public class Validator {
 
     /**
      * Checks if device is connected to the internet
+     *
      * @param context Application Context
      * @return returns true if network is connected else returns false
      */
@@ -48,9 +51,10 @@ public class Validator {
 
     /**
      * sets an empty text error
+     *
      * @param inputLayout input layout on which error is to be set
-     * */
-    public static void setEmptyError(TextInputLayout inputLayout){
+     */
+    public static void setEmptyError(TextInputLayout inputLayout) {
         inputLayout.setError("This field can't be empty");
     }
 
@@ -66,16 +70,18 @@ public class Validator {
     }
 
     public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (activity != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
+            //Find the currently focused view, so we can grab the correct window token from it.
+            View view = activity.getCurrentFocus();
 
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
+            //If no view currently has focus, create a new one, just so we can grab a window token from it
+            if (view == null) {
+                view = new View(activity);
+            }
+
+            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
