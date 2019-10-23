@@ -330,6 +330,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         String studentId = studentIdText.getText().toString();
 
         Validator.hideKeyboard(Objects.requireNonNull(getActivity()));
+        studentIdText.clearFocus();
 
         if (!studentId.isEmpty()) {
             for (Student student : studentList) {
@@ -366,6 +367,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_student_details_layout, null);
@@ -449,6 +451,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.return_popup_layout, null);
@@ -617,6 +620,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
 
         dialog.setCancelable(false);

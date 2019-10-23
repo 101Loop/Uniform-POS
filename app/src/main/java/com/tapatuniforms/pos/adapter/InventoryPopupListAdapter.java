@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.ViewHelper;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
@@ -142,6 +144,8 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     }
 
     private void onDoneClick(ViewHolder holder, int position){
+        Validator.hideKeyboard((Activity) context.getApplicationContext());
+        holder.quantityEditText.clearFocus();
 
         int count = 0;
 
