@@ -19,13 +19,13 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="35dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/pos_logo"/>
+        android:src="@drawable/logo"/>
 
     <TextView
         android:layout_width="60dp"
