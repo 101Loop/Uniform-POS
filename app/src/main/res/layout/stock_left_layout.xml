@@ -21,7 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView4"
         android:layout_width="match_parent"
@@ -34,19 +33,23 @@
         app:layout_constraintTop_toBottomOf="@+id/textView38">
 
         <LinearLayout
+            android:id="@+id/editTextLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="afterDescendants"
+            android:weightSum="2"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:id="@+id/fullNameLayout"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
-                android:padding="2dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/stroke_around_rect"
+                android:padding="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -57,26 +60,27 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2.8"
                     android:background="@android:color/transparent"
+                    android:focusableInTouchMode="true"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="start"
                     android:hint="@string/search_by_indent_serial_no"
+                    android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingEnd="8dp"
                     android:paddingStart="2dp"
-                    android:textSize="14sp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
                     android:textColor="@color/black1"
-                    android:theme="@style/EditTextTheme"
-                    android:imeOptions="actionDone"/>
+                    android:textSize="14sp"
+                    android:theme="@style/EditTextTheme" />
 
                 <Button
                     android:id="@+id/searchButton"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
-                    android:layout_gravity="center_vertical"
                     android:text="Search"
                     android:textColor="@color/white1" />
             </LinearLayout>
@@ -99,24 +103,25 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2.8"
                     android:background="@android:color/transparent"
+                    android:focusableInTouchMode="true"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="start"
                     android:hint="Add Barcode"
-                    android:textSize="14sp"
+                    android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingEnd="8dp"
                     android:paddingStart="2dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
                     android:textColor="@color/black1"
-                    android:theme="@style/EditTextTheme"
-                    android:imeOptions="actionDone"/>
+                    android:textSize="14sp"
+                    android:theme="@style/EditTextTheme" />
 
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:text="Add"
                     android:textColor="@color/white1" />
@@ -174,9 +179,9 @@
         android:id="@+id/noIndentsLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -185,8 +190,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="@string/no_indents_available"/>
-
+            android:text="@string/no_indents_available"
+            android:textSize="24sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

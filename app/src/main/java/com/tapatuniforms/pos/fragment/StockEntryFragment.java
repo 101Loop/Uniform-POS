@@ -95,21 +95,38 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
 
         Validator.hideKeyBoardEditText(getActivity(), barcodeEditText);
 
-        searchEditText.setOnEditorActionListener(((textView, actionId, keyEvent) -> {
+        searchEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 onSearchClicked();
                 return true;
             }
 
             return false;
-        }));
+        });
 
         searchButton.setOnClickListener(view -> onSearchClicked());
+
+        barcodeEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                onBarcodeAddClicked();
+                return true;
+            }
+
+            return false;
+        });
+    }
+
+    private void onBarcodeAddClicked() {
+        String barcodeText = barcodeEditText.getText().toString();
+
+        barcodeEditText.clearFocus();
+        Validator.hideKeyboard(Objects.requireNonNull(getActivity()));
     }
 
     private void onSearchClicked() {
         String searchText = searchEditText.getText().toString();
 
+        searchEditText.clearFocus();
         Validator.hideKeyboard(Objects.requireNonNull(getActivity()));
 
         if (!searchText.isEmpty()) {
