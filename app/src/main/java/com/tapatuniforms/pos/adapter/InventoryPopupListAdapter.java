@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,9 +37,12 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     private DatabaseSingleton db;
     private String title;
     private ProductVariant productVariant;
+    private Activity activity;
+    private View view;
 
-    public InventoryPopupListAdapter(Context context, ProductHeader item, String title) {
+    public InventoryPopupListAdapter(Context context, Activity activity, ProductHeader item, String title) {
         this.context = context;
+        this.activity = activity;
         this.item = item;
         this.title = title;
         sizeList = new ArrayList<>();
@@ -61,7 +65,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(
+        view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.inventory_popup_table_layout, parent, false);
 
         return new InventoryPopupListAdapter.ViewHolder(view);
@@ -144,7 +148,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     }
 
     private void onDoneClick(ViewHolder holder, int position){
-        Validator.hideKeyboard((Activity) context);
+        hideKeyboard();
         holder.quantityEditText.clearFocus();
 
         int count = 0;
@@ -172,6 +176,14 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
 
         if (listener != null) {
             listener.onItemChangeListener(count, 1);
+        }
+    }
+
+    private void hideKeyboard() {
+        final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

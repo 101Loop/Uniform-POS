@@ -1,5 +1,6 @@
 package com.tapatuniforms.pos.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,14 +40,16 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
     private List<ProductVariant> productVariantList;
     private int totalCount = 0;
     private DialogDismissedListener listener;
+    private Activity activity;
 
     public interface DialogDismissedListener {
         void onDialogDismissListener();
     }
 
-    public InventoryDialog(Context context, ProductHeader item, String title) {
+    public InventoryDialog(Context context, FragmentActivity activity, ProductHeader item, String title) {
         super(context);
 
+        this.activity = activity;
         this.item = item;
         this.title = title;
         db = DatabaseHelper.getDatabase(context);
@@ -73,7 +77,7 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         countTitle = findViewById(R.id.countTitle);
 
         //initializing entities
-        InventoryPopupListAdapter inventoryPopupListAdapter = new InventoryPopupListAdapter(getContext(), item, title);
+        InventoryPopupListAdapter inventoryPopupListAdapter = new InventoryPopupListAdapter(getContext(), activity, item, title);
         productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         itemRecyclerView.setAdapter(inventoryPopupListAdapter);

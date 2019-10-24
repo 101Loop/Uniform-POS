@@ -219,7 +219,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
      */
     @Override
     public void onTransferButtonClick(ProductHeader product, String title) {
-        InventoryDialog dialog = new InventoryDialog(getContext(), product, title);
+        InventoryDialog dialog = new InventoryDialog(getContext(), getActivity(), product, title);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
