@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -380,6 +382,8 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         final EditText fatherNameText = view.findViewById(R.id.fatherNameText);
         final EditText phoneText = view.findViewById(R.id.phoneText);
         final EditText emailText = view.findViewById(R.id.emailText);
+        final Spinner standardDropdown = view.findViewById(R.id.standardDropdown);
+        final Spinner sectionDropdown = view.findViewById(R.id.sectionDropdown);
 
         //just in case,, error is to be generated
         studentIDLayout = view.findViewById(R.id.studentIDInputLayout);
@@ -390,6 +394,20 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         phoneLayout = view.findViewById(R.id.phoneInputLayout);
         emailLayout = view.findViewById(R.id.emailInputLayout);
         genderErrorText = view.findViewById(R.id.genderErrorText);
+
+        if (standardDropdown != null) {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
+                    R.array.standard_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            standardDropdown.setAdapter(adapter);
+        }
+
+        if (sectionDropdown != null) {
+            ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
+                    R.array.section_array, android.R.layout.simple_spinner_item);
+            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            sectionDropdown.setAdapter(adapter1);
+        }
 
         final RadioButton maleRadio = view.findViewById(R.id.maleRadio);
         final RadioButton femaleRadio = view.findViewById(R.id.femaleRadio);
