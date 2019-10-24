@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -99,7 +100,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private TextView genderErrorText;
     private String studentID;
     private String studentName;
-    private String classStr;
+    private String standard;
     private String section;
     private String fatherName;
     private String gender;
@@ -395,11 +396,29 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         emailLayout = view.findViewById(R.id.emailInputLayout);
         genderErrorText = view.findViewById(R.id.genderErrorText);
 
+        final RadioButton maleRadio = view.findViewById(R.id.maleRadio);
+        final RadioButton femaleRadio = view.findViewById(R.id.femaleRadio);
+
+        final CardView addDetailsCard = view.findViewById(R.id.addDetailsButton);
+        final CardView closeCard = view.findViewById(R.id.closeButton);
+
         if (standardDropdown != null) {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
                     R.array.standard_array, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             standardDropdown.setAdapter(adapter);
+
+            standardDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+//                    standardDropdown.set;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
 
         if (sectionDropdown != null) {
@@ -409,18 +428,12 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             sectionDropdown.setAdapter(adapter1);
         }
 
-        final RadioButton maleRadio = view.findViewById(R.id.maleRadio);
-        final RadioButton femaleRadio = view.findViewById(R.id.femaleRadio);
-
-        final CardView addDetailsCard = view.findViewById(R.id.addDetailsButton);
-        final CardView closeCard = view.findViewById(R.id.closeButton);
-
         //TODO: fetch school from API
         if (addDetailsCard != null) {
             addDetailsCard.setOnClickListener(view1 -> {
                 studentID = studentIDText.getText().toString();
                 studentName = studentNameText.getText().toString();
-                classStr = classText.getText().toString();
+                this.standard = classText.getText().toString();
                 section = sectionText.getText().toString();
                 fatherName = fatherNameText.getText().toString();
                 phone = phoneText.getText().toString();
@@ -438,7 +451,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 //input validation
                 if (isInputValid()) {
                     try {
-                        SchoolAPI.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, classStr, section, gender, fatherName, dialog);
+                        SchoolAPI.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, this.standard, section, gender, fatherName, dialog);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -533,7 +546,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             studentNameLayout.setErrorEnabled(false);
         }
 
-        if (TextUtils.isEmpty(classStr)) {
+        if (TextUtils.isEmpty(standard)) {
             Validator.setEmptyError(classLayout);
             isValidInput = false;
         } else {
