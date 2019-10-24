@@ -223,8 +223,10 @@ public class PosActivity extends AppCompatActivity implements
             finish();
             return;
         } else {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new DashboardFragment()).commit();
+            if (!(getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) instanceof DashboardFragment)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DashboardFragment()).commit();
+            }
+
             Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
         }
         lastBackPress = currentTime;
