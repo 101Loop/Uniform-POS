@@ -12,13 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.CartAdapter;
 import com.tapatuniforms.pos.adapter.CategoryAdapter;
@@ -92,8 +91,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private boolean notSelectedYet = true;
     private TextInputLayout studentIDLayout;
     private TextInputLayout studentNameLayout;
-    private TextInputLayout classLayout;
-    private TextInputLayout sectionLayout;
     private TextInputLayout fatherNameLayout;
     private TextInputLayout phoneLayout;
     private TextInputLayout emailLayout;
@@ -378,19 +375,15 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
 
         final EditText studentIDText = view.findViewById(R.id.studentIDText);
         final EditText studentNameText = view.findViewById(R.id.studentNameText);
-        final EditText classText = view.findViewById(R.id.classText);
-        final EditText sectionText = view.findViewById(R.id.sectionText);
         final EditText fatherNameText = view.findViewById(R.id.fatherNameText);
         final EditText phoneText = view.findViewById(R.id.phoneText);
         final EditText emailText = view.findViewById(R.id.emailText);
-        final Spinner standardDropdown = view.findViewById(R.id.standardDropdown);
-        final Spinner sectionDropdown = view.findViewById(R.id.sectionDropdown);
+        final MaterialSpinner standardDropdown = view.findViewById(R.id.standardDropdown);
+        final MaterialSpinner sectionDropdown = view.findViewById(R.id.sectionDropdown);
 
         //just in case,, error is to be generated
         studentIDLayout = view.findViewById(R.id.studentIDInputLayout);
         studentNameLayout = view.findViewById(R.id.studentNameInputLayout);
-        classLayout = view.findViewById(R.id.classInputLayout);
-        sectionLayout = view.findViewById(R.id.sectionInputLayout);
         fatherNameLayout = view.findViewById(R.id.fatherNameInputLayout);
         phoneLayout = view.findViewById(R.id.phoneInputLayout);
         emailLayout = view.findViewById(R.id.emailInputLayout);
@@ -402,30 +395,18 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         final CardView addDetailsCard = view.findViewById(R.id.addDetailsButton);
         final CardView closeCard = view.findViewById(R.id.closeButton);
 
+        final String[] arrStandard = getResources().getStringArray(R.array.standard_array);
+        standard = arrStandard[0];
         if (standardDropdown != null) {
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
-                    R.array.standard_array, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            standardDropdown.setAdapter(adapter);
-
-            standardDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-//                    standardDropdown.set;
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
+            standardDropdown.setItems(arrStandard);
+            standardDropdown.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view12, position, id, item) -> standard = item);
         }
 
+        final String[] arrSection = getResources().getStringArray(R.array.section_array);
+        section = arrSection[0];
         if (sectionDropdown != null) {
-            ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
-                    R.array.section_array, android.R.layout.simple_spinner_item);
-            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            sectionDropdown.setAdapter(adapter1);
+            sectionDropdown.setItems(arrSection);
+            sectionDropdown.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view12, position, id, item) -> section = item);
         }
 
         //TODO: fetch school from API
@@ -433,8 +414,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             addDetailsCard.setOnClickListener(view1 -> {
                 studentID = studentIDText.getText().toString();
                 studentName = studentNameText.getText().toString();
-                this.standard = classText.getText().toString();
-                section = sectionText.getText().toString();
                 fatherName = fatherNameText.getText().toString();
                 phone = phoneText.getText().toString();
                 int school = 1;
@@ -544,22 +523,6 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         } else {
             studentNameLayout.setError(null);
             studentNameLayout.setErrorEnabled(false);
-        }
-
-        if (TextUtils.isEmpty(standard)) {
-            Validator.setEmptyError(classLayout);
-            isValidInput = false;
-        } else {
-            classLayout.setError(null);
-            classLayout.setErrorEnabled(false);
-        }
-
-        if (TextUtils.isEmpty(section)) {
-            Validator.setEmptyError(sectionLayout);
-            isValidInput = false;
-        } else {
-            sectionLayout.setError(null);
-            sectionLayout.setErrorEnabled(false);
         }
 
         if (TextUtils.isEmpty(fatherName)) {

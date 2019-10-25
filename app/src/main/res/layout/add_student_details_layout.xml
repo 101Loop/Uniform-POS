@@ -105,12 +105,12 @@
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
-                        <Spinner
+                        <com.jaredrummler.materialspinner.MaterialSpinner
                             android:id="@+id/standardDropdown"
-                            android:layout_width="60dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:miscrollbarfnHeight="100dp"
-                            android:layout_marginStart="16dp"/>
+                            android:layout_marginStart="16dp"
+                            app:ms_dropdown_max_height="200dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -127,11 +127,12 @@
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
-                        <Spinner
+                        <com.jaredrummler.materialspinner.MaterialSpinner
                             android:id="@+id/sectionDropdown"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"/>
+                            android:layout_marginStart="16dp"
+                            app:ms_dropdown_max_height="200dp" />
                     </LinearLayout>
                 </LinearLayout>
                 <!--gender_type layout-->
