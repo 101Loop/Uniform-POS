@@ -117,7 +117,13 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         itemName.setText(item.getName());
 
         //color image and code
-        colorImage.setBackgroundColor(Color.parseColor(item.getColorCode()));
+        String hexColor = item.getColorCode();
+
+        if (hexColor.length() == 4) {
+            String[] arrHexColor = hexColor.split("#");
+            hexColor = "#" + arrHexColor[1] + arrHexColor[1];
+        }
+        colorImage.setBackgroundColor(Color.parseColor(hexColor));
         itemColorView.setText(item.getColor());
 
         transferButton.setOnClickListener(view -> {

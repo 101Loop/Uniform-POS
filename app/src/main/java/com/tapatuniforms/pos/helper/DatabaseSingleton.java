@@ -33,7 +33,7 @@ import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.model.User;
 
-@Database(version = 9, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
+@Database(version = 10, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
         Transaction.class, Category.class, Discount.class, Box.class, BoxItem.class,
         Indent.class, ProductHeader.class, ProductVariant.class, Student.class, School.class}, exportSchema = false)
 

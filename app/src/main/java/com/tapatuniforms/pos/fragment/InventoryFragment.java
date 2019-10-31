@@ -202,7 +202,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         }
 
         for (ProductHeader product : tempList) {
-            if (product.getCategory() == category.getApiId()) {
+            if (product.getCategory() == category.getId()) {
                 productList.add(product);
             }
         }

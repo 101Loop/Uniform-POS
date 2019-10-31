@@ -54,7 +54,14 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.itemNameView.setText(item.getName());
 
         holder.colorName.setText(item.getColor());
-        holder.colorImage.setBackgroundColor(Color.parseColor(item.getColorCode()));
+
+        String hexColor = item.getColorCode();
+
+        if (hexColor.length() == 4) {
+            String[] arrHexColor = hexColor.split("#");
+            hexColor = "#" + arrHexColor[1] + arrHexColor[1];
+        }
+        holder.colorImage.setBackgroundColor(Color.parseColor(hexColor));
 
         ArrayList<String> sizeList = new ArrayList<>();
         int totalWarehouseStock = 0;

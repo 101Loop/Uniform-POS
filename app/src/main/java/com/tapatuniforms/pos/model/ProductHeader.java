@@ -8,6 +8,8 @@ import com.tapatuniforms.pos.helper.APIStatic;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 @Entity
 public class ProductHeader {
     @PrimaryKey
@@ -49,18 +51,21 @@ public class ProductHeader {
         JSONObject productJson = jsonObject.optJSONObject(APIStatic.Key.product);
         JSONArray subProductSet = jsonObject.optJSONArray(APIStatic.Key.outletSubproductSet);
 
-        this.id = productJson.optInt(APIStatic.Key.id);
-        this.name = productJson.optString(APIStatic.Key.name);
-        this.gender = productJson.optString(APIStatic.Key.gender_type);
-        this.productType = productJson.optString(APIStatic.Key.productType);
+        if (productJson != null) {
+            this.id = productJson.optInt(APIStatic.Key.id);
+            this.name = productJson.optString(APIStatic.Key.name);
+            this.gender = productJson.optString(APIStatic.Key.gender_type);
+            this.productType = productJson.optString(APIStatic.Key.productType);
+            this.category = productJson.optInt(APIStatic.Key.category);
+            this.sku = productJson.optString(APIStatic.Key.sku);
+        }
+
         this.color = jsonObject.optString(APIStatic.Key.color);
         this.colorCode = jsonObject.optString(APIStatic.Key.colorCode);
         this.image = jsonObject.optString(APIStatic.Key.image);
         this.outletId = jsonObject.optInt(APIStatic.Key.outlet);
-        this.category = productJson.optInt(APIStatic.Key.category);
-        this.variantSize = subProductSet.length();
+        this.variantSize = Objects.requireNonNull(subProductSet).length();
         this.isSynced = false;
-        this.sku = productJson.optString(APIStatic.Key.sku);
         this.isSizeAlreadyOpened = false;
         this.totalWarehouseStock = 0;
     }

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 @Entity
 public class Student {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
     private String studentId;
     private String name;
@@ -37,6 +37,7 @@ public class Student {
 
     @Ignore
     public Student(JSONObject jsonObject) {
+        this.id = jsonObject.optInt(APIStatic.Key.id);
         this.studentId = jsonObject.optString(APIStatic.Key.studentId);
         this.name = jsonObject.optString(APIStatic.Key.name);
         this.standard = jsonObject.optString(APIStatic.Key.standard);

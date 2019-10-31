@@ -55,8 +55,8 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
         holder.price.setText("₹" + indent.getPrice());
         holder.itemCount.setText(indent.getNumberOfItems() + " Items");
 //        holder.senderName.setText(indent.getDispatchPerson());
-        holder.receivedDate.setText(indent.getReceivedOn());
-        holder.shippingLocation.setText(indent.getShippingFrom());
+//        holder.receivedDate.setText(indent.getReceivedOn());
+//        holder.shippingLocation.setText(indent.getShippingFrom());
 
         //do nothing if the indent is already selected
         //change bg accordingly for other cases

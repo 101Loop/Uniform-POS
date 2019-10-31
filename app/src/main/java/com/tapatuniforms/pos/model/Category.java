@@ -10,23 +10,20 @@ import org.json.JSONObject;
 
 @Entity
 public class Category {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
-    private int apiId;
     private String name;
     private String image;
 
-    public Category(int id, int apiId, String name, String image) {
+    public Category(int id, String name, String image) {
         this.id = id;
-        this.apiId = apiId;
         this.name = name;
         this.image = image;
     }
 
     @Ignore
     public Category(JSONObject object) {
-        this.id = 0;
-        this.apiId = object.optInt(APIStatic.Key.id);
+        this.id = object.optInt(APIStatic.Key.id);
         this.name = object.optString(APIStatic.Key.name);
         this.image = object.optString(APIStatic.Key.image);
     }
@@ -37,14 +34,6 @@ public class Category {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getApiId() {
-        return apiId;
-    }
-
-    public void setApiId(int apiId) {
-        this.apiId = apiId;
     }
 
     public String getName() {
