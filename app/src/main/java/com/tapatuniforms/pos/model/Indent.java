@@ -26,26 +26,17 @@ public class Indent {
     private String price;
     private String numberOfBoxes;
     private String numberOfItems;
-    private String shippingFrom;
-    private String shippingFromLat;
-    private String shippingFromLong;
-    private String shippedOn;
-    private String receivedOn;
+    private int warehouseName;
     private boolean isSelected;
 
-    public Indent(long id, int schoolId, String name, String price, String numberOfBoxes, String numberOfItems,
-                  String shippingFrom, String shippingFromLat, String shippingFromLong, String shippedOn, String receivedOn, boolean isSelected) {
+    public Indent(long id, int schoolId, String name, String price, String numberOfBoxes, String numberOfItems, int warehouseName, boolean isSelected) {
         this.id = id;
         this.schoolId = schoolId;
         this.name = name;
         this.price = price;
         this.numberOfBoxes = numberOfBoxes;
         this.numberOfItems = numberOfItems;
-        this.shippingFrom = shippingFrom;
-        this.shippingFromLat = shippingFromLat;
-        this.shippingFromLong = shippingFromLong;
-        this.shippedOn = shippedOn;
-        this.receivedOn = receivedOn;
+        this.warehouseName = warehouseName;
         this.isSelected = isSelected;
     }
 
@@ -53,17 +44,16 @@ public class Indent {
         JSONObject schoolJSON = jsonObject.optJSONObject(APIStatic.Key.school);
 
         this.id = jsonObject.optInt(APIStatic.Key.id);
-        this.schoolId = schoolJSON.optInt(APIStatic.Key.id);
-        this.name = jsonObject.optString(APIStatic.Key.name);
+
+        if (schoolJSON != null)
+            this.schoolId = schoolJSON.optInt(APIStatic.Key.id);
+
+        this.name = jsonObject.optString(APIStatic.Key.indent);
         this.price = jsonObject.optString(APIStatic.Key.price);
         this.numberOfBoxes = jsonObject.optString(APIStatic.Key.numberOfBoxes);
         this.numberOfItems = jsonObject.optString(APIStatic.Key.numberOfItems);
+        this.warehouseName = jsonObject.optInt(APIStatic.Key.warehouseName);
         this.isSelected = false;
-        this.shippingFrom = jsonObject.optString(APIStatic.Key.shippingFrom);
-        this.shippingFromLat = jsonObject.optString(APIStatic.Key.shippingFromLat);
-        this.shippingFromLong = jsonObject.optString(APIStatic.Key.shippingFromLong);
-        this.shippedOn = jsonObject.optString(APIStatic.Key.shippedOn);
-        this.receivedOn = jsonObject.optString(APIStatic.Key.receivedOn);
     }
 
     public long getId() {
@@ -114,14 +104,6 @@ public class Indent {
         isSelected = selected;
     }
 
-    public String getShippingFrom() {
-        return shippingFrom;
-    }
-
-    public void setShippingFrom(String shippingFrom) {
-        this.shippingFrom = shippingFrom;
-    }
-
     public String getPrice() {
         return price;
     }
@@ -130,35 +112,11 @@ public class Indent {
         this.price = price;
     }
 
-    public String getShippingFromLat() {
-        return shippingFromLat;
+    public int getWarehouseName() {
+        return warehouseName;
     }
 
-    public void setShippingFromLat(String shippingFromLat) {
-        this.shippingFromLat = shippingFromLat;
-    }
-
-    public String getShippingFromLong() {
-        return shippingFromLong;
-    }
-
-    public void setShippingFromLong(String shippingFromLong) {
-        this.shippingFromLong = shippingFromLong;
-    }
-
-    public String getShippedOn() {
-        return shippedOn;
-    }
-
-    public void setShippedOn(String shippedOn) {
-        this.shippedOn = shippedOn;
-    }
-
-    public String getReceivedOn() {
-        return receivedOn;
-    }
-
-    public void setReceivedOn(String receivedOn) {
-        this.receivedOn = receivedOn;
+    public void setWarehouseName(int warehouseName) {
+        this.warehouseName = warehouseName;
     }
 }

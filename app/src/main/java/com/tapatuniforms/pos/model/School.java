@@ -13,25 +13,24 @@ public class School {
     private int id;
     private String name;
     private String address;
-    private String latitude;
-    private String longitude;
+    private int city;
 
-    public School(int id, String name, String address, String latitude, String longitude) {
+    public School(int id, String name, String address, int city) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.city = city;
     }
 
     public School(JSONObject jsonObject) {
         JSONObject schoolJSON = jsonObject.optJSONObject(APIStatic.Key.school);
 
-        this.id = schoolJSON.optInt(APIStatic.Key.id);
-        this.name = schoolJSON.optString(APIStatic.Key.name);
-        this.address = schoolJSON.optString(APIStatic.Key.address);
-        this.latitude = schoolJSON.optString(APIStatic.Key.latitude);
-        this.longitude = schoolJSON.optString(APIStatic.Key.longitude);
+        if (schoolJSON != null) {
+            this.id = schoolJSON.optInt(APIStatic.Key.id);
+            this.name = schoolJSON.optString(APIStatic.Key.name);
+            this.address = schoolJSON.optString(APIStatic.Key.address);
+            this.city = schoolJSON.optInt(APIStatic.Key.city);
+        }
     }
 
     public int getId() {
@@ -58,19 +57,11 @@ public class School {
         this.address = address;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public int getCity() {
+        return city;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setCity(int city) {
+        this.city = city;
     }
 }

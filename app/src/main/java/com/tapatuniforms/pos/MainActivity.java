@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!BuildConfig.DEBUG) {
+//        if (!BuildConfig.DEBUG) {
             Sentry.init(new AndroidSentryClientFactory(this));
-        }
+//        }
 
         db = DatabaseHelper.getDatabase(this);
         ArrayList<User> userList = (ArrayList<User>) db.userDao().getAll();

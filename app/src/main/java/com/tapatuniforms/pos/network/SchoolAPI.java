@@ -44,7 +44,7 @@ public class SchoolAPI {
      */
     public void addStudentDetails(String studentId, String name, int school, String email, String mobile,
                                   String standard, String section, String gender, String fatherName,
-                                  AlertDialog dialog) throws JSONException {
+                                  AlertDialog dialog, DatabaseSingleton db) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(APIStatic.Key.studentId, studentId);
         jsonObject.put(APIStatic.Key.name, name);
@@ -62,6 +62,8 @@ public class SchoolAPI {
                 jsonObject,
                 response -> {
                     Toast.makeText(context, "Details added successfully!", Toast.LENGTH_SHORT).show();
+                    Student student = new Student(response);
+                    db.studentDao().insert(student);
                     dialog.dismiss();
                 },
                 new APIErrorListener(context) {

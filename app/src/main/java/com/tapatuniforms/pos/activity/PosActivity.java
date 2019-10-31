@@ -37,7 +37,9 @@ import com.tapatuniforms.pos.adapter.NotificationsAdapter;
 import com.tapatuniforms.pos.fragment.DashboardFragment;
 import com.tapatuniforms.pos.fragment.DayClosingFragment;
 import com.tapatuniforms.pos.fragment.InventoryFragment;
+import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
+import com.tapatuniforms.pos.fragment.SaleReportFragment;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
 import com.tapatuniforms.pos.helper.NetworkChangeReceiver;
 import com.tapatuniforms.pos.helper.RecyclerDivider;
@@ -191,12 +193,12 @@ public class PosActivity extends AppCompatActivity implements
             case R.id.posScreen:
                 fragment = new POSFragment();
                 break;
-            /*case R.id.orderScreen:
+            case R.id.orderScreen:
                 fragment = new OrderFragment();
-                break;*/
-            /*case R.id.saleScreen:
+                break;
+            case R.id.saleScreen:
                 fragment = new SaleReportFragment();
-                break;*/
+                break;
             case R.id.stockScreen:
                 fragment = new StockEntryFragment();
                 break;

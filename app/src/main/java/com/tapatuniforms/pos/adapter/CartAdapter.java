@@ -62,7 +62,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         //color name and image
         String color = productHeader.getColor();
         holder.itemColor.setText(color);
-        holder.itemColorImage.setBackgroundColor(Color.parseColor(productHeader.getColorCode()));
+
+        String hexColor = productHeader.getColorCode();
+
+        if (hexColor.length() == 4) {
+            String[] arrHexColor = hexColor.split("#");
+            hexColor = "#" + arrHexColor[1] + arrHexColor[1];
+        }
+        holder.itemColorImage.setBackgroundColor(Color.parseColor(hexColor));
 
         //quantity
         holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));

@@ -115,6 +115,8 @@ public interface APIStatic {
         String shippedOn = "shipped_on";
         String receivedOn = "received_on";
         String outletProduct = "outlet_product";
+        String city = "city";
+        String warehouseName = "warehouse_name";
     }
 
     interface Constants {

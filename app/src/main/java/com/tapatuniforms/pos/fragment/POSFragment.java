@@ -430,7 +430,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 //input validation
                 if (isInputValid()) {
                     try {
-                        SchoolAPI.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, this.standard, section, gender, fatherName, dialog);
+                        SchoolAPI.getInstance(getContext()).addStudentDetails(studentID, studentName, school, email, phone, this.standard, section, gender, fatherName, dialog, db);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -584,7 +584,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         }
 
         for (ProductHeader product : tempList) {
-            if (product.getCategory() == category.getApiId()) {
+            if (product.getCategory() == category.getId()) {
                 productList.add(product);
             }
         }
