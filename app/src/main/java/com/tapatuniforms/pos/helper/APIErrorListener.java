@@ -46,7 +46,13 @@ public class APIErrorListener extends DjangoErrorListener {
 
     @Override
     public void onBadRequestError(JSONObject response) {
-        defaultErrorListener("Bad Request. Data sent in incorrect format!");
+        String message = "Bad Request. Data sent in incorrect format!";
+
+        if (response.has("non_field_errors")) {
+            message = response.optString("non_field_errors");
+        }
+
+        defaultErrorListener(message);
     }
 
     @Override

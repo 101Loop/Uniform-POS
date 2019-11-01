@@ -772,6 +772,21 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                     Toast.makeText(getContext(), "Not enough items in display", Toast.LENGTH_SHORT).show();
                     return;
                 }
+            }else{
+                //TODO: implement the else case otherwise one item will be added to the cart
+                CartItem lastCartItem = cartList.get(cartList.size() - 1);
+
+                ProductVariant productVariant = null;
+                for (ProductVariant currentVariant : productVariantList) {
+                    if (currentVariant.getSize().equals(lastCartItem.getSize())) {
+                        productVariant = currentVariant;
+                    }
+                }
+
+                if (productVariant != null && productVariant.getDisplayStock() - lastCartItem.getQuantity() < 1) {
+                    Toast.makeText(getContext(), "Not enough items in display", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
 
             for (CartItem cartItem : cartList) {
