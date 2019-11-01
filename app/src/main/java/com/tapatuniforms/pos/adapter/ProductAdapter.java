@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -107,6 +108,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
                 sizeAdapter.setOnSizeClickListener((pos, size) -> {
                     product.setSizeAlreadyOpened(false);
+
+                    ProductVariant productVariant = null;
+                    for (ProductVariant currentVariant : productVariantList) {
+                        if (currentVariant.getSize().equals(size)) {
+                            productVariant = currentVariant;
+                        }
+                    }
+
+                    assert productVariant != null;
+                    if (productVariant.getDisplayStock() < 1) {
+                        Toast.makeText(context, "Not enough items in display", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     if (listener != null) {
                         listener.onProductClicked(product, size);
