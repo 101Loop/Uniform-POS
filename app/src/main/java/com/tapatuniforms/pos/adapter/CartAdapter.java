@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
@@ -90,7 +91,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
             assert productVariant != null;
             if (productVariant.getDisplayStock() - cartItem.getQuantity() < 1) {
-                Toast.makeText(context, "Not enough items in display", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
                 return;
             }
 

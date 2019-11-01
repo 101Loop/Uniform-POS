@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -769,22 +768,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
                 }
 
                 if (productVariant != null && productVariant.getDisplayStock() - lastCartItem.getQuantity() < 1) {
-                    Toast.makeText(getContext(), "Not enough items in display", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }else{
-                //TODO: implement the else case otherwise one item will be added to the cart
-                CartItem lastCartItem = cartList.get(cartList.size() - 1);
-
-                ProductVariant productVariant = null;
-                for (ProductVariant currentVariant : productVariantList) {
-                    if (currentVariant.getSize().equals(lastCartItem.getSize())) {
-                        productVariant = currentVariant;
-                    }
-                }
-
-                if (productVariant != null && productVariant.getDisplayStock() - lastCartItem.getQuantity() < 1) {
-                    Toast.makeText(getContext(), "Not enough items in display", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
                     return;
                 }
             }

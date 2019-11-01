@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
@@ -118,7 +119,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
                     assert productVariant != null;
                     if (productVariant.getDisplayStock() < 1) {
-                        Toast.makeText(context, "Not enough items in display", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
                         return;
                     }
 
