@@ -125,5 +125,6 @@ public interface APIStatic {
         String PERCENTAGE = "P";
         String AMOUNT = "A";
         String OTHER = "O";
+        String OUT_OF_STOCK = "This item is out of stock";
     }
 }
