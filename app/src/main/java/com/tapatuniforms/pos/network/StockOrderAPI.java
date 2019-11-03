@@ -76,7 +76,7 @@ public class StockOrderAPI {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            indentList.add(new Indent(jsonObject));
+                            indentList.add(new Indent(jsonObject, db));
 
                             if (schoolList != null && schoolList.size() < 1) {
                                 schoolList.add(new School(jsonObject));

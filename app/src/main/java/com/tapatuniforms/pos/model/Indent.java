@@ -7,6 +7,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.tapatuniforms.pos.helper.APIStatic;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 
 import org.json.JSONObject;
 
@@ -40,13 +41,15 @@ public class Indent {
         this.isSelected = isSelected;
     }
 
-    public Indent(JSONObject jsonObject) {
+    public Indent(JSONObject jsonObject, DatabaseSingleton db) {
         JSONObject schoolJSON = jsonObject.optJSONObject(APIStatic.Key.school);
 
         this.id = jsonObject.optInt(APIStatic.Key.id);
 
+        //TODO: fetch school id from the server
+        this.schoolId = db.schoolDao().getAll().get(0).getId();
         if (schoolJSON != null)
-            this.schoolId = schoolJSON.optInt(APIStatic.Key.id);
+//            this.schoolId = schoolJSON.optInt(APIStatic.Key.id);
 
         this.name = jsonObject.optString(APIStatic.Key.indent);
         this.price = jsonObject.optString(APIStatic.Key.price);
