@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
-import com.tapatuniforms.pos.helper.Validator;
-import com.tapatuniforms.pos.helper.ViewHelper;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
 
@@ -39,6 +37,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     private ProductVariant productVariant;
     private Activity activity;
     private View view;
+    private int previousCount = -1;
 
     public InventoryPopupListAdapter(Context context, Activity activity, ProductHeader item, String title) {
         this.context = context;
@@ -87,6 +86,12 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
             return false;
         }));
 
+        holder.quantityEditText.setOnFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                previousCount = Integer.parseInt(holder.quantityEditText.getText().toString());
+            }
+        });
+
         holder.plusButton.setOnClickListener(view -> {
             int count = Integer.parseInt(holder.quantityEditText.getText().toString());
 
@@ -118,7 +123,6 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
                 holder.quantityEditText.setText(String.valueOf(count));
                 holder.quantityTextView.setText(String.valueOf(count));
 
-
                 if (listener != null) {
                     listener.onItemChangeListener(-1, 0);
                 }
@@ -147,16 +151,19 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         }
     }
 
-    private void onDoneClick(ViewHolder holder, int position){
+    private void onDoneClick(ViewHolder holder, int position) {
         hideKeyboard();
         holder.quantityEditText.clearFocus();
 
         int count = 0;
+        int currentCount = 0;
 
-        try{
+        try {
             count = Integer.parseInt(holder.quantityEditText.getText().toString());
-        }catch (NumberFormatException e) {
+            currentCount = count;
+        } catch (NumberFormatException e) {
             e.printStackTrace();
+            holder.quantityEditText.setText(String.valueOf(previousCount));
             Toast.makeText(context, "Value too long", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "integer value too long");
         }
@@ -164,15 +171,22 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         if (title.equalsIgnoreCase("transfer")) {
             if (count > productVariant.getWarehouseStock()) {
                 Toast.makeText(context, "Not enough items in stock", Toast.LENGTH_SHORT).show();
+                holder.quantityEditText.setText(String.valueOf(previousCount));
                 return;
             }
         }
 
-        db.productVariantDao().updateTransferOrderCount(count, productVariant.getId());
+        if (previousCount == count) {
+            return;
+        } else {
+            count -= previousCount;
+        }
+
+        db.productVariantDao().updateTransferOrderCount(currentCount, productVariant.getId());
         ProductVariant currentVariant = getCurrentVariant(position);
-        currentVariant.setTransferOrderCount(count);
-        holder.quantityEditText.setText(String.valueOf(count));
-        holder.quantityTextView.setText(String.valueOf(count));
+        currentVariant.setTransferOrderCount(currentCount);
+        holder.quantityEditText.setText(String.valueOf(currentCount));
+        holder.quantityTextView.setText(String.valueOf(currentCount));
 
         if (listener != null) {
             listener.onItemChangeListener(count, 1);
