@@ -80,7 +80,6 @@ public class ProductAPI {
                         db.categoryDao().deleteAll();
                         db.categoryDao().insertAll(categoryList);
                     }
-
                 }, new APIErrorListener(context), context);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
@@ -136,28 +135,20 @@ public class ProductAPI {
                         allProducts.add(product);
 
                         //TODO: check sync status, delete the item and insert it again
-                        /*if (!product.isSynced()) {
-                            db.productHeaderDao().deleteById(product.getId());
-                            db.productHeaderDao().insertProductHeader(product);
-                        }*/
                     }
 
                     //TODO: 1. change this logic, products should be synced on the basis of their sync status, not size
                     //TODO: 2. sync status is to be fetched from the server(for each model in the DB)
-                    if (localProductList == null || localProductList.size() < 1) {
-                        db.productHeaderDao().deleteAllProductHeaders();
-                        db.productVariantDao().deleteAllProductVariants();
+                    db.productHeaderDao().deleteAllProductHeaders();
+                    db.productVariantDao().deleteAllProductVariants();
 
-                        for (int i = 0; i < productList.size(); i++) {
-                            ProductHeader productHeader = new ProductHeader(response.optJSONObject(i));
-                            db.productHeaderDao().insertProductHeader(productHeader);
+                    for (int i = 0; i < productList.size(); i++) {
+                        ProductHeader productHeader = new ProductHeader(response.optJSONObject(i));
+                        db.productHeaderDao().insertProductHeader(productHeader);
 
-                            for (int j = 0; j < productHeader.getVariantSize(); j++) {
-                                db.productVariantDao().insertProductVariant(new ProductVariant(response.optJSONObject(i), j));
-                            }
+                        for (int j = 0; j < productHeader.getVariantSize(); j++) {
+                            db.productVariantDao().insertProductVariant(new ProductVariant(response.optJSONObject(i), j));
                         }
-//                        db.productHeaderDao().insertAllProductHeader(productHeaderList);
-//                        db.productVariantDao().insertAllProductVariants(productVariantList);
                     }
 
                     if (inventoryAdapter != null) {
@@ -175,7 +166,6 @@ public class ProductAPI {
                     if (productAdapter != null) {
                         productAdapter.notifyDataSetChanged();
                     }
-
                 }, new APIErrorListener(context), context);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
@@ -330,7 +320,7 @@ public class ProductAPI {
                     response -> {
                         /*if (finalProductVariant != null) {
 
-                            *//*if (subOrder.getQuantity() > finalProductVariant.getDisplayStock()) {
+                         *//*if (subOrder.getQuantity() > finalProductVariant.getDisplayStock()) {
                                 Log.e(TAG, "Syncing suborder: items count can't be greater than items in the display");
                                 return;
                             }*//*
