@@ -197,11 +197,6 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
      */
     @Override
     public void onItemChangeListener(int count, int isDone) {
-
-        if (isDone == 1) {
-            totalCount = 0;
-        }
-
         totalCount += count;
         totalTransferView.setText(String.valueOf(totalCount));
     }
