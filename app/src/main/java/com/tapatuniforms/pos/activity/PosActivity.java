@@ -8,8 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,7 +25,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +55,7 @@ public class PosActivity extends AppCompatActivity implements
     private ImageView calendarIcon;
     private ImageView homeIcon;
     private ImageView bagNavIcon;
+    private ImageView notificationIcon;
     private NetworkChangeReceiver receiver;
     long lastBackPress;
     private RecyclerView notificationsRecycler;
@@ -82,6 +80,7 @@ public class PosActivity extends AppCompatActivity implements
         calendarIcon = findViewById(R.id.calenderNavIcon);
         homeIcon = findViewById(R.id.homeNavIcon);
         bagNavIcon = findViewById(R.id.bagNavIcon);
+        notificationIcon = findViewById(R.id.notificationNavIcon);
         receiver = new NetworkChangeReceiver();
 
         hamburgerMenuIcon.setOnClickListener(this);
@@ -103,7 +102,8 @@ public class PosActivity extends AppCompatActivity implements
             }
         });
 
-        bagNavIcon.setOnClickListener(v -> showNotificationDialog());
+        notificationIcon.setOnClickListener(v -> showNotificationDialog());
+
         registerBroadcastReceiver();
     }
 
