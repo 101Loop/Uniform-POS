@@ -1,13 +1,14 @@
 package com.tapatuniforms.pos.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,6 +17,7 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.AppStatic;
+import com.tapatuniforms.pos.helper.CustomRelativeLayout;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SignUpActivity extends AppCompatActivity {
+    private CustomRelativeLayout signUpLayout;
     private EditText nameEditText, emailEditText, mobileEditText;
     private ProgressDialog dialog;
 
@@ -35,13 +38,16 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void init() {
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        signUpLayout = findViewById(R.id.activity_landing);
         nameEditText = findViewById(R.id.nameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         mobileEditText = findViewById(R.id.mobileEditText);
     }
 
     public void SignUpClicked(View view) {
-        String name  = nameEditText.getText().toString().trim();
+        String name = nameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String mobile = mobileEditText.getText().toString().trim();
 
@@ -103,7 +109,7 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    private void showProgressDialog(){
+    private void showProgressDialog() {
         if (dialog == null) {
             dialog = new ProgressDialog(this);
         }
@@ -114,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void dismissDialog(){
+    private void dismissDialog() {
         if (dialog != null) {
             dialog.dismiss();
         }
