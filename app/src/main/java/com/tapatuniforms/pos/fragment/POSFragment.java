@@ -331,6 +331,12 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         Validator.hideKeyboard(Objects.requireNonNull(getActivity()));
         studentIdText.clearFocus();
 
+        List<Student> localStudentList = db.studentDao().getAll();
+        if (localStudentList.size() != studentList.size()) {
+            studentList.clear();
+            studentList.addAll(localStudentList);
+        }
+
         if (!studentId.isEmpty()) {
             for (Student student : studentList) {
                 if (student.getStudentId().equals(studentId)) {
