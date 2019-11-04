@@ -27,6 +27,6 @@ public interface IndentDao {
     @Query("DELETE FROM Indent")
     void deleteAll();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Indent Indent);
 }

@@ -51,7 +51,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class PosActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SchoolAPI.NotifyListener {
     private static final String TAG = "PosActivity";
     private DrawerLayout mDrawerLayout;
     private ImageView hamburgerMenuIcon;
@@ -66,6 +66,7 @@ public class PosActivity extends AppCompatActivity implements
     private CardView notificationsCardLayout;
     private TextView notificationCountText;
     private TextView noNotificationText;
+    private TextView schoolNameText;
     private NotificationsAdapter notificationsAdapter;
     private ArrayList<NotificationItem> notificationItems;
     private ConstraintLayout rootLayout;
@@ -80,6 +81,7 @@ public class PosActivity extends AppCompatActivity implements
 
         rootLayout = findViewById(R.id.rootLayout);
         mDrawerLayout = findViewById(R.id.drawerLayout);
+        schoolNameText = findViewById(R.id.schoolNameText);
         NavigationView navigationView = findViewById(R.id.nav_view);
         hamburgerMenuIcon = findViewById(R.id.hamburgerMenuIcon);
         detailIcon = findViewById(R.id.detailNavIcon);
@@ -113,6 +115,7 @@ public class PosActivity extends AppCompatActivity implements
         db = DatabaseHelper.getDatabase(this);
         schoolList = new ArrayList<>();
         SchoolAPI.getInstance(this).getSchool(schoolList, db);
+        SchoolAPI.getInstance(this).setNotifyListener(this);
 
         registerBroadcastReceiver();
     }
@@ -260,5 +263,14 @@ public class PosActivity extends AppCompatActivity implements
         super.onDestroy();
 
         unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onNotify() {
+        if (schoolList.size() > 0) {
+            School school = schoolList.get(0);
+            String schoolName = school.getName() + " " + school.getCity();
+            schoolNameText.setText(schoolName);
+        }
     }
 }

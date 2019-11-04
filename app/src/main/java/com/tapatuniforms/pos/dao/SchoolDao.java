@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.tapatuniforms.pos.model.School;
@@ -19,12 +20,12 @@ public interface SchoolDao {
     @Query("SELECT * FROM School WHERE id = :id")
     School getSchoolByOutlet(long id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<School> schoolList);
 
     @Query("DELETE FROM School")
     void deleteAll();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(School school);
 }
