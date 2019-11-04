@@ -13,9 +13,9 @@ public class School {
     private int id;
     private String name;
     private String address;
-    private int city;
+    private String city;
 
-    public School(int id, String name, String address, int city) {
+    public School(int id, String name, String address, String city) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -26,7 +26,7 @@ public class School {
         this.id = jsonObject.optInt(APIStatic.Key.id);
         this.name = jsonObject.optString(APIStatic.Key.name);
         this.address = jsonObject.optString(APIStatic.Key.address);
-        this.city = jsonObject.optInt(APIStatic.Key.city);
+        this.city = jsonObject.optString(APIStatic.Key.city);
     }
 
     public int getId() {
@@ -53,11 +53,11 @@ public class School {
         this.address = address;
     }
 
-    public int getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(int city) {
+    public void setCity(String city) {
         this.city = city;
     }
 }

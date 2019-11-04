@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +65,7 @@ import static com.tapatuniforms.pos.helper.APIStatic.Constants.AMOUNT;
 import static com.tapatuniforms.pos.helper.APIStatic.Constants.OTHER;
 import static com.tapatuniforms.pos.helper.APIStatic.Constants.PERCENTAGE;
 
-public class POSFragment extends Fragment implements CategoryAdapter.CategoryClickListener, CartAdapter.UpdateItemListener, DiscountAdapter.DiscountInterface, ReturnItemClickListener {
+public class POSFragment extends BaseFragment implements CategoryAdapter.CategoryClickListener, CartAdapter.UpdateItemListener, DiscountAdapter.DiscountInterface, ReturnItemClickListener {
     private static final String TAG = "POSFragment";
     private RecyclerView categoryRecycler, productRecycler, cartRecyclerView, discountRecyclerView;
     private Button paymentButton;
@@ -115,6 +114,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
     private ArrayList<String> itemList;
     private TextView noItemsText;
     private RecyclerView itemRecyclerView;
+    private CardView backButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -157,6 +157,7 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         submitButton = view.findViewById(R.id.submit);
         returnButton = view.findViewById(R.id.returnButton);
         noDiscountText = view.findViewById(R.id.noDiscountText);
+        backButton = view.findViewById(R.id.backButton);
 
         // Initialize Variables
         categoryList = new ArrayList<>();
@@ -208,6 +209,11 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
         discountAdapter.setOnDiscountClickListener(this);
 
         SchoolAPI.getInstance(getActivity()).getStudents(studentList, db);
+
+        //back button
+        backButton.setOnClickListener(view -> {
+            onBackPressClicked();
+        });
 
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());

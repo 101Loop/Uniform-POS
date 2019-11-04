@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class InventoryFragment extends Fragment implements InventoryAdapter.ButtonClickListener,
+public class InventoryFragment extends BaseFragment implements InventoryAdapter.ButtonClickListener,
         InventoryOrderAdapter.ButtonClickListener, CategoryAdapter.CategoryClickListener, InventoryDialog.DialogDismissedListener {
     private static final String TAG = "InventoryFragment";
     private RecyclerView inventoryRecyclerView, recommendedRecyclerView;
@@ -54,6 +55,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
     private ArrayList<ProductHeader> femaleList;
     private TextView noProductText;
     private ArrayList<ProductHeader> recommendedProductList;
+    private CardView backButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -65,6 +67,8 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
 
     private void init(View view) {
         db = DatabaseHelper.getDatabase(getContext());
+
+        backButton = view.findViewById(R.id.backButton);
 
         categoryList = new ArrayList<>();
         categoryRecyclerView = view.findViewById(R.id.categoryRecycler);
@@ -97,6 +101,9 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Butt
         noProductText = view.findViewById(R.id.noProductText);
         maleList = new ArrayList<>();
         femaleList = new ArrayList<>();
+
+        //back button
+        backButton.setOnClickListener(view1 -> onBackPressClicked());
 
         //gender_type button
         maleView.setOnClickListener(v -> {
