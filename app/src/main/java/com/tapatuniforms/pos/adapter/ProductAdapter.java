@@ -90,7 +90,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.sizeLayout.setVisibility(View.GONE);
         });
 
-        //TODO: items now can be added, without checking display count(bug discovered)
         holder.addToCartButton.setOnClickListener(view -> {
 
             if (!product.isSizeAlreadyOpened()) {

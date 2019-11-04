@@ -132,9 +132,8 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
             if (quantity > 0) {
                 if (!title.equalsIgnoreCase("transfer")) {
 
-                    //TODO: school API call is to be made here
                     int productId = item.getId();
-                    int schoolId = 1;
+                    int schoolId = db.schoolDao().getAll().get(0).getId();
                     StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, schoolId, this);
 
                 } else {

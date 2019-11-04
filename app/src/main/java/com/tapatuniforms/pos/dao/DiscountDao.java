@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.tapatuniforms.pos.model.Discount;
@@ -19,12 +20,12 @@ public interface DiscountDao {
     @Query("SELECT * FROM Discount WHERE id = :id")
     Discount getDiscountByOutlet(long id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Discount> DiscountList);
 
     @Query("DELETE FROM Discount")
     void deleteAll();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Discount Discount);
 }

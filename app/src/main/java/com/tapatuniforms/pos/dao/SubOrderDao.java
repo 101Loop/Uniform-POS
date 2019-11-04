@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.tapatuniforms.pos.model.SubOrder;
@@ -22,10 +23,10 @@ public interface SubOrderDao {
     @Query("SELECT * FROM SubOrder WHERE orderId = :orderId AND isSynced = 0")
     List<SubOrder> getSubOrderByOrderId(long orderId);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<SubOrder> subOrderList);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(SubOrder order);
 
     @Query("UPDATE SubOrder SET isSynced=:syncStatus WHERE id = :id")

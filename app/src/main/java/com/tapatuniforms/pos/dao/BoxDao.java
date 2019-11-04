@@ -29,6 +29,6 @@ public interface BoxDao {
     @Query("DELETE FROM Box")
     void deleteAll();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Box Box);
 }

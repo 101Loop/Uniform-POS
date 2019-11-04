@@ -27,6 +27,7 @@ public class SchoolAPI {
     private static final String TAG = "Billing";
     private static SchoolAPI instance;
     private Context context;
+    private NotifyListener listener;
 
     private SchoolAPI(Context context) {
         this.context = context;
@@ -37,6 +38,10 @@ public class SchoolAPI {
             instance = new SchoolAPI(context);
         }
         return instance;
+    }
+
+    public interface NotifyListener{
+        void onNotify();
     }
 
     /**
@@ -168,6 +173,7 @@ public class SchoolAPI {
                         schoolList.clear();
                         schoolList.add(new School(schoolJson));
                         db.schoolDao().insertAll(schoolList);
+                        listener.onNotify();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -178,5 +184,9 @@ public class SchoolAPI {
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    public void setNotifyListener(NotifyListener listener){
+        this.listener = listener;
     }
 }
