@@ -211,9 +211,7 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
         SchoolAPI.getInstance(getActivity()).getStudents(studentList, db);
 
         //back button
-        backButton.setOnClickListener(view -> {
-            onBackPressClicked();
-        });
+        backButton.setOnClickListener(view -> onBackPressClicked());
 
         // Payment Button
         paymentButton.setOnClickListener((v) -> onPaymentButtonClicked());
