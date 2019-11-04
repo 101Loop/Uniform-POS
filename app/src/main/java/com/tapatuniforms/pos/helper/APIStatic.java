@@ -116,6 +116,7 @@ public interface APIStatic {
         String receivedOn = "received_on";
         String outletProduct = "outlet_product";
         String city = "city_name";
+        String state = "state_name";
         String warehouseName = "warehouse_name";
     }
 
