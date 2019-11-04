@@ -269,7 +269,7 @@ public class PosActivity extends AppCompatActivity implements
     public void onNotify() {
         if (schoolList.size() > 0) {
             School school = schoolList.get(0);
-            String schoolName = school.getName() + " " + school.getCity();
+            String schoolName = school.getName() + " - " + school.getCity() + ", " + school.getState();
             schoolNameText.setText(schoolName);
         }
     }

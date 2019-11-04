@@ -14,12 +14,14 @@ public class School {
     private String name;
     private String address;
     private String city;
+    private String state;
 
-    public School(int id, String name, String address, String city) {
+    public School(int id, String name, String address, String city, String state) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
+        this.state = state;
     }
 
     public School(JSONObject jsonObject) {
@@ -27,6 +29,7 @@ public class School {
         this.name = jsonObject.optString(APIStatic.Key.name);
         this.address = jsonObject.optString(APIStatic.Key.address);
         this.city = jsonObject.optString(APIStatic.Key.city);
+        this.state = jsonObject.optString(APIStatic.Key.state);
     }
 
     public int getId() {
@@ -59,5 +62,13 @@ public class School {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
