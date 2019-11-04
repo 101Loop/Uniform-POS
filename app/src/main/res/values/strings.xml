@@ -86,7 +86,7 @@
     <string name="no_items_to_return">No items to return</string>
     <string name="no_new_notifications">No new notifications</string>
     <string name="standard">Standard</string>
-
+    <string name="back">Back</string>
     <string-array name="standard_array">
         <item>I</item>
         <item>II</item>

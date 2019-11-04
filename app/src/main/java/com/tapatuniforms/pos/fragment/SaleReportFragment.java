@@ -10,16 +10,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.tapatuniforms.pos.R;
 
 import java.util.ArrayList;
 
-public class SaleReportFragment extends Fragment implements View.OnClickListener {
-    Spinner billerSpinner, categorySpinner;
-    TextView startDateView, endDateView;
-    ImageView startDateImage, endDateImage;
+public class SaleReportFragment extends BaseFragment implements View.OnClickListener {
+    private Spinner billerSpinner, categorySpinner;
+    private TextView startDateView, endDateView;
+    private ImageView startDateImage, endDateImage;
+    private CardView backButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -40,6 +42,7 @@ public class SaleReportFragment extends Fragment implements View.OnClickListener
         startDateImage = v.findViewById(R.id.imageView);
         endDateView = v.findViewById(R.id.endDateView);
         endDateImage = v.findViewById(R.id.imageView2);
+        backButton = v.findViewById(R.id.backButton);
 
         ArrayList<String> list = new ArrayList<>();
         list.add("Nick Fury");
@@ -57,6 +60,7 @@ public class SaleReportFragment extends Fragment implements View.OnClickListener
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(catAdapter);
 
+        backButton.setOnClickListener(view -> onBackPressClicked());
         startDateView.setOnClickListener(this);
         startDateImage.setOnClickListener(this);
         endDateView.setOnClickListener(this);
