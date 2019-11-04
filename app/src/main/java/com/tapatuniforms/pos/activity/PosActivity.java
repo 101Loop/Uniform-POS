@@ -38,9 +38,13 @@ import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
 import com.tapatuniforms.pos.fragment.SaleReportFragment;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NetworkChangeReceiver;
 import com.tapatuniforms.pos.helper.RecyclerDivider;
 import com.tapatuniforms.pos.model.NotificationItem;
+import com.tapatuniforms.pos.model.School;
+import com.tapatuniforms.pos.network.SchoolAPI;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,6 +69,8 @@ public class PosActivity extends AppCompatActivity implements
     private NotificationsAdapter notificationsAdapter;
     private ArrayList<NotificationItem> notificationItems;
     private ConstraintLayout rootLayout;
+    private ArrayList<School> schoolList;
+    private DatabaseSingleton db;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -103,6 +109,10 @@ public class PosActivity extends AppCompatActivity implements
         });
 
         notificationIcon.setOnClickListener(v -> showNotificationDialog());
+
+        db = DatabaseHelper.getDatabase(this);
+        schoolList = new ArrayList<>();
+        SchoolAPI.getInstance(this).getSchool(schoolList, db);
 
         registerBroadcastReceiver();
     }

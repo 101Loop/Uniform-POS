@@ -37,21 +37,16 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     private static final String TAG = "StockEntryFragment";
     private RecyclerView indentRecyclerView, requestRecyclerView;
     private LinearLayout noIndentsLayout, noBoxLayout;
-
     private StockBoxAdapter stockBoxAdapter;
     private ArrayList<Box> boxList;
     private ArrayList<Box> allBoxList;
-
     private StockIndentAdapter stockIndentAdapter;
     private ArrayList<Indent> indentList;
     private ArrayList<School> schoolList;
     private ArrayList<Indent> allIndentList = new ArrayList<>();
-
     private EditText searchEditText, barcodeEditText;
     private Button searchButton;
-
     private DatabaseSingleton db;
-
     private TextView boxText;
 
     @Override
@@ -170,7 +165,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
      * Method to get list of indents
      */
     private void getIndentList() {
-        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, allIndentList, boxList, allBoxList, schoolList, stockIndentAdapter, this, db);
+        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, allIndentList, stockIndentAdapter, this, db);
     }
 
     /**

@@ -3,7 +3,6 @@ package com.tapatuniforms.pos.helper;
 public interface APIStatic {
     String baseURL = "https://tapatapi.civilmachines.com/api/";
 //    String baseURL = "http://192.168.1.247:8000/api/";
-
     String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss";
     String onlyDateFormat = "yyyyMMdd";
 
@@ -34,6 +33,7 @@ public interface APIStatic {
 
     interface School {
         String endPoint = "school/";
+        String schoolUrl = baseURL + endPoint;
         String studentUrl = baseURL + endPoint + "student/";
     }
 
@@ -115,7 +115,7 @@ public interface APIStatic {
         String shippedOn = "shipped_on";
         String receivedOn = "received_on";
         String outletProduct = "outlet_product";
-        String city = "city";
+        String city = "city_name";
         String warehouseName = "warehouse_name";
     }
 
