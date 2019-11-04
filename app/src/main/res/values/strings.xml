@@ -87,6 +87,8 @@
     <string name="no_new_notifications">No new notifications</string>
     <string name="standard">Standard</string>
     <string name="back">Back</string>
+    <string name="billing_id">Billing ID</string>
+    <string name="check">Check</string>
     <string-array name="standard_array">
         <item>I</item>
         <item>II</item>
