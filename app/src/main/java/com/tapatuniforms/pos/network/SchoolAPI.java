@@ -14,6 +14,7 @@ import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
+import com.tapatuniforms.pos.model.School;
 import com.tapatuniforms.pos.model.Student;
 
 import org.json.JSONException;
@@ -23,10 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SchoolAPI {
-
     private static final String TAG = "Billing";
     private static SchoolAPI instance;
     private Context context;
+    private NotifyListener listener;
 
     private SchoolAPI(Context context) {
         this.context = context;
@@ -37,6 +38,10 @@ public class SchoolAPI {
             instance = new SchoolAPI(context);
         }
         return instance;
+    }
+
+    public interface NotifyListener{
+        void onNotify();
     }
 
     /**
@@ -117,7 +122,6 @@ public class SchoolAPI {
     public void getStudents(ArrayList<Student> studentList, DatabaseSingleton db) {
         List<Student> localStudentList = db.studentDao().getAll();
 
-
         if (!Validator.isNetworkConnected(context)) {
             studentList.clear();
             studentList.addAll(localStudentList);
@@ -146,5 +150,43 @@ public class SchoolAPI {
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    public void getSchool(ArrayList<School> schoolList, DatabaseSingleton db) {
+        List<School> localSchoolList = db.schoolDao().getAll();
+
+        if (!Validator.isNetworkConnected(context)) {
+            schoolList.clear();
+            schoolList.addAll(localSchoolList);
+            return;
+        }
+
+        DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
+                Request.Method.GET,
+                APIStatic.School.schoolUrl,
+                null,
+                response -> {
+                    db.schoolDao().deleteAll();
+
+                    try {
+                        JSONObject schoolJson = response.getJSONObject(0);
+                        schoolList.clear();
+                        schoolList.add(new School(schoolJson));
+                        db.schoolDao().insertAll(schoolList);
+                        listener.onNotify();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                new APIErrorListener(context),
+                context
+        );
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    public void setNotifyListener(NotifyListener listener){
+        this.listener = listener;
     }
 }

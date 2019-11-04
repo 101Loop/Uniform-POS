@@ -137,17 +137,15 @@ public class ProductAPI {
                         //TODO: check sync status, delete the item and insert it again
                     }
 
-                    //TODO: 1. change this logic, products should be synced on the basis of their sync status, not size
-                    //TODO: 2. sync status is to be fetched from the server(for each model in the DB)
-                    db.productHeaderDao().deleteAllProductHeaders();
-                    db.productVariantDao().deleteAllProductVariants();
+                    db.productHeaderDao().deleteAll();
+                    db.productVariantDao().deleteAll();
 
                     for (int i = 0; i < productList.size(); i++) {
                         ProductHeader productHeader = new ProductHeader(response.optJSONObject(i));
-                        db.productHeaderDao().insertProductHeader(productHeader);
+                        db.productHeaderDao().insert(productHeader);
 
                         for (int j = 0; j < productHeader.getVariantSize(); j++) {
-                            db.productVariantDao().insertProductVariant(new ProductVariant(response.optJSONObject(i), j));
+                            db.productVariantDao().insert(new ProductVariant(response.optJSONObject(i), j));
                         }
                     }
 

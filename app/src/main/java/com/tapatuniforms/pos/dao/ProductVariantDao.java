@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.tapatuniforms.pos.model.ProductVariant;
@@ -11,7 +12,7 @@ import java.util.List;
 @Dao
 public interface ProductVariantDao {
     @Query("SELECT * FROM ProductVariant")
-    List<ProductVariant> getAllProductVariants();
+    List<ProductVariant> getAll();
 
     @Query("SELECT * FROM ProductVariant WHERE productId=:productId")
     List<ProductVariant> getProductVariantsById(int productId);
@@ -25,17 +26,17 @@ public interface ProductVariantDao {
     @Query("UPDATE ProductVariant SET transferOrderCount=:transferOrderCount WHERE id=:id")
     void updateTransferOrderCount(int transferOrderCount, int id);
 
-    @Insert
-    void insertProductVariant(ProductVariant productVariant);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(ProductVariant productVariant);
 
-    @Insert
-    void insertAllProductVariants(List<ProductVariant> productVariantList);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<ProductVariant> productVariantList);
 
     @Query("DELETE FROM ProductVariant WHERE id=:id")
-    void deleteProductVariant(int id);
+    void delete(int id);
 
     @Query("DELETE FROM ProductVariant")
-    void deleteAllProductVariants();
+    void deleteAll();
 
     @Query("UPDATE productvariant SET isSynced = :syncStatus WHERE id = :id")
     void setSyncStatus(boolean syncStatus, int id);

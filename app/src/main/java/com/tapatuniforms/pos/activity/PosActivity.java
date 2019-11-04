@@ -38,16 +38,20 @@ import com.tapatuniforms.pos.fragment.OrderFragment;
 import com.tapatuniforms.pos.fragment.POSFragment;
 import com.tapatuniforms.pos.fragment.SaleReportFragment;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
+import com.tapatuniforms.pos.helper.DatabaseHelper;
+import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NetworkChangeReceiver;
 import com.tapatuniforms.pos.helper.RecyclerDivider;
 import com.tapatuniforms.pos.model.NotificationItem;
+import com.tapatuniforms.pos.model.School;
+import com.tapatuniforms.pos.network.SchoolAPI;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class PosActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SchoolAPI.NotifyListener {
     private static final String TAG = "PosActivity";
     private DrawerLayout mDrawerLayout;
     private ImageView hamburgerMenuIcon;
@@ -62,9 +66,12 @@ public class PosActivity extends AppCompatActivity implements
     private CardView notificationsCardLayout;
     private TextView notificationCountText;
     private TextView noNotificationText;
+    private TextView schoolNameText;
     private NotificationsAdapter notificationsAdapter;
     private ArrayList<NotificationItem> notificationItems;
     private ConstraintLayout rootLayout;
+    private ArrayList<School> schoolList;
+    private DatabaseSingleton db;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -74,6 +81,7 @@ public class PosActivity extends AppCompatActivity implements
 
         rootLayout = findViewById(R.id.rootLayout);
         mDrawerLayout = findViewById(R.id.drawerLayout);
+        schoolNameText = findViewById(R.id.schoolNameText);
         NavigationView navigationView = findViewById(R.id.nav_view);
         hamburgerMenuIcon = findViewById(R.id.hamburgerMenuIcon);
         detailIcon = findViewById(R.id.detailNavIcon);
@@ -103,6 +111,11 @@ public class PosActivity extends AppCompatActivity implements
         });
 
         notificationIcon.setOnClickListener(v -> showNotificationDialog());
+
+        db = DatabaseHelper.getDatabase(this);
+        schoolList = new ArrayList<>();
+        SchoolAPI.getInstance(this).getSchool(schoolList, db);
+        SchoolAPI.getInstance(this).setNotifyListener(this);
 
         registerBroadcastReceiver();
     }
@@ -250,5 +263,14 @@ public class PosActivity extends AppCompatActivity implements
         super.onDestroy();
 
         unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onNotify() {
+        if (schoolList.size() > 0) {
+            School school = schoolList.get(0);
+            String schoolName = school.getName() + " - " + school.getCity() + ", " + school.getState();
+            schoolNameText.setText(schoolName);
+        }
     }
 }

@@ -42,15 +42,8 @@ public class Indent {
     }
 
     public Indent(JSONObject jsonObject, DatabaseSingleton db) {
-        JSONObject schoolJSON = jsonObject.optJSONObject(APIStatic.Key.school);
-
         this.id = jsonObject.optInt(APIStatic.Key.id);
-
-        //TODO: fetch school id from the server
         this.schoolId = db.schoolDao().getAll().get(0).getId();
-        if (schoolJSON != null)
-//            this.schoolId = schoolJSON.optInt(APIStatic.Key.id);
-
         this.name = jsonObject.optString(APIStatic.Key.indent);
         this.price = jsonObject.optString(APIStatic.Key.price);
         this.numberOfBoxes = jsonObject.optString(APIStatic.Key.numberOfBoxes);

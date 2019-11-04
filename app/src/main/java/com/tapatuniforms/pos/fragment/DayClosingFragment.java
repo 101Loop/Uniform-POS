@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -20,7 +21,7 @@ import com.tapatuniforms.pos.adapter.DayClosingPagerAdapter;
 
 import java.util.Objects;
 
-public class DayClosingFragment extends Fragment implements ViewPager.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener {
+public class DayClosingFragment extends BaseFragment implements ViewPager.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "DayClosingActivity";
     private TextView saleText, stockReportText, closeDayText;
     private ViewPager viewPager;
@@ -28,6 +29,7 @@ public class DayClosingFragment extends Fragment implements ViewPager.OnPageChan
     private LinearLayout stockReportLayout;
     private LinearLayout closeDayLayout;
     private DayClosingPagerAdapter dayClosingPagerAdapter;
+    private CardView backButton;
 
     @Nullable
     @Override
@@ -38,6 +40,7 @@ public class DayClosingFragment extends Fragment implements ViewPager.OnPageChan
     }
 
     private void initViews(View view) {
+        backButton = view.findViewById(R.id.backButton);
         saleText = view.findViewById(R.id.saleText);
         stockReportText = view.findViewById(R.id.stockReport);
         closeDayText = view.findViewById(R.id.closeDay);
@@ -54,6 +57,8 @@ public class DayClosingFragment extends Fragment implements ViewPager.OnPageChan
         viewPager.setAdapter(dayClosingPagerAdapter);
 
         viewPager.addOnPageChangeListener(this);
+
+        backButton.setOnClickListener(view1 -> onBackPressClicked());
 
         saleSummaryLayout.setOnClickListener(view1 -> viewPager.setCurrentItem(0));
 

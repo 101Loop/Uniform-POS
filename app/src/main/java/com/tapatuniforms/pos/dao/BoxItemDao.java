@@ -23,7 +23,7 @@ public interface BoxItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<BoxItem> BoxItemList);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(BoxItem BoxItem);
 
     @Query("DELETE FROM BoxItem")

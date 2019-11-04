@@ -10,6 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:contentPadding="8dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/lighterGrey"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back"/>
+
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
@@ -19,7 +37,7 @@
             android:text="Filter"
             android:textColor="@color/black1"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/backButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

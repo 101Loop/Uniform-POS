@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,26 +34,22 @@ import com.tapatuniforms.pos.network.StockOrderAPI;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBoxClickListener, StockIndentAdapter.OnIndentClickListener {
+public class StockEntryFragment extends BaseFragment implements StockBoxAdapter.OnBoxClickListener, StockIndentAdapter.OnIndentClickListener {
     private static final String TAG = "StockEntryFragment";
     private RecyclerView indentRecyclerView, requestRecyclerView;
     private LinearLayout noIndentsLayout, noBoxLayout;
-
     private StockBoxAdapter stockBoxAdapter;
     private ArrayList<Box> boxList;
     private ArrayList<Box> allBoxList;
-
     private StockIndentAdapter stockIndentAdapter;
     private ArrayList<Indent> indentList;
     private ArrayList<School> schoolList;
     private ArrayList<Indent> allIndentList = new ArrayList<>();
-
     private EditText searchEditText, barcodeEditText;
     private Button searchButton;
-
     private DatabaseSingleton db;
-
     private TextView boxText;
+    private CardView backButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -66,6 +63,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
     }
 
     private void init(View v) {
+        backButton = v.findViewById(R.id.backButton);
         indentRecyclerView = v.findViewById(R.id.indentRecyclerView);
         requestRecyclerView = v.findViewById(R.id.itemRequestRecyclerView);
         noIndentsLayout = v.findViewById(R.id.noIndentsLayout);
@@ -94,6 +92,8 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
         stockBoxAdapter.setOnBoxClickListener(this);
 
         Validator.hideKeyBoardEditText(getActivity(), barcodeEditText);
+
+        backButton.setOnClickListener(view -> onBackPressClicked());
 
         searchEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -170,7 +170,7 @@ public class StockEntryFragment extends Fragment implements StockBoxAdapter.OnBo
      * Method to get list of indents
      */
     private void getIndentList() {
-        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, allIndentList, boxList, allBoxList, schoolList, stockIndentAdapter, this, db);
+        StockOrderAPI.getInstance(getContext()).getIndentList(indentList, allIndentList, stockIndentAdapter, this, db);
     }
 
     /**

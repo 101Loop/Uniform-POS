@@ -2,8 +2,10 @@ package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.tapatuniforms.pos.adapter.DashboardAdapter;
 import com.tapatuniforms.pos.model.User;
 
 import java.util.List;
@@ -19,10 +21,10 @@ public interface UserDao {
     @Query("SELECT * FROM User WHERE mobile = :mobile")
     User getUserByMobile(String mobile);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<User> userList);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(User user);
 
     @Query("UPDATE user SET token=:token WHERE mobile = :mobile")
