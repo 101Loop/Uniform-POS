@@ -23,14 +23,10 @@ public class School {
     }
 
     public School(JSONObject jsonObject) {
-        JSONObject schoolJSON = jsonObject.optJSONObject(APIStatic.Key.school);
-
-        if (schoolJSON != null) {
-            this.id = schoolJSON.optInt(APIStatic.Key.id);
-            this.name = schoolJSON.optString(APIStatic.Key.name);
-            this.address = schoolJSON.optString(APIStatic.Key.address);
-            this.city = schoolJSON.optInt(APIStatic.Key.city);
-        }
+        this.id = jsonObject.optInt(APIStatic.Key.id);
+        this.name = jsonObject.optString(APIStatic.Key.name);
+        this.address = jsonObject.optString(APIStatic.Key.address);
+        this.city = jsonObject.optInt(APIStatic.Key.city);
     }
 
     public int getId() {

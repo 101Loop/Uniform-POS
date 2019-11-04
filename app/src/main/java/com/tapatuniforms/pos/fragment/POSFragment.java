@@ -414,14 +414,13 @@ public class POSFragment extends Fragment implements CategoryAdapter.CategoryCli
             sectionDropdown.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view12, position, id, item) -> section = item);
         }
 
-        //TODO: fetch school from API
         if (addDetailsCard != null) {
             addDetailsCard.setOnClickListener(view1 -> {
                 studentID = studentIDText.getText().toString();
                 studentName = studentNameText.getText().toString();
                 fatherName = fatherNameText.getText().toString();
                 phone = phoneText.getText().toString();
-                int school = 1;
+                int school = db.schoolDao().getAll().get(0).getId();
                 email = emailText.getText().toString();
 
                 if (maleRadio != null && femaleRadio != null) {
