@@ -1,31 +1,41 @@
 package com.tapatuniforms.pos.model;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
-@Entity
-public class Outlet {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private int apiId;
-    private String name;
+import static androidx.room.ForeignKey.CASCADE;
 
-    public Outlet(int id, int apiId, String name) {
+@Entity(indices = @Index(value = "schoolId"), foreignKeys = @ForeignKey(entity = School.class,
+        parentColumns = "id",
+        childColumns = "schoolId",
+        onDelete = CASCADE))
+public class Outlet {
+    @PrimaryKey
+    private int id;
+    private int schoolId;
+    private String shortName;
+
+    public Outlet(int id, int schoolId, String shortName) {
         this.id = id;
-        this.apiId = apiId;
-        this.name = name;
+        this.schoolId = schoolId;
+        this.shortName = shortName;
     }
 
     @Ignore
-    public Outlet(JSONObject object){
-        this.id = 0;
-        this.apiId = object.optInt(APIStatic.Key.id);
-        this.name = object.optString(APIStatic.Key.name);
+    public Outlet(JSONObject object) {
+        this.id = object.optInt(APIStatic.Key.id);
+        this.shortName = object.optString(APIStatic.Key.shortName);
+
+        JSONObject schoolJson = object.optJSONObject(APIStatic.Key.school);
+        if (schoolJson != null)
+            this.schoolId = schoolJson.optInt(APIStatic.Key.id);
     }
 
     public int getId() {
@@ -36,19 +46,19 @@ public class Outlet {
         this.id = id;
     }
 
-    public int getApiId() {
-        return apiId;
+    public int getSchoolId() {
+        return schoolId;
     }
 
-    public void setApiId(int apiId) {
-        this.apiId = apiId;
+    public void setSchoolId(int schoolId) {
+        this.schoolId = schoolId;
     }
 
-    public String getName() {
-        return name;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

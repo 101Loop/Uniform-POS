@@ -43,11 +43,14 @@ import com.tapatuniforms.pos.fragment.StockEntryFragment;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NetworkChangeReceiver;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.RecyclerDivider;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.NotificationItem;
+import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.School;
+import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.network.SchoolAPI;
 
 import java.util.ArrayList;
@@ -56,7 +59,7 @@ import java.util.Date;
 import java.util.List;
 
 public class PosActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SchoolAPI.NotifyListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, NotifyListener {
     private static final String TAG = "PosActivity";
     private DrawerLayout mDrawerLayout;
     private ImageView hamburgerMenuIcon;
@@ -82,6 +85,7 @@ public class PosActivity extends AppCompatActivity implements
     private ArrayList<NotificationItem> notificationItems;
     private ConstraintLayout rootLayout;
     private ArrayList<School> schoolList;
+    private ArrayList<Outlet> outletList;
     private DatabaseSingleton db;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -131,6 +135,9 @@ public class PosActivity extends AppCompatActivity implements
         schoolList = new ArrayList<>();
         SchoolAPI.getInstance(this).getSchool(schoolList, db);
         SchoolAPI.getInstance(this).setNotifyListener(this);
+
+        outletList = new ArrayList<>();
+        ProductAPI.getInstance(this).getOutletList(outletList, db);
 
         registerBroadcastReceiver();
     }

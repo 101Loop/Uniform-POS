@@ -136,7 +136,7 @@ public class StockEntryFragment extends BaseFragment implements StockBoxAdapter.
             indentList.clear();
 
             for (Indent indent : allIndentList) {
-                if (searchText.equals(String.valueOf(indent.getId())) || searchText.equals(indent.getName())) {
+                if (searchText.equals(String.valueOf(indent.getId())) || searchText.equals(indent.getIndent())) {
                     indentList.add(indent);
                 }
             }

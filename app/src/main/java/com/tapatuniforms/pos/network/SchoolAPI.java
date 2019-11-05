@@ -12,6 +12,7 @@ import com.civilmachines.drfapi.DjangoJSONObjectRequest;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.School;
@@ -38,10 +39,6 @@ public class SchoolAPI {
             instance = new SchoolAPI(context);
         }
         return instance;
-    }
-
-    public interface NotifyListener{
-        void onNotify();
     }
 
     /**

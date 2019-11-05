@@ -17,10 +17,12 @@ import com.tapatuniforms.pos.fragment.InventoryFragment;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.Order;
+import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.SubOrder;
@@ -34,14 +36,26 @@ import java.util.List;
 
 public class ProductAPI {
     private static final String TAG = "ProductAPI";
+    private static ProductAPI instance;
+    private Context context;
 
     /**
      * Method to fetch the categories from server
      *
-     * @param context      Context of calling activity
-     * @param categoryList list of categories
-     * @param adapter      reference to CategoryAdapter
+     * @param context Context of calling activity
      */
+    private ProductAPI(Context context) {
+        this.context = context;
+    }
+
+    public static synchronized ProductAPI getInstance(Context context) {
+        if (instance == null) {
+            instance = new ProductAPI(context);
+        }
+
+        return instance;
+    }
+
     public static void fetchCategories(Context context, ArrayList<Category> categoryList,
                                        CategoryAdapter adapter, DatabaseSingleton db) {
 
@@ -372,5 +386,33 @@ public class ProductAPI {
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(context).getRequestQueue().add(request);
         }
+    }
+
+    public void getOutletList(ArrayList<Outlet> outletList, DatabaseSingleton db) {
+        outletList.clear();
+
+        if (!Validator.isNetworkConnected(context)) {
+            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            outletList.add(db.outletDao().getAll().get(0));
+            return;
+        }
+
+        DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
+                Request.Method.GET,
+                APIStatic.Outlet.outletUrl,
+                null,
+                response -> {
+                    JSONObject outletJSON = response.optJSONObject(0);
+
+                    Outlet outlet = new Outlet(outletJSON);
+                    db.outletDao().insert(outlet);
+                    outletList.add(outlet);
+                },
+                new APIErrorListener(context),
+                context);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 }
