@@ -20,9 +20,6 @@ public interface BoxDao {
     @Query("SELECT * FROM BOX WHERE indentId = :indentId")
     List<Box> getBoxesByIndent(long indentId);
 
-    @Query("SELECT * FROM Box WHERE id = :id")
-    Box getBoxByOutlet(long id);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Box> BoxList);
 

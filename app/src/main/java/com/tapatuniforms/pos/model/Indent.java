@@ -13,27 +13,27 @@ import org.json.JSONObject;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = @Index(value = "schoolId"), foreignKeys = @ForeignKey(entity = School.class,
+@Entity(indices = @Index(value = "outletId"), foreignKeys = @ForeignKey(entity = Outlet.class,
         parentColumns = "id",
-        childColumns = "schoolId",
+        childColumns = "outletId",
         onDelete = CASCADE))
 
 public class Indent {
     @PrimaryKey
     private long id;
-    @ColumnInfo(name = "schoolId")
-    private int schoolId;
-    private String name;
+    @ColumnInfo(name = "outletId")
+    private int outletId;
+    private String indent;
     private String price;
     private String numberOfBoxes;
     private String numberOfItems;
     private int warehouseName;
     private boolean isSelected;
 
-    public Indent(long id, int schoolId, String name, String price, String numberOfBoxes, String numberOfItems, int warehouseName, boolean isSelected) {
+    public Indent(long id, int outletId, String indent, String price, String numberOfBoxes, String numberOfItems, int warehouseName, boolean isSelected) {
         this.id = id;
-        this.schoolId = schoolId;
-        this.name = name;
+        this.outletId = outletId;
+        this.indent = indent;
         this.price = price;
         this.numberOfBoxes = numberOfBoxes;
         this.numberOfItems = numberOfItems;
@@ -41,15 +41,18 @@ public class Indent {
         this.isSelected = isSelected;
     }
 
-    public Indent(JSONObject jsonObject, DatabaseSingleton db) {
+    public Indent(JSONObject jsonObject) {
         this.id = jsonObject.optInt(APIStatic.Key.id);
-        this.schoolId = db.schoolDao().getAll().get(0).getId();
-        this.name = jsonObject.optString(APIStatic.Key.indent);
+        this.indent = jsonObject.optString(APIStatic.Key.indent);
         this.price = jsonObject.optString(APIStatic.Key.price);
         this.numberOfBoxes = jsonObject.optString(APIStatic.Key.numberOfBoxes);
         this.numberOfItems = jsonObject.optString(APIStatic.Key.numberOfItems);
         this.warehouseName = jsonObject.optInt(APIStatic.Key.warehouseName);
         this.isSelected = false;
+
+        JSONObject outletJson = jsonObject.optJSONObject(APIStatic.Key.outlet);
+        if (outletJson != null)
+            this.outletId = outletJson.optInt(APIStatic.Key.id);
     }
 
     public long getId() {
@@ -60,20 +63,28 @@ public class Indent {
         this.id = id;
     }
 
-    public int getSchoolId() {
-        return schoolId;
+    public int getOutletId() {
+        return outletId;
     }
 
-    public void setSchoolId(int schoolId) {
-        this.schoolId = schoolId;
+    public void setOutletId(int outletId) {
+        this.outletId = outletId;
     }
 
-    public String getName() {
-        return name;
+    public String getIndent() {
+        return indent;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIndent(String indent) {
+        this.indent = indent;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getNumberOfBoxes() {
@@ -92,27 +103,19 @@ public class Indent {
         this.numberOfItems = numberOfItems;
     }
 
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public int getWarehouseName() {
         return warehouseName;
     }
 
     public void setWarehouseName(int warehouseName) {
         this.warehouseName = warehouseName;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

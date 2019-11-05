@@ -61,7 +61,7 @@ public class StockItemDialog extends AlertDialog {
         boxNameView.setText(box.getName());
 
         Indent indent = db.indentDao().getIndent(box.getIndentId());
-        indentNameView.setText(indent.getName());
+        indentNameView.setText(indent.getIndent());
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         boxItemList = new ArrayList<>();

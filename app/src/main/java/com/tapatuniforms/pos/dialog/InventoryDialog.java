@@ -133,8 +133,8 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                 if (!title.equalsIgnoreCase("transfer")) {
 
                     int productId = item.getId();
-                    int schoolId = db.schoolDao().getAll().get(0).getId();
-                    StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, schoolId, this);
+                    int outletId = db.outletDao().getAll().get(0).getId();
+                    StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, outletId, this);
 
                 } else {
                     List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
