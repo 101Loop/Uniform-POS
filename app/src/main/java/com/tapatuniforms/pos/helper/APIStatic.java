@@ -15,6 +15,7 @@ public interface APIStatic {
 
     interface Outlet {
         String endPoint = "outlets/";
+        String outletUrl = baseURL + endPoint;
         String productUrl = baseURL + endPoint + "products/";
     }
 
@@ -118,6 +119,7 @@ public interface APIStatic {
         String city = "city_name";
         String state = "state_name";
         String warehouseName = "warehouse_name";
+        String shortName = "short_name";
     }
 
     interface Constants {

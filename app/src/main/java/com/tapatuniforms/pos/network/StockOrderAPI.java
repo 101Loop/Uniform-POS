@@ -73,7 +73,7 @@ public class StockOrderAPI {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            indentList.add(new Indent(jsonObject, db));
+                            indentList.add(new Indent(jsonObject));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -250,7 +250,7 @@ public class StockOrderAPI {
      * Method to get indent list
      * stores the data when online and displays them if offline
      */
-    public void indentRequestDetails(int productId, int quantity, int schoolId, InventoryDialog inventoryDialog) {
+    public void indentRequestDetails(int productId, int quantity, int outletId, InventoryDialog inventoryDialog) {
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             return;
@@ -260,7 +260,7 @@ public class StockOrderAPI {
         try {
             jsonRequest.put(APIStatic.Key.product, productId);
             jsonRequest.put(APIStatic.Key.qunatity, quantity);
-            jsonRequest.put(APIStatic.Key.school, schoolId);
+            jsonRequest.put(APIStatic.Key.outlet, outletId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

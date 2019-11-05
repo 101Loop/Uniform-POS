@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +48,7 @@ public class StockEntryFragment extends BaseFragment implements StockBoxAdapter.
     private Button searchButton;
     private DatabaseSingleton db;
     private TextView boxText;
+    private TextView dateText;
     private CardView backButton;
 
     @Override
@@ -64,6 +64,7 @@ public class StockEntryFragment extends BaseFragment implements StockBoxAdapter.
 
     private void init(View v) {
         backButton = v.findViewById(R.id.backButton);
+        dateText = v.findViewById(R.id.dateText);
         indentRecyclerView = v.findViewById(R.id.indentRecyclerView);
         requestRecyclerView = v.findViewById(R.id.itemRequestRecyclerView);
         noIndentsLayout = v.findViewById(R.id.noIndentsLayout);
@@ -92,6 +93,8 @@ public class StockEntryFragment extends BaseFragment implements StockBoxAdapter.
         stockBoxAdapter.setOnBoxClickListener(this);
 
         Validator.hideKeyBoardEditText(getActivity(), barcodeEditText);
+
+        dateText.setText(getDate());
 
         backButton.setOnClickListener(view -> onBackPressClicked());
 
@@ -133,7 +136,7 @@ public class StockEntryFragment extends BaseFragment implements StockBoxAdapter.
             indentList.clear();
 
             for (Indent indent : allIndentList) {
-                if (searchText.equals(String.valueOf(indent.getId())) || searchText.equals(indent.getName())) {
+                if (searchText.equals(String.valueOf(indent.getId())) || searchText.equals(indent.getIndent())) {
                     indentList.add(indent);
                 }
             }

@@ -38,6 +38,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     private Activity activity;
     private View view;
     private int previousCount = -1;
+    private boolean isDoneClicked = false;
 
     public InventoryPopupListAdapter(Context context, Activity activity, ProductHeader item, String title) {
         this.context = context;
@@ -88,7 +89,10 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
 
         holder.quantityEditText.setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus) {
+                isDoneClicked = false;
                 previousCount = Integer.parseInt(holder.quantityEditText.getText().toString());
+            } else if (!isDoneClicked) {
+                onDoneClick(holder, position);
             }
         });
 
@@ -152,6 +156,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     }
 
     private void onDoneClick(ViewHolder holder, int position) {
+        isDoneClicked = true;
         hideKeyboard();
         holder.quantityEditText.clearFocus();
 
@@ -163,6 +168,10 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
             currentCount = count;
         } catch (NumberFormatException e) {
             e.printStackTrace();
+
+            if (previousCount == -1)
+                previousCount = 0;
+
             holder.quantityEditText.setText(String.valueOf(previousCount));
             Toast.makeText(context, "Value too long", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "integer value too long");
@@ -171,16 +180,21 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         if (title.equalsIgnoreCase("transfer")) {
             if (count > productVariant.getWarehouseStock()) {
                 Toast.makeText(context, "Not enough items in stock", Toast.LENGTH_SHORT).show();
+
+                if (previousCount == -1)
+                    previousCount = 0;
+
                 holder.quantityEditText.setText(String.valueOf(previousCount));
                 return;
             }
         }
 
-        if (previousCount == count) {
-            return;
-        } else {
-            count -= previousCount;
-        }
+        if (previousCount != -1)
+            if (previousCount == count) {
+                return;
+            } else {
+                count -= previousCount;
+            }
 
         db.productVariantDao().updateTransferOrderCount(currentCount, productVariant.getId());
         ProductVariant currentVariant = getCurrentVariant(position);

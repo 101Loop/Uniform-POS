@@ -11,13 +11,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="47dp"
-        android:background="@drawable/ic_notification_pointer" />
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/ic_smaller_notification" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
         app:contentPadding="16dp">
@@ -28,15 +31,15 @@
             android:padding="-16dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notificationsRecycler"
+                android:id="@+id/itemsRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <TextView
-                android:id="@+id/noNotificationText"
+                android:id="@+id/noItemsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_new_notifications"
+                android:text="@string/no_new_items"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

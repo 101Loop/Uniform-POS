@@ -133,8 +133,8 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                 if (!title.equalsIgnoreCase("transfer")) {
 
                     int productId = item.getId();
-                    int schoolId = db.schoolDao().getAll().get(0).getId();
-                    StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, schoolId, this);
+                    int outletId = db.outletDao().getAll().get(0).getId();
+                    StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, outletId, this);
 
                 } else {
                     List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
@@ -192,7 +192,6 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
      * Method to update total count
      *
      * @param count Count to be added (+1 for adding, -1 for subtracting)
-     * @param isDone 0 if it is not from done click
      */
     @Override
     public void onItemChangeListener(int count, int isDone) {

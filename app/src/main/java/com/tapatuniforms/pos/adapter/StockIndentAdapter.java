@@ -50,7 +50,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
             setBackgroundWhite(holder);
         }
 
-        holder.indentNameView.setText(indent.getName());
+        holder.indentNameView.setText(indent.getIndent());
         holder.indentBoxNumber.setText(indent.getNumberOfBoxes() + " Boxes");
         holder.price.setText("₹" + indent.getPrice());
         holder.itemCount.setText(indent.getNumberOfItems() + " Items");
@@ -69,7 +69,7 @@ public class StockIndentAdapter extends RecyclerView.Adapter<StockIndentAdapter.
             }
 
             if (listener != null) {
-                listener.onClickListener(selectedIndent.getId(), selectedIndent.getName());
+                listener.onClickListener(selectedIndent.getId(), selectedIndent.getIndent());
             }
 
             if (selectedIndent != lastIndent) {
