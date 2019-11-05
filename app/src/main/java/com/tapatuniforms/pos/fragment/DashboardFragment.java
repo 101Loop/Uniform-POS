@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -44,9 +45,8 @@ import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.network.ProductAPI;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class DashboardFragment extends Fragment implements DashboardAdapter.OnClickListener, OnChartValueSelectedListener {
+public class DashboardFragment extends BaseFragment implements DashboardAdapter.OnClickListener, OnChartValueSelectedListener {
     private RecyclerView dashRecycler;
     private DashboardAdapter dashAdapter;
     private DatabaseSingleton db;
@@ -62,6 +62,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
     private IndexAdapter indexAdapter;
     private ArrayList<Integer> indexList;
     private RecyclerView indexRecycler;
+    private TextView dateText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,12 +76,16 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnCl
     }
 
     private void init(View v) {
+        dateText = v.findViewById(R.id.dateText);
+
         dashRecycler = v.findViewById(R.id.dashRecycler);
         dashRecycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
         dashRecycler.addItemDecoration(new GridItemDecoration(8, 8));
         dashAdapter = new DashboardAdapter(getDashboardItems());
         dashRecycler.setAdapter(dashAdapter);
         dashAdapter.setOnClickListener(this);
+
+        dateText.setText(getDate());
 
         activitiesList = new ArrayList<>();
         activitiesRecycler = v.findViewById(R.id.activitiesRecycler);
