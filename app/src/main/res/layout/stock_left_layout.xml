@@ -11,18 +11,17 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:contentPadding="8dp"
-        app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="@color/lighterGrey"
         android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/lighterGrey"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/back"/>
-
+            android:text="@string/back" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -54,11 +53,11 @@
             android:id="@+id/editTextLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:focusableInTouchMode="true"
+            android:baselineAligned="false"
             android:descendantFocusability="afterDescendants"
-            android:weightSum="2"
-            android:baselineAligned="false">
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <LinearLayout
                 android:id="@+id/fullNameLayout"
@@ -148,7 +147,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView39"
+        android:id="@+id/dateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -180,7 +179,7 @@
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView39" />
+        app:layout_constraintTop_toBottomOf="@+id/dateText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/indentRecyclerView"
