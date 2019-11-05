@@ -192,7 +192,6 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
      * Method to update total count
      *
      * @param count Count to be added (+1 for adding, -1 for subtracting)
-     * @param isDone 0 if it is not from done click
      */
     @Override
     public void onItemChangeListener(int count, int isDone) {
