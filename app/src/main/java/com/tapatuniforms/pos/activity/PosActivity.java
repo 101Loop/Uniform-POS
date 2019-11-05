@@ -211,7 +211,7 @@ public class PosActivity extends AppCompatActivity implements
         notificationsRecycler.setAdapter(notificationsAdapter);
 
         getNotifications();
-        updateItemsCount(cartItemList.size(), bagItemsRecycler, noNotificationText, null, null);
+        updateItemsCount(notificationItems.size(), bagItemsRecycler, noNotificationText, null, null);
 
         dialog.show();
     }
@@ -242,7 +242,7 @@ public class PosActivity extends AppCompatActivity implements
         itemsRecycler.setAdapter(notificationsAdapter);
 
         getNotifications();
-        updateItemsCount(cartItemList.size(), bagItemsRecycler, noItemsText, null, null);
+        updateItemsCount(notificationItems.size(), bagItemsRecycler, noItemsText, null, null);
 
         dialog.show();
     }
