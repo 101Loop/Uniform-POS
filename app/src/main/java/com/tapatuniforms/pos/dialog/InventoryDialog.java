@@ -21,6 +21,7 @@ import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
+import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.Stock;
@@ -65,7 +66,10 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         this.title = title;
         db = DatabaseHelper.getDatabase(context);
 
-        outletId = db.outletDao().getAll().get(0).getId();
+        List<Outlet> outletList = db.outletDao().getAll();
+
+        if (outletList.size() > 0)
+            outletId = outletList.get(0).getId();
     }
 
     @Override
@@ -156,7 +160,6 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                     int productId = item.getId();
                     int outletId = db.outletDao().getAll().get(0).getId();
                     StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, outletId, this);
-
                 } else {
                     List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
 
