@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -151,7 +152,8 @@ public class PosActivity extends AppCompatActivity implements
 
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP | Gravity.END;
-            params.y = 70;
+            params.y = 100;
+            dialog.getWindow().setAttributes(params);
         }
 
         View view = LayoutInflater.from(this).inflate(R.layout.bag_items_layout, null);
@@ -161,6 +163,9 @@ public class PosActivity extends AppCompatActivity implements
         itemsCountText = view.findViewById(R.id.itemsCountText);
         noBagItemsText = view.findViewById(R.id.noBagItemsText);
         bagItemsRecycler = view.findViewById(R.id.bagItemsRecycler);
+
+        final RelativeLayout rootLayout = view.findViewById(R.id.rootLayout);
+        rootLayout.setOnClickListener(view1 -> dialog.dismiss());
 
         bagItemsRecycler.addItemDecoration(new RecyclerDivider(this, RecyclerDivider.VERTICAL));
 
@@ -194,7 +199,7 @@ public class PosActivity extends AppCompatActivity implements
 
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP | Gravity.END;
-            params.y = 70;
+            params.y = 100;
         }
 
         View view = LayoutInflater.from(this).inflate(R.layout.notifications_layout, null);
@@ -225,7 +230,7 @@ public class PosActivity extends AppCompatActivity implements
 
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP | Gravity.END;
-            params.y = 70;
+            params.y = 100;
         }
 
         View view = LayoutInflater.from(this).inflate(R.layout.details_item_layout, null);
