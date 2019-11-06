@@ -25,6 +25,7 @@ import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 
@@ -126,6 +127,17 @@ public class ProductAPI {
             allProducts.clear();
             allProducts.addAll(localProductList);
 
+            List<Stock> stockList = db.stockDao().getAll();
+            if (stockList == null || stockList.size() < 1)
+                for (ProductHeader product : allProducts) {
+                    List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
+
+                    for (ProductVariant variant : variantList) {
+                        Stock stock = new Stock(variant.getId(), variant.getDisplayStock(), variant.getWarehouseStock());
+                        db.stockDao().insert(stock);
+                    }
+                }
+
             if (inventoryFragment != null) {
                 inventoryFragment.getRecommendedProductList();
             }
@@ -162,6 +174,17 @@ public class ProductAPI {
                             db.productVariantDao().insert(new ProductVariant(response.optJSONObject(i), j));
                         }
                     }
+
+                    List<Stock> stockList = db.stockDao().getAll();
+                    if (stockList == null || stockList.size() < 1)
+                        for (ProductHeader product : allProducts) {
+                            List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
+
+                            for (ProductVariant variant : variantList) {
+                                Stock stock = new Stock(variant.getId(), variant.getDisplayStock(), variant.getWarehouseStock());
+                                db.stockDao().insert(stock);
+                            }
+                        }
 
                     if (inventoryAdapter != null) {
                         inventoryAdapter.notifyDataSetChanged();
@@ -229,12 +252,21 @@ public class ProductAPI {
                     }
                 }
                 assert productVariant != null;
-                if (subOrder.getQuantity() > productVariant.getDisplayStock()) {
+                Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                if (subOrder.getQuantity() > stock.getDisplay()) {
                     Log.e(TAG, "Syncing suborder: items count can't be greater than items in the display");
                     return;
                 }
 
-                db.productVariantDao().updateDisplayStock(productVariant.getDisplayStock() - subOrder.getQuantity(), productVariant.getId());
+//                db.stockDao().updateDisplayStock(stock.getDisplay() - subOrder.getQuantity(), productVariant.getId());
+//                db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
+
+                long outletId = db.outletDao().getAll().get(0).getId();
+                stock.setDisplay(productVariant.getDisplayStock() - subOrder.getQuantity());
+
+                JSONObject stockJson = stock.toJson();
+
+                ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stockJson, db, null);
             }
         }
 
@@ -407,6 +439,28 @@ public class ProductAPI {
                     Outlet outlet = new Outlet(outletJSON);
                     db.outletDao().insert(outlet);
                     outletList.add(outlet);
+                },
+                new APIErrorListener(context),
+                context);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    public void updateStock(long outletId, long variantId, JSONObject stockJSON, DatabaseSingleton db, NotifyListener listener){
+        DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
+                Request.Method.PATCH,
+                APIStatic.Outlet.outletUrl + outletId + "/product/" + variantId + "/",
+                stockJSON,
+                response -> {
+                    Stock stock = new Stock(response);
+                    db.stockDao().delete(stock.getId());
+                    db.stockDao().insert(stock);
+
+                    if (listener != null) {
+                        listener.onNotify();
+                    }
                 },
                 new APIErrorListener(context),
                 context);

@@ -24,6 +24,7 @@ import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.Indent;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -223,13 +224,15 @@ public class StockOrderAPI {
                         ProductHeader product = db.productHeaderDao().getProductHeaderById(boxItem.getProductId());
 
                         ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
+                        Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
                         if (!productVariant.isSynced()) {
                             db.productVariantDao().setSyncStatus(true, productVariant.getId());
 
-                            int warehouseStock = productVariant.getWarehouseStock();
+                            int warehouseStock = stock.getWarehouse();
                             int itemScanned = boxItem.getNumberOfScannedItems();
 
-                            db.productVariantDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
+                            db.stockDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
+                            db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
                         }
                     }
 

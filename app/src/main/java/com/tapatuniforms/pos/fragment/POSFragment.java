@@ -47,6 +47,7 @@ import com.tapatuniforms.pos.model.Discount;
 import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
@@ -115,6 +116,7 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
     private TextView noItemsText;
     private RecyclerView itemRecyclerView;
     private CardView backButton;
+    private ReturnItemAdapter returnItemAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -479,19 +481,38 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
 
         noItemsText = view.findViewById(R.id.noItemsText);
         itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
-        final ReturnItemAdapter returnItemAdapter = new ReturnItemAdapter(getContext(), itemList);
+
+        final EditText billingIdText = view.findViewById(R.id.billingIDText);
+        final EditText studentIdText = view.findViewById(R.id.studentIDText);
+        final CardView checkButton = view.findViewById(R.id.checkButton);
+        checkButton.setOnClickListener(view1 -> {
+            String billingId = billingIdText.getText().toString();
+            String studentId = studentIdText.getText().toString();
+
+            if (!billingId.isEmpty() && !studentId.isEmpty())
+                checkReturnItems(billingId, studentId);
+            else {
+                Toast.makeText(getContext(), "Billing ID and Student ID both are required", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        returnItemAdapter = new ReturnItemAdapter(getContext(), itemList);
 
         itemRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         itemRecyclerView.setAdapter(returnItemAdapter);
         returnItemAdapter.setOnReturnItemClickListener(this);
+        checkItemsAvailability();
 
+        dialog.show();
+    }
+
+    private void checkReturnItems(String billingId, String studentId) {
+        itemList.clear();
         for (int i = 0; i < 3; i++) {
             itemList.add("Shirt type: " + i);
         }
         returnItemAdapter.notifyDataSetChanged();
         checkItemsAvailability();
-
-        dialog.show();
     }
 
     /**
@@ -776,10 +797,14 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
                     }
                 }
 
-                if (productVariant != null && productVariant.getDisplayStock() - lastCartItem.getQuantity() < 1) {
-                    Toast.makeText(getContext(), APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
-                    return;
+                if (productVariant != null) {
+                    Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                    if (stock.getDisplay() - lastCartItem.getQuantity() < 1) {
+                        Toast.makeText(getContext(), APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+
             }
 
             for (CartItem cartItem : cartList) {

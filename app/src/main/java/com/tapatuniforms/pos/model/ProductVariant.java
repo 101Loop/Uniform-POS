@@ -19,7 +19,7 @@ import static androidx.room.ForeignKey.CASCADE;
         onDelete = CASCADE))
 
 public class ProductVariant {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
     @ColumnInfo(name = "productId")
     private int productId;
@@ -46,6 +46,7 @@ public class ProductVariant {
         JSONObject currentSubProduct = subProductSet.optJSONObject(position);
         JSONObject productJson = jsonObject.optJSONObject(APIStatic.Key.product);
 
+        this.id = currentSubProduct.optInt(APIStatic.Key.id);
         this.productId = productJson.optInt(APIStatic.Key.id);
         this.size = currentSubProduct.optString(APIStatic.Key.size);
         this.price = currentSubProduct.optDouble(APIStatic.Key.price);
