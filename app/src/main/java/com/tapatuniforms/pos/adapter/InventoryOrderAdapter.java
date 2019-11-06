@@ -14,8 +14,10 @@ import com.bumptech.glide.Glide;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,16 +54,18 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
         String image = getCategoryImage(product.getCategory());
 
         //image
-        Glide.with(context)
-                .load(image)
-                .centerCrop()
-                .into(holder.itemImageView);
+        if (image != null)
+            Glide.with(context)
+                    .load(image)
+                    .centerCrop()
+                    .into(holder.itemImageView);
 
         holder.itemNameView.setText(product.getName());
 
         int totalWarehouseCount = 0;
         for (ProductVariant currentVariant : variantList) {
-            totalWarehouseCount += currentVariant.getWarehouseStock();
+            Stock stock = db.stockDao().getStocksById(currentVariant.getId()).get(0);
+            totalWarehouseCount += stock.getWarehouse();
         }
 
         holder.warehouseCount.setText(String.valueOf(totalWarehouseCount));
@@ -108,6 +112,9 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
      * @return Returns image url
      */
     private String getCategoryImage(int category) {
-        return db.categoryDao().getCategory(category).getImage();
+        Category category1 = db.categoryDao().getCategory(category);
+        if (category1 != null)
+            return category1.getImage();
+        return null;
     }
 }

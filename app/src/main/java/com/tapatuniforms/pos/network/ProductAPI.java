@@ -17,6 +17,7 @@ import com.tapatuniforms.pos.fragment.InventoryFragment;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Category;
@@ -251,14 +252,21 @@ public class ProductAPI {
                     }
                 }
                 assert productVariant != null;
-                if (subOrder.getQuantity() > productVariant.getDisplayStock()) {
+                Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                if (subOrder.getQuantity() > stock.getDisplay()) {
                     Log.e(TAG, "Syncing suborder: items count can't be greater than items in the display");
                     return;
                 }
 
-                db.stockDao().updateDisplayStock(productVariant.getDisplayStock() - subOrder.getQuantity(), productVariant.getId());
-                Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
-                db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
+//                db.stockDao().updateDisplayStock(stock.getDisplay() - subOrder.getQuantity(), productVariant.getId());
+//                db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
+
+                long outletId = db.outletDao().getAll().get(0).getId();
+                stock.setDisplay(productVariant.getDisplayStock() - subOrder.getQuantity());
+
+                JSONObject stockJson = stock.toJson();
+
+                ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stockJson, db, null);
             }
         }
 
@@ -431,6 +439,28 @@ public class ProductAPI {
                     Outlet outlet = new Outlet(outletJSON);
                     db.outletDao().insert(outlet);
                     outletList.add(outlet);
+                },
+                new APIErrorListener(context),
+                context);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    public void updateStock(long outletId, long variantId, JSONObject stockJSON, DatabaseSingleton db, NotifyListener listener){
+        DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
+                Request.Method.PATCH,
+                APIStatic.Outlet.outletUrl + outletId + "/product/" + variantId + "/",
+                stockJSON,
+                response -> {
+                    Stock stock = new Stock(response);
+                    db.stockDao().delete(stock.getId());
+                    db.stockDao().insert(stock);
+
+                    if (listener != null) {
+                        listener.onNotify();
+                    }
                 },
                 new APIErrorListener(context),
                 context);

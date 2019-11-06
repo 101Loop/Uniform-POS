@@ -224,16 +224,14 @@ public class StockOrderAPI {
                         ProductHeader product = db.productHeaderDao().getProductHeaderById(boxItem.getProductId());
 
                         ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
+                        Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
                         if (!productVariant.isSynced()) {
                             db.productVariantDao().setSyncStatus(true, productVariant.getId());
 
-                            int warehouseStock = productVariant.getWarehouseStock();
+                            int warehouseStock = stock.getWarehouse();
                             int itemScanned = boxItem.getNumberOfScannedItems();
 
                             db.stockDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
-
-                            Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
-
                             db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
                         }
                     }

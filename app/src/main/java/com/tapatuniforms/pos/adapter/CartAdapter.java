@@ -19,6 +19,7 @@ import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.CartItem;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private static final String TAG = "CartAdapter";
-
     private ArrayList<CartItem> cartList;
     private UpdateItemListener listener;
     private DatabaseSingleton db;
@@ -90,7 +90,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
 
             assert productVariant != null;
-            if (productVariant.getDisplayStock() - cartItem.getQuantity() < 1) {
+            List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+
+            Stock stock = null;
+            if (stockList.size() > 0)
+                stock = stockList.get(0);
+
+            if (stock != null && stock.getDisplay() - cartItem.getQuantity() < 1) {
                 Toast.makeText(context, APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
                 return;
             }

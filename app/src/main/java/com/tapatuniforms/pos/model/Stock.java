@@ -7,6 +7,11 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import com.tapatuniforms.pos.helper.APIStatic;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(indices = {@Index("variantId")}, foreignKeys = @ForeignKey(entity = ProductVariant.class,
@@ -14,7 +19,7 @@ import static androidx.room.ForeignKey.CASCADE;
         childColumns = "variantId",
         onDelete = CASCADE))
 public class Stock {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
     @ColumnInfo(name = "variantId")
     private int variantId;
@@ -29,10 +34,31 @@ public class Stock {
     }
 
     @Ignore
+    public Stock(JSONObject jsonObject) {
+        this.variantId = jsonObject.optInt(APIStatic.Key.id);
+        this.id = this.variantId;
+        this.display = jsonObject.optInt(APIStatic.Key.displayStock);
+        this.warehouse = jsonObject.optInt(APIStatic.Key.warehouseStock);
+    }
+
+    @Ignore
     public Stock(int variantId, int display, int warehouse) {
         this.variantId = variantId;
+        this.id = variantId;
         this.display = display;
         this.warehouse = warehouse;
+    }
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(APIStatic.Key.displayStock, this.getDisplay());
+            jsonObject.put(APIStatic.Key.warehouseStock, this.getWarehouse());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
     }
 
     public int getId() {
