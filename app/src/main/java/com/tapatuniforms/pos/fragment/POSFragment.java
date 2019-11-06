@@ -47,6 +47,7 @@ import com.tapatuniforms.pos.model.Discount;
 import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
@@ -796,10 +797,14 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
                     }
                 }
 
-                if (productVariant != null && productVariant.getDisplayStock() - lastCartItem.getQuantity() < 1) {
-                    Toast.makeText(getContext(), APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
-                    return;
+                if (productVariant != null) {
+                    Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                    if (stock.getDisplay() - lastCartItem.getQuantity() < 1) {
+                        Toast.makeText(getContext(), APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+
             }
 
             for (CartItem cartItem : cartList) {

@@ -19,14 +19,19 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.InventoryPopupListAdapter;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
+import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.network.StockOrderAPI;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
-public class InventoryDialog extends AlertDialog implements InventoryPopupListAdapter.ItemCountChangeListener {
+public class InventoryDialog extends AlertDialog implements InventoryPopupListAdapter.ItemCountChangeListener, NotifyListener {
     private final static String TAG = "InventoryDialog";
     private RecyclerView itemRecyclerView;
     private Button closeButton;
@@ -41,6 +46,12 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
     private int totalCount = 0;
     private DialogDismissedListener listener;
     private Activity activity;
+    private long outletId;
+
+    @Override
+    public void onNotify() {
+        Toast.makeText(activity, "Items transferred successfully", Toast.LENGTH_SHORT).show();
+    }
 
     public interface DialogDismissedListener {
         void onDialogDismissListener();
@@ -53,6 +64,8 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         this.item = item;
         this.title = title;
         db = DatabaseHelper.getDatabase(context);
+
+        outletId = db.outletDao().getAll().get(0).getId();
     }
 
     @Override
@@ -92,8 +105,16 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         int totalDisplayStock = 0;
 
         for (ProductVariant currentVariant : productVariantList) {
-            totalStock += currentVariant.getWarehouseStock();
-            totalDisplayStock += currentVariant.getDisplayStock();
+            List<Stock> stockList = db.stockDao().getStocksById(currentVariant.getId());
+
+            Stock stock = null;
+            if (stockList.size() > 0)
+                stock = stockList.get(0);
+
+            if (stock != null) {
+                totalStock += stock.getWarehouse();
+                totalDisplayStock += stock.getDisplay();
+            }
         }
 
         stockItemsView.setText(totalStock + " in Stock");
@@ -140,19 +161,23 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                     List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
 
                     for (ProductVariant currentVariant : productVariantList) {
+                        Stock stock = db.stockDao().getStocksById(currentVariant.getId()).get(0);
                         int transferOrderCount = currentVariant.getTransferOrderCount();
-                        int warehouseStock = currentVariant.getWarehouseStock();
-                        int displayStock = currentVariant.getDisplayStock();
+                        int warehouseStock = stock.getWarehouse();
+                        int displayStock = stock.getDisplay();
+
+                        stock.setDisplay(displayStock + transferOrderCount);
+                        stock.setWarehouse(warehouseStock - transferOrderCount);
 
                         if (transferOrderCount > warehouseStock) {
                             Toast.makeText(getContext(), "Not enough items in warehouse", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        db.productVariantDao().updateWarehouseStock(warehouseStock - transferOrderCount, currentVariant.getId());
-                        db.productVariantDao().updateDisplayStock(displayStock + transferOrderCount, currentVariant.getId());
+                        JSONObject stockJson = stock.toJson();
+                        ProductAPI.getInstance(getContext()).updateStock(outletId, currentVariant.getId(), stockJson, db, this);
+
                         db.productVariantDao().updateTransferOrderCount(0, currentVariant.getId());
-                        Toast.makeText(getContext(), "Items transferred", Toast.LENGTH_SHORT).show();
                         dismiss();
                     }
                 }

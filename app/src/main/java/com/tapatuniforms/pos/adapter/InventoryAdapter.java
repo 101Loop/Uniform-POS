@@ -18,6 +18,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +68,17 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         int totalWarehouseStock = 0;
         int totalDisplayStock = 0;
         for (ProductVariant currentVariant : productVariantList) {
-            totalWarehouseStock += currentVariant.getWarehouseStock();
-            totalDisplayStock += currentVariant.getDisplayStock();
+            List<Stock> stockList = db.stockDao().getStocksById(currentVariant.getId());
+
+            Stock stock = null;
+            if (stockList.size() > 0)
+                stock = stockList.get(0);
+
+            if (stock != null) {
+                totalWarehouseStock += stock.getWarehouse();
+                totalDisplayStock += stock.getDisplay();
+            }
+
             sizeList.add(currentVariant.getSize());
         }
         holder.itemWarehouseCount.setText(String.valueOf(totalWarehouseStock));

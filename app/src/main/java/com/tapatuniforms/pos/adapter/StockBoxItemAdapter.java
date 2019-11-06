@@ -1,6 +1,7 @@
 package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
+import com.tapatuniforms.pos.network.ProductAPI;
 
 import java.util.ArrayList;
 
-public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapter.ViewHolder> {
+public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapter.ViewHolder> implements NotifyListener {
     private Context context;
     private ArrayList<BoxItem> boxItemList;
     private DatabaseSingleton db;
@@ -46,12 +50,13 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         BoxItem currentItem = boxItemList.get(position);
         ProductHeader product = db.productHeaderDao().getProductHeaderById(currentItem.getProductId());
         ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
+        Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
 
         String name = product.getName();
         holder.itemNameView.setText(name);
         holder.itemSentView.setText(String.valueOf(currentItem.getNumberOfItems()));
         holder.itemScannedView.setText(String.valueOf(currentItem.getNumberOfScannedItems()));
-        holder.itemShelfView.setText(String.valueOf(productVariant.getDisplayStock()));
+        holder.itemShelfView.setText(String.valueOf(stock.getDisplay()));
 
         holder.moveButton.setOnClickListener(view -> {
             int moveCount = Integer.parseInt(holder.itemsToMoveText.getText().toString().trim());
@@ -67,8 +72,8 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
                 return;
             }
 
-            int displayCount = productVariant.getDisplayStock();
-            int warehouseCount = productVariant.getWarehouseStock();
+            int displayCount = stock.getDisplay();
+            int warehouseCount = stock.getWarehouse();
             int shelfCount = displayCount + moveCount;
             int finalScannedItems = scannedCount - moveCount;
 
@@ -81,8 +86,17 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             holder.itemShelfView.setText(String.valueOf(shelfCount));
             holder.itemScannedView.setText(String.valueOf(finalScannedItems));
 
-            db.productVariantDao().updateWarehouseStock(warehouseCount - moveCount, productVariant.getId());
-            db.productVariantDao().updateDisplayStock(displayCount + moveCount, productVariant.getId());
+            long outletId = db.outletDao().getAll().get(0).getId();
+            stock.setWarehouse(warehouseCount - moveCount);
+            stock.setDisplay(displayCount + moveCount);
+
+            ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stock.toJson(), db, this);
+//            db.stockDao().updateWarehouseStock(warehouseCount - moveCount, productVariant.getId());
+//            db.stockDao().updateDisplayStock(displayCount + moveCount, productVariant.getId());
+//
+//            db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
+//            db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
+
             db.boxItemDao().updateScannedItems(finalScannedItems, currentItem.getId());
 
             Toast.makeText(context, "Items transferred successfully", Toast.LENGTH_SHORT).show();
@@ -92,6 +106,11 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
     @Override
     public int getItemCount() {
         return boxItemList.size();
+    }
+
+    @Override
+    public void onNotify() {
+        new Handler().postDelayed(this::notifyDataSetChanged, 1000);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

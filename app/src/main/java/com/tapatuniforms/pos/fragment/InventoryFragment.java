@@ -1,9 +1,9 @@
 package com.tapatuniforms.pos.fragment;
 
-
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +27,7 @@ import com.tapatuniforms.pos.helper.GridItemDecoration;
 import com.tapatuniforms.pos.model.Category;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.network.ProductAPI;
 
 import java.util.ArrayList;
@@ -170,8 +170,21 @@ public class InventoryFragment extends BaseFragment implements InventoryAdapter.
             }
         });
 
-        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
-        ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db, inventoryOrderAdapter, this);
+        categoryList.addAll(db.categoryDao().getAll());
+        if (categoryList.size() < 1)
+            ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
+        else
+            categoryAdapter.notifyDataSetChanged();
+
+        productList.addAll(db.productHeaderDao().getAllProductHeader());
+        allProducts.addAll(productList);
+        if (productList.size() < 1)
+            ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db, inventoryOrderAdapter, this);
+        else {
+            inventoryAdapter.notifyDataSetChanged();
+            inventoryOrderAdapter.notifyDataSetChanged();
+            getRecommendedProductList();
+        }
     }
 
     /**
@@ -250,11 +263,18 @@ public class InventoryFragment extends BaseFragment implements InventoryAdapter.
         for (ProductHeader productHeader : allProducts) {
             List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(productHeader.getId());
 
-            int stock = 0;
+            int stockCount = 0;
             for (ProductVariant currentVariant : productVariantList) {
-                stock += currentVariant.getWarehouseStock();
+                List<Stock> stockList = db.stockDao().getStocksById(currentVariant.getId());
+
+                Stock stock = null;
+                if (stockList.size() > 0)
+                    stock = stockList.get(0);
+
+                if (stock != null)
+                    stockCount += stock.getWarehouse();
             }
-            productHeader.setTotalWarehouseStock(stock);
+            productHeader.setTotalWarehouseStock(stockCount);
         }
 
         Collections.sort(allProducts, (productHeader, t1) -> productHeader.getTotalWarehouseStock() - t1.getTotalWarehouseStock());
@@ -275,8 +295,10 @@ public class InventoryFragment extends BaseFragment implements InventoryAdapter.
      */
     @Override
     public void onDialogDismissListener() {
-        getRecommendedProductList();
-        inventoryAdapter.notifyDataSetChanged();
-        inventoryOrderAdapter.notifyDataSetChanged();
+        new Handler().postDelayed(() -> {
+            getRecommendedProductList();
+            inventoryAdapter.notifyDataSetChanged();
+            inventoryOrderAdapter.notifyDataSetChanged();
+        }, 1000);
     }
 }

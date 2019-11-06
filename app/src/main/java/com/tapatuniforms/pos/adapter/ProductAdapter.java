@@ -23,6 +23,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +118,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     }
 
                     assert productVariant != null;
-                    if (productVariant.getDisplayStock() < 1) {
+                    Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                    if (stock.getDisplay() < 1) {
                         Toast.makeText(context, APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
                         return;
                     }

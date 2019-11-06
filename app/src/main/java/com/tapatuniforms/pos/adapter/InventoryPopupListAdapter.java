@@ -20,6 +20,7 @@ import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +52,10 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
 
         List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
         for (ProductVariant currentVariant : productVariantList) {
+            Stock stock = db.stockDao().getStocksById(currentVariant.getId()).get(0);
             sizeList.add(currentVariant.getSize());
-            warehouseStockList.add(String.valueOf(currentVariant.getWarehouseStock()));
-            displayStockList.add(currentVariant.getDisplayStock());
+            warehouseStockList.add(String.valueOf(stock.getWarehouse()));
+            displayStockList.add(stock.getDisplay());
         }
     }
 
@@ -73,6 +75,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductVariant productVariant = getCurrentVariant(position);
+        Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
 
         holder.sizeView.setText(sizeList.get(position));
         holder.stockView.setText(warehouseStockList.get(position));
@@ -106,7 +109,7 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
             }
 
             if (title.equalsIgnoreCase("transfer")) {
-                if (productVariant.getWarehouseStock() - count < 1) {
+                if (stock.getWarehouse() - count < 1) {
                     Toast.makeText(context, "Not enough items in stock", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -192,7 +195,8 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         }
 
         if (title.equalsIgnoreCase("transfer")) {
-            if (count > productVariant.getWarehouseStock()) {
+            int warehouseStock = db.stockDao().getStocksById(productVariant.getId()).get(0).getWarehouse();
+            if (count > warehouseStock) {
                 Toast.makeText(context, "Not enough items in stock", Toast.LENGTH_SHORT).show();
 
                 if (previousCount == -1)

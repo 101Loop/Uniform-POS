@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 @Entity
 public class School {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
     private String name;
     private String address;
