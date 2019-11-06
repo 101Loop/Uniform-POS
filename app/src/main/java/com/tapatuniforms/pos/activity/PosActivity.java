@@ -194,7 +194,7 @@ public class PosActivity extends AppCompatActivity implements
 
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP | Gravity.END;
-            params.y = 70;
+            params.verticalMargin = 70;
         }
 
         View view = LayoutInflater.from(this).inflate(R.layout.notifications_layout, null);
