@@ -19,6 +19,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import java.util.ArrayList;
 
@@ -81,8 +82,13 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             holder.itemShelfView.setText(String.valueOf(shelfCount));
             holder.itemScannedView.setText(String.valueOf(finalScannedItems));
 
-            db.productVariantDao().updateWarehouseStock(warehouseCount - moveCount, productVariant.getId());
-            db.productVariantDao().updateDisplayStock(displayCount + moveCount, productVariant.getId());
+            db.stockDao().updateWarehouseStock(warehouseCount - moveCount, productVariant.getId());
+            db.stockDao().updateDisplayStock(displayCount + moveCount, productVariant.getId());
+
+            Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+            db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
+            db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
+
             db.boxItemDao().updateScannedItems(finalScannedItems, currentItem.getId());
 
             Toast.makeText(context, "Items transferred successfully", Toast.LENGTH_SHORT).show();

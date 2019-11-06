@@ -24,6 +24,7 @@ import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.Indent;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -229,7 +230,11 @@ public class StockOrderAPI {
                             int warehouseStock = productVariant.getWarehouseStock();
                             int itemScanned = boxItem.getNumberOfScannedItems();
 
-                            db.productVariantDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
+                            db.stockDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
+
+                            Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+
+                            db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
                         }
                     }
 

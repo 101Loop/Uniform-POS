@@ -1,6 +1,5 @@
 package com.tapatuniforms.pos.fragment;
 
-
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -170,8 +168,21 @@ public class InventoryFragment extends BaseFragment implements InventoryAdapter.
             }
         });
 
-        ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
-        ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db, inventoryOrderAdapter, this);
+        categoryList.addAll(db.categoryDao().getAll());
+        if (categoryList.size() < 1)
+            ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
+        else
+            categoryAdapter.notifyDataSetChanged();
+
+        productList.addAll(db.productHeaderDao().getAllProductHeader());
+        allProducts.addAll(productList);
+        if (productList.size() < 1)
+            ProductAPI.fetchProducts(getContext(), allProducts, productList, null, inventoryAdapter, db, inventoryOrderAdapter, this);
+        else {
+            inventoryAdapter.notifyDataSetChanged();
+            inventoryOrderAdapter.notifyDataSetChanged();
+            getRecommendedProductList();
+        }
     }
 
     /**

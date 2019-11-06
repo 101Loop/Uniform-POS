@@ -14,6 +14,7 @@ import com.tapatuniforms.pos.dao.OutletDao;
 import com.tapatuniforms.pos.dao.ProductHeaderDao;
 import com.tapatuniforms.pos.dao.ProductVariantDao;
 import com.tapatuniforms.pos.dao.SchoolDao;
+import com.tapatuniforms.pos.dao.StockDao;
 import com.tapatuniforms.pos.dao.StockItemDao;
 import com.tapatuniforms.pos.dao.StudentDao;
 import com.tapatuniforms.pos.dao.SubOrderDao;
@@ -29,15 +30,16 @@ import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.School;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.StockItem;
 import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 import com.tapatuniforms.pos.model.User;
 
-@Database(version = 11, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
+@Database(version = 1, entities = {StockItem.class, User.class, Order.class, SubOrder.class,
         Transaction.class, Category.class, Discount.class, Box.class, BoxItem.class,
-        Indent.class, ProductHeader.class, ProductVariant.class, Student.class, School.class, Outlet.class}, exportSchema = false)
+        Indent.class, ProductHeader.class, ProductVariant.class, Student.class, School.class, Outlet.class, Stock.class}, exportSchema = false)
 
 @TypeConverters({Converter.class})
 public abstract class DatabaseSingleton extends RoomDatabase {
@@ -70,4 +72,6 @@ public abstract class DatabaseSingleton extends RoomDatabase {
     abstract public SchoolDao schoolDao();
 
     abstract public OutletDao outletDao();
+
+    abstract public StockDao stockDao();
 }

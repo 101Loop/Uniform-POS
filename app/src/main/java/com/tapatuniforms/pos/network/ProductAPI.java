@@ -17,7 +17,6 @@ import com.tapatuniforms.pos.fragment.InventoryFragment;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
-import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Category;
@@ -25,6 +24,7 @@ import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
 
@@ -126,6 +126,17 @@ public class ProductAPI {
             allProducts.clear();
             allProducts.addAll(localProductList);
 
+            List<Stock> stockList = db.stockDao().getAll();
+            if (stockList == null || stockList.size() < 1)
+                for (ProductHeader product : allProducts) {
+                    List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
+
+                    for (ProductVariant variant : variantList) {
+                        Stock stock = new Stock(variant.getId(), variant.getDisplayStock(), variant.getWarehouseStock());
+                        db.stockDao().insert(stock);
+                    }
+                }
+
             if (inventoryFragment != null) {
                 inventoryFragment.getRecommendedProductList();
             }
@@ -162,6 +173,17 @@ public class ProductAPI {
                             db.productVariantDao().insert(new ProductVariant(response.optJSONObject(i), j));
                         }
                     }
+
+                    List<Stock> stockList = db.stockDao().getAll();
+                    if (stockList == null || stockList.size() < 1)
+                        for (ProductHeader product : allProducts) {
+                            List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
+
+                            for (ProductVariant variant : variantList) {
+                                Stock stock = new Stock(variant.getId(), variant.getDisplayStock(), variant.getWarehouseStock());
+                                db.stockDao().insert(stock);
+                            }
+                        }
 
                     if (inventoryAdapter != null) {
                         inventoryAdapter.notifyDataSetChanged();
@@ -234,7 +256,9 @@ public class ProductAPI {
                     return;
                 }
 
-                db.productVariantDao().updateDisplayStock(productVariant.getDisplayStock() - subOrder.getQuantity(), productVariant.getId());
+                db.stockDao().updateDisplayStock(productVariant.getDisplayStock() - subOrder.getQuantity(), productVariant.getId());
+                Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
             }
         }
 

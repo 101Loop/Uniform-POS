@@ -22,6 +22,7 @@ import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.network.StockOrderAPI;
 
 import java.util.List;
@@ -149,8 +150,13 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                             return;
                         }
 
-                        db.productVariantDao().updateWarehouseStock(warehouseStock - transferOrderCount, currentVariant.getId());
-                        db.productVariantDao().updateDisplayStock(displayStock + transferOrderCount, currentVariant.getId());
+                        db.stockDao().updateWarehouseStock(warehouseStock - transferOrderCount, currentVariant.getId());
+                        db.stockDao().updateDisplayStock(displayStock + transferOrderCount, currentVariant.getId());
+
+                        Stock stock = db.stockDao().getStocksById(currentVariant.getId()).get(0);
+                        db.productVariantDao().updateDisplayStock(stock.getDisplay(), currentVariant.getId());
+                        db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), currentVariant.getId());
+
                         db.productVariantDao().updateTransferOrderCount(0, currentVariant.getId());
                         Toast.makeText(getContext(), "Items transferred", Toast.LENGTH_SHORT).show();
                         dismiss();
