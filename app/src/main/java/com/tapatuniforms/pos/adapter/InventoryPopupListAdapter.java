@@ -34,7 +34,6 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     private ItemCountChangeListener listener;
     private DatabaseSingleton db;
     private String title;
-    private ProductVariant productVariant;
     private Activity activity;
     private View view;
     private int previousCount = -1;
@@ -73,9 +72,10 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ProductVariant productVariant = getCurrentVariant(position);
+
         holder.sizeView.setText(sizeList.get(position));
         holder.stockView.setText(warehouseStockList.get(position));
-        productVariant = getCurrentVariant(position);
         int variantId = productVariant.getId();
 
         holder.quantityEditText.setOnEditorActionListener(((textView, actionId, keyEvent) -> {
@@ -97,7 +97,13 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         });
 
         holder.plusButton.setOnClickListener(view -> {
-            int count = Integer.parseInt(holder.quantityEditText.getText().toString());
+            int count = -1;
+
+            try{
+                count = Integer.parseInt(holder.quantityEditText.getText().toString());
+            }catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
 
             if (title.equalsIgnoreCase("transfer")) {
                 if (productVariant.getWarehouseStock() - count < 1) {
@@ -119,7 +125,13 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         });
 
         holder.minusButton.setOnClickListener(view -> {
-            int count = Integer.parseInt(holder.quantityEditText.getText().toString());
+            int count = 1;
+
+            try{
+                count = Integer.parseInt(holder.quantityEditText.getText().toString());
+            }catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
 
             if (count > 0) {
                 --count;
@@ -159,6 +171,8 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         isDoneClicked = true;
         hideKeyboard();
         holder.quantityEditText.clearFocus();
+
+        ProductVariant productVariant = getCurrentVariant(position);
 
         int count = 0;
         int currentCount = 0;
