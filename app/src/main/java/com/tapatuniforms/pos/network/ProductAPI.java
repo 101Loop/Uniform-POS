@@ -252,7 +252,14 @@ public class ProductAPI {
                     }
                 }
                 assert productVariant != null;
-                Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+                Stock stock = null;
+
+                if (stockList.size() > 0) {
+                    stock = stockList.get(0);
+                }
+
+                assert stock != null;
                 if (subOrder.getQuantity() > stock.getDisplay()) {
                     Log.e(TAG, "Syncing suborder: items count can't be greater than items in the display");
                     return;
@@ -448,7 +455,7 @@ public class ProductAPI {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
-    public void updateStock(long outletId, long variantId, JSONObject stockJSON, DatabaseSingleton db, NotifyListener listener){
+    public void updateStock(long outletId, long variantId, JSONObject stockJSON, DatabaseSingleton db, NotifyListener listener) {
         DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
                 Request.Method.PATCH,
                 APIStatic.Outlet.outletUrl + outletId + "/product/" + variantId + "/",
@@ -459,7 +466,7 @@ public class ProductAPI {
                     db.stockDao().insert(stock);
 
                     if (listener != null) {
-                        listener.onNotify();
+                        listener.onNotifyResponse(stock);
                     }
                 },
                 new APIErrorListener(context),

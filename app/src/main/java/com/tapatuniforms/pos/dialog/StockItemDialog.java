@@ -16,6 +16,7 @@ import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockBoxItemAdapter;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.model.Box;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.Indent;
@@ -23,7 +24,7 @@ import com.tapatuniforms.pos.network.StockOrderAPI;
 
 import java.util.ArrayList;
 
-public class StockItemDialog extends AlertDialog {
+public class StockItemDialog extends AlertDialog implements NotifyListener {
     private RecyclerView itemRecyclerView;
     private Button closeButton;
     private EditText barcodeText;
@@ -78,10 +79,10 @@ public class StockItemDialog extends AlertDialog {
     }
 
     private void getBoxItemList() {
-        StockOrderAPI.getInstance(getContext()).getBoxItem(boxItemList, adapter, box.getId(), this, db);
+        StockOrderAPI.getInstance(getContext()).getBoxItem(boxItemList, box.getId(), db, this);
     }
 
-    public void checkAvailability() {
+    private void checkAvailability() {
         if (boxItemList == null || boxItemList.size() == 0) {
             boxItemLayout.setVisibility(View.GONE);
             noBoxItemText.setVisibility(View.VISIBLE);
@@ -89,5 +90,16 @@ public class StockItemDialog extends AlertDialog {
             boxItemLayout.setVisibility(View.VISIBLE);
             noBoxItemText.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onNotify() {
+        checkAvailability();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNotifyResponse(Object data) {
+
     }
 }

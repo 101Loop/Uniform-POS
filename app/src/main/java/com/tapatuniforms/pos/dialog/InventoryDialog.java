@@ -54,6 +54,11 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         Toast.makeText(activity, "Items transferred successfully", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onNotifyResponse(Object data) {
+
+    }
+
     public interface DialogDismissedListener {
         void onDialogDismissListener();
     }

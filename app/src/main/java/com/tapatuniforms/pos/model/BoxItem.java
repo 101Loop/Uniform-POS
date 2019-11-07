@@ -10,6 +10,8 @@ import com.tapatuniforms.pos.helper.APIStatic;
 
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(indices = {@Index("productId")}, foreignKeys = @ForeignKey(entity = ProductHeader.class,
@@ -25,23 +27,29 @@ public class BoxItem {
     private int numberOfItems;
     private int numberOfScannedItems;
     private int boxId;
+    private int warehouseStock;
 
-    public BoxItem(int id, int productId, int numberOfItems, int numberOfScannedItems, int boxId) {
+    public BoxItem(int id, int productId, int numberOfItems, int numberOfScannedItems, int boxId, int warehouseStock) {
         this.id = id;
         this.productId = productId;
         this.numberOfItems = numberOfItems;
         this.numberOfScannedItems = numberOfScannedItems;
         this.boxId = boxId;
+        this.warehouseStock = warehouseStock;
     }
 
     public BoxItem(JSONObject jsonObject) {
-        JSONObject productJSON = jsonObject.optJSONObject(APIStatic.Key.product).optJSONObject(APIStatic.Key.outletProduct).optJSONObject(APIStatic.Key.product);
+        JSONObject productJSON = Objects.requireNonNull(Objects.requireNonNull(jsonObject.optJSONObject(APIStatic.Key.product)).optJSONObject(APIStatic.Key.outletProduct)).optJSONObject(APIStatic.Key.product);
 
         this.id = jsonObject.optInt(APIStatic.Key.id);
-        this.productId = productJSON.optInt(APIStatic.Key.id);
+
+        if (productJSON != null)
+            this.productId = productJSON.optInt(APIStatic.Key.id);
+
         this.numberOfItems = jsonObject.optInt(APIStatic.Key.numberOfItem);
         this.numberOfScannedItems = jsonObject.optInt(APIStatic.Key.numberOfScannedItems);
         this.boxId = jsonObject.optInt(APIStatic.Key.box);
+        this.warehouseStock = jsonObject.optInt(APIStatic.Key.warehouseStock);
     }
 
     public int getId() {
@@ -82,5 +90,13 @@ public class BoxItem {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public int getWarehouseStock() {
+        return warehouseStock;
+    }
+
+    public void setWarehouseStock(int warehouseStock) {
+        this.warehouseStock = warehouseStock;
     }
 }

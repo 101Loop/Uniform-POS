@@ -15,21 +15,29 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
+import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.model.BoxItem;
+import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.network.ProductAPI;
+import com.tapatuniforms.pos.network.StockOrderAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapter.ViewHolder> implements NotifyListener {
     private Context context;
     private ArrayList<BoxItem> boxItemList;
     private DatabaseSingleton db;
+    private BoxItem currentItem;
 
     public StockBoxItemAdapter(Context context, ArrayList<BoxItem> boxItemList) {
         this.context = context;
@@ -47,7 +55,7 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BoxItem currentItem = boxItemList.get(position);
+        currentItem = boxItemList.get(position);
         ProductHeader product = db.productHeaderDao().getProductHeaderById(currentItem.getProductId());
         ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
         Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
@@ -57,6 +65,20 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         holder.itemSentView.setText(String.valueOf(currentItem.getNumberOfItems()));
         holder.itemScannedView.setText(String.valueOf(currentItem.getNumberOfScannedItems()));
         holder.itemShelfView.setText(String.valueOf(stock.getDisplay()));
+
+        int warehouseStock = currentItem.getWarehouseStock();
+        int numberOfItems = currentItem.getNumberOfItems();
+
+        if (warehouseStock != numberOfItems) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put(APIStatic.Key.warehouseStock, numberOfItems);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            StockOrderAPI.getInstance(context).updateBoxItem(currentItem.getBoxId(), currentItem.getId(), jsonObject, db, this);
+        }
 
         holder.moveButton.setOnClickListener(view -> {
             int moveCount = Integer.parseInt(holder.itemsToMoveText.getText().toString().trim());
@@ -86,16 +108,24 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             holder.itemShelfView.setText(String.valueOf(shelfCount));
             holder.itemScannedView.setText(String.valueOf(finalScannedItems));
 
-            long outletId = db.outletDao().getAll().get(0).getId();
+            List<Outlet> outletList = db.outletDao().getAll();
+            long outletId = -1;
+            if (outletList.size() > 0)
+                outletId = outletList.get(0).getId();
+
             stock.setWarehouse(warehouseCount - moveCount);
             stock.setDisplay(displayCount + moveCount);
 
-            ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stock.toJson(), db, this);
-//            db.stockDao().updateWarehouseStock(warehouseCount - moveCount, productVariant.getId());
-//            db.stockDao().updateDisplayStock(displayCount + moveCount, productVariant.getId());
-//
-//            db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
-//            db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
+            JSONObject json = stock.toJson();
+            try {
+                json.put(APIStatic.Key.numberOfScannedItems, finalScannedItems);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            StockOrderAPI.getInstance(context).updateBoxItem(currentItem.getBoxId(), currentItem.getId(), json, db, this);
+
+            if (outletId != -1)
+                ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stock.toJson(), db, null);
 
             db.boxItemDao().updateScannedItems(finalScannedItems, currentItem.getId());
 
@@ -111,6 +141,33 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
     @Override
     public void onNotify() {
         new Handler().postDelayed(this::notifyDataSetChanged, 1000);
+    }
+
+    @Override
+    public void onNotifyResponse(Object data) {
+        new Handler().postDelayed(() -> {
+            currentItem = (BoxItem) data;
+
+            ProductHeader product = db.productHeaderDao().getProductHeaderById(currentItem.getProductId());
+            ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
+
+            List<Outlet> outletList = db.outletDao().getAll();
+            Outlet outlet = null;
+            if (outletList.size() > 0)
+                outlet = outletList.get(0);
+
+            List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+            Stock stock = null;
+
+            if (stockList.size() > 0) {
+                stock = stockList.get(0);
+            }
+
+            if (stock != null && outlet != null) {
+                stock.setWarehouse(currentItem.getWarehouseStock() + productVariant.getWarehouseStock());
+                ProductAPI.getInstance(context).updateStock(outlet.getId(), productVariant.getId(), stock.toJson(), db, null);
+            }
+        }, 1000);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
