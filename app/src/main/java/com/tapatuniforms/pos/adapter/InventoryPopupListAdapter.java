@@ -27,6 +27,7 @@ import java.util.List;
 
 public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPopupListAdapter.ViewHolder> {
     private static final String TAG = InventoryPopupListAdapter.class.getName();
+    private Stock stock;
     private Context context;
     private ProductHeader item;
     private ArrayList<String> sizeList;
@@ -52,7 +53,8 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
 
         List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
         for (ProductVariant currentVariant : productVariantList) {
-            Stock stock = db.stockDao().getStocksById(currentVariant.getId()).get(0);
+            List<Stock> stockList = db.stockDao().getStocksById(currentVariant.getId());
+            stock = stockList.get(0);
             sizeList.add(currentVariant.getSize());
             warehouseStockList.add(String.valueOf(stock.getWarehouse()));
             displayStockList.add(stock.getDisplay());
@@ -75,7 +77,9 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductVariant productVariant = getCurrentVariant(position);
-        Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+        List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+        if (stockList.size() > 0)
+            stock = stockList.get(0);
 
         holder.sizeView.setText(sizeList.get(position));
         holder.stockView.setText(warehouseStockList.get(position));
@@ -102,9 +106,9 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         holder.plusButton.setOnClickListener(view -> {
             int count = -1;
 
-            try{
+            try {
                 count = Integer.parseInt(holder.quantityEditText.getText().toString());
-            }catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
 
@@ -130,9 +134,9 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         holder.minusButton.setOnClickListener(view -> {
             int count = 1;
 
-            try{
+            try {
                 count = Integer.parseInt(holder.quantityEditText.getText().toString());
-            }catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
 
@@ -195,7 +199,10 @@ public class InventoryPopupListAdapter extends RecyclerView.Adapter<InventoryPop
         }
 
         if (title.equalsIgnoreCase("transfer")) {
-            int warehouseStock = db.stockDao().getStocksById(productVariant.getId()).get(0).getWarehouse();
+            List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+            int warehouseStock = -1;
+            if (stockList.size() > 0)
+                warehouseStock = stockList.get(0).getWarehouse();
             if (count > warehouseStock) {
                 Toast.makeText(context, "Not enough items in stock", Toast.LENGTH_SHORT).show();
 

@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -181,13 +180,20 @@ public class PosActivity extends AppCompatActivity implements
     }
 
     private void getCartItems() {
-        ProductHeader product = db.productHeaderDao().getAllProductHeader().get(0);
-        cartItemList.clear();
-        for (int i = 0; i < 2; i++) {
-            CartItem cartItem = new CartItem(i, 10 + i, product, String.valueOf(20 + (i * i)), 1000 * (i + 1));
-            cartItemList.add(cartItem);
+        List<ProductHeader> products = db.productHeaderDao().getAllProductHeader();
+
+        ProductHeader product = null;
+        if (products.size() > 0)
+            product = products.get(0);
+
+        if (product != null) {
+            cartItemList.clear();
+            for (int i = 0; i < 2; i++) {
+                CartItem cartItem = new CartItem(i, 10 + i, product, String.valueOf(20 + (i * i)), 1000 * (i + 1));
+                cartItemList.add(cartItem);
+            }
+            bagItemsAdapter.notifyDataSetChanged();
         }
-        bagItemsAdapter.notifyDataSetChanged();
     }
 
     private void showNotificationDialog() {
