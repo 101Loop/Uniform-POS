@@ -27,6 +27,7 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
     private ArrayList<ProductHeader> recommendedProductList;
     private ButtonClickListener listener;
     private DatabaseSingleton db;
+    private Stock stock;
 
     public interface ButtonClickListener {
         void onTransferButtonClick(ProductHeader item, String title);
@@ -64,7 +65,9 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
 
         int totalWarehouseCount = 0;
         for (ProductVariant currentVariant : variantList) {
-            Stock stock = db.stockDao().getStocksById(currentVariant.getId()).get(0);
+            List<Stock> stockList = db.stockDao().getStocksById(currentVariant.getId());
+            if (stockList.size() > 0)
+            stock = stockList.get(0);
             totalWarehouseCount += stock.getWarehouse();
         }
 

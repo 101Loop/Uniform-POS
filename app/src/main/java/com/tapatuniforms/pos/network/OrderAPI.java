@@ -17,9 +17,9 @@ import com.tapatuniforms.pos.model.Discount;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderAPI {
-
     private static final String TAG = "Billing";
     private static OrderAPI instance;
     private Context context;
@@ -45,7 +45,9 @@ public class OrderAPI {
      */
     public void getDiscount(ArrayList<Discount> discountList, DiscountAdapter adapter, POSFragment posFragment, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
-            discountList.addAll(db.discountDao().getAll());
+            List<Discount> discounts = db.discountDao().getAll();
+            if (discounts.size() > 0)
+                discountList.addAll(discounts);
             posFragment.updateDiscountNotification(discountList.size());
             return;
         }

@@ -47,6 +47,7 @@ import com.tapatuniforms.pos.model.Discount;
 import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.School;
 import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.Student;
 import com.tapatuniforms.pos.model.SubOrder;
@@ -426,7 +427,12 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
                 studentName = studentNameText.getText().toString();
                 fatherName = fatherNameText.getText().toString();
                 phone = phoneText.getText().toString();
-                int school = db.schoolDao().getAll().get(0).getId();
+
+                List<School> schools = db.schoolDao().getAll();
+                int school = -1;
+                if (schools.size() > 0)
+                    school = schools.get(0).getId();
+
                 email = emailText.getText().toString();
 
                 if (maleRadio != null && femaleRadio != null) {
@@ -798,13 +804,16 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
                 }
 
                 if (productVariant != null) {
-                    Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
-                    if (stock.getDisplay() - lastCartItem.getQuantity() < 1) {
+                    List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+                    Stock stock = null;
+                    if (stockList.size() > 0)
+                        stock = stockList.get(0);
+
+                    if (stock != null && stock.getDisplay() - lastCartItem.getQuantity() < 1) {
                         Toast.makeText(getContext(), APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
-
             }
 
             for (CartItem cartItem : cartList) {

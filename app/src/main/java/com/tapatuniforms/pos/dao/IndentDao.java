@@ -18,9 +18,6 @@ public interface IndentDao {
     @Query("SELECT * FROM Indent WHERE id = :id")
     Indent getIndent(long id);
 
-    @Query("SELECT * FROM Indent WHERE id = :id")
-    Indent getIndentByOutlet(long id);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(ArrayList<Indent> IndentList);
 

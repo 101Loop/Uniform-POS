@@ -1,28 +1,16 @@
 package com.tapatuniforms.pos.model;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.tapatuniforms.pos.helper.APIStatic;
-import com.tapatuniforms.pos.helper.DatabaseSingleton;
 
 import org.json.JSONObject;
 
-import static androidx.room.ForeignKey.CASCADE;
-
-@Entity(indices = @Index(value = "outletId"), foreignKeys = @ForeignKey(entity = Outlet.class,
-        parentColumns = "id",
-        childColumns = "outletId",
-        onDelete = CASCADE))
-
+@Entity
 public class Indent {
     @PrimaryKey
     private long id;
-    @ColumnInfo(name = "outletId")
-    private int outletId;
     private String indent;
     private String price;
     private String numberOfBoxes;
@@ -30,9 +18,8 @@ public class Indent {
     private int warehouseName;
     private boolean isSelected;
 
-    public Indent(long id, int outletId, String indent, String price, String numberOfBoxes, String numberOfItems, int warehouseName, boolean isSelected) {
+    public Indent(long id, String indent, String price, String numberOfBoxes, String numberOfItems, int warehouseName, boolean isSelected) {
         this.id = id;
-        this.outletId = outletId;
         this.indent = indent;
         this.price = price;
         this.numberOfBoxes = numberOfBoxes;
@@ -49,10 +36,6 @@ public class Indent {
         this.numberOfItems = jsonObject.optString(APIStatic.Key.numberOfItems);
         this.warehouseName = jsonObject.optInt(APIStatic.Key.warehouseName);
         this.isSelected = false;
-
-        JSONObject outletJson = jsonObject.optJSONObject(APIStatic.Key.outlet);
-        if (outletJson != null)
-            this.outletId = outletJson.optInt(APIStatic.Key.id);
     }
 
     public long getId() {
@@ -61,14 +44,6 @@ public class Indent {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getOutletId() {
-        return outletId;
-    }
-
-    public void setOutletId(int outletId) {
-        this.outletId = outletId;
     }
 
     public String getIndent() {

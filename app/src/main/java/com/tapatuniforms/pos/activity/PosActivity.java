@@ -8,13 +8,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -151,7 +151,8 @@ public class PosActivity extends AppCompatActivity implements
 
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP | Gravity.END;
-            params.y = 70;
+            params.y = 100;
+            dialog.getWindow().setAttributes(params);
         }
 
         View view = LayoutInflater.from(this).inflate(R.layout.bag_items_layout, null);
@@ -161,6 +162,9 @@ public class PosActivity extends AppCompatActivity implements
         itemsCountText = view.findViewById(R.id.itemsCountText);
         noBagItemsText = view.findViewById(R.id.noBagItemsText);
         bagItemsRecycler = view.findViewById(R.id.bagItemsRecycler);
+
+        final RelativeLayout rootLayout = view.findViewById(R.id.rootLayout);
+        rootLayout.setOnClickListener(view1 -> dialog.dismiss());
 
         bagItemsRecycler.addItemDecoration(new RecyclerDivider(this, RecyclerDivider.VERTICAL));
 
@@ -176,13 +180,20 @@ public class PosActivity extends AppCompatActivity implements
     }
 
     private void getCartItems() {
-        ProductHeader product = db.productHeaderDao().getAllProductHeader().get(0);
-        cartItemList.clear();
-        for (int i = 0; i < 2; i++) {
-            CartItem cartItem = new CartItem(i, 10 + i, product, String.valueOf(20 + (i * i)), 1000 * (i + 1));
-            cartItemList.add(cartItem);
+        List<ProductHeader> products = db.productHeaderDao().getAllProductHeader();
+
+        ProductHeader product = null;
+        if (products.size() > 0)
+            product = products.get(0);
+
+        if (product != null) {
+            cartItemList.clear();
+            for (int i = 0; i < 2; i++) {
+                CartItem cartItem = new CartItem(i, 10 + i, product, String.valueOf(20 + (i * i)), 1000 * (i + 1));
+                cartItemList.add(cartItem);
+            }
+            bagItemsAdapter.notifyDataSetChanged();
         }
-        bagItemsAdapter.notifyDataSetChanged();
     }
 
     private void showNotificationDialog() {
@@ -194,7 +205,7 @@ public class PosActivity extends AppCompatActivity implements
 
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP | Gravity.END;
-            params.y = 70;
+            params.y = 100;
         }
 
         View view = LayoutInflater.from(this).inflate(R.layout.notifications_layout, null);
@@ -225,7 +236,7 @@ public class PosActivity extends AppCompatActivity implements
 
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP | Gravity.END;
-            params.y = 70;
+            params.y = 100;
         }
 
         View view = LayoutInflater.from(this).inflate(R.layout.details_item_layout, null);
@@ -371,5 +382,10 @@ public class PosActivity extends AppCompatActivity implements
             String schoolName = school.getName() + " - " + school.getCity() + ", " + school.getState();
             schoolNameText.setText(schoolName);
         }
+    }
+
+    @Override
+    public void onNotifyResponse(Object data) {
+
     }
 }

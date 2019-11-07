@@ -21,6 +21,7 @@ import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
+import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.Stock;
@@ -47,10 +48,16 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
     private DialogDismissedListener listener;
     private Activity activity;
     private long outletId;
+    private Stock stock;
 
     @Override
     public void onNotify() {
         Toast.makeText(activity, "Items transferred successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNotifyResponse(Object data) {
+
     }
 
     public interface DialogDismissedListener {
@@ -65,7 +72,10 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         this.title = title;
         db = DatabaseHelper.getDatabase(context);
 
-        outletId = db.outletDao().getAll().get(0).getId();
+        List<Outlet> outletList = db.outletDao().getAll();
+
+        if (outletList.size() > 0)
+            outletId = outletList.get(0).getId();
     }
 
     @Override
@@ -154,14 +164,22 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                 if (!title.equalsIgnoreCase("transfer")) {
 
                     int productId = item.getId();
-                    int outletId = db.outletDao().getAll().get(0).getId();
-                    StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, outletId, this);
 
+                    List<Outlet> outletList = db.outletDao().getAll();
+                    int outletId = -1;
+                    if (outletList.size() > 0)
+                        outletId = outletList.get(0).getId();
+
+                    if (outletId != -1)
+                        StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, outletId, this);
                 } else {
                     List<ProductVariant> productVariantList = db.productVariantDao().getProductVariantsById(item.getId());
 
                     for (ProductVariant currentVariant : productVariantList) {
-                        Stock stock = db.stockDao().getStocksById(currentVariant.getId()).get(0);
+                        List<Stock> stockList = db.stockDao().getStocksById(currentVariant.getId());
+
+                        if (stockList.size() > 0)
+                            stock = stockList.get(0);
                         int transferOrderCount = currentVariant.getTransferOrderCount();
                         int warehouseStock = stock.getWarehouse();
                         int displayStock = stock.getDisplay();

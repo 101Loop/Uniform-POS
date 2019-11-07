@@ -10,6 +10,7 @@ import com.tapatuniforms.pos.network.ProductAPI;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
     private DatabaseSingleton db;
@@ -41,6 +42,8 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     }
 
     private void fetchOrderList() {
-        orderList.addAll(db.orderDao().getAll());
+        List<Order> orders = db.orderDao().getAll();
+        if (orders.size() > 0)
+            orderList.addAll(orders);
     }
 }
