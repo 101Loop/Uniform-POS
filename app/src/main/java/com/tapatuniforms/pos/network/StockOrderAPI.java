@@ -9,14 +9,13 @@ import com.civilmachines.drfapi.DjangoJSONArrayResponseRequest;
 import com.civilmachines.drfapi.DjangoJSONObjectRequest;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.StockBoxAdapter;
-import com.tapatuniforms.pos.adapter.StockBoxItemAdapter;
 import com.tapatuniforms.pos.adapter.StockIndentAdapter;
 import com.tapatuniforms.pos.dialog.InventoryDialog;
-import com.tapatuniforms.pos.dialog.StockItemDialog;
 import com.tapatuniforms.pos.fragment.StockEntryFragment;
 import com.tapatuniforms.pos.helper.APIErrorListener;
 import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
+import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.Validator;
 import com.tapatuniforms.pos.helper.VolleySingleton;
 import com.tapatuniforms.pos.model.Box;
@@ -179,14 +178,12 @@ public class StockOrderAPI {
      * Method to get box item list
      * stores the data when online and displays them if offline
      *
-     * @param boxItemList     List of BoxItem, used to update the fetched data
-     * @param adapter         reference to the adapter which is used to notify any changes
-     * @param id              Id of the box, used to show only the relevant box item
-     * @param stockItemDialog reference of the calling class
-     * @param db              DatabaseSingleton reference for db transactions
+     * @param boxItemList List of BoxItem, used to update the fetched data
+     * @param id          Id of the box, used to show only the relevant box item
+     * @param db          DatabaseSingleton reference for db transactions
      */
-    public void getBoxItem(ArrayList<BoxItem> boxItemList, StockBoxItemAdapter adapter, long id,
-                           StockItemDialog stockItemDialog, DatabaseSingleton db) {
+    public void getBoxItem(ArrayList<BoxItem> boxItemList, long id,
+                           DatabaseSingleton db, NotifyListener listener) {
 
         if (!Validator.isNetworkConnected(context)) {
 
@@ -196,7 +193,9 @@ public class StockOrderAPI {
                 }
             }
 
-            stockItemDialog.checkAvailability();
+            if (listener != null)
+                listener.onNotify();
+
             return;
         }
 
@@ -237,9 +236,8 @@ public class StockOrderAPI {
                     }
 
 //                    }
-
-                    stockItemDialog.checkAvailability();
-                    adapter.notifyDataSetChanged();
+                    if (listener != null)
+                        listener.onNotify();
                 },
                 new APIErrorListener(context),
                 context);
@@ -278,6 +276,27 @@ public class StockOrderAPI {
                 },
                 new APIErrorListener(context),
                 context);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    public void updateBoxItem(int boxId, int boxItemId, JSONObject jsonObject, DatabaseSingleton db, NotifyListener listener) {
+        DjangoJSONObjectRequest request = new DjangoJSONObjectRequest(
+                Request.Method.PATCH,
+                APIStatic.StockOrder.boxItemUrl + boxId + APIStatic.StockOrder.itemsUrl + boxItemId + "/",
+                jsonObject,
+                response -> {
+                    db.boxItemDao().delete(boxItemId);
+                    db.boxItemDao().insert(new BoxItem(response));
+
+                    if (listener != null)
+                        listener.onNotifyResponse(new BoxItem(response));
+                },
+                new APIErrorListener(context),
+                context
+        );
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

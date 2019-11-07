@@ -377,4 +377,9 @@ public class PosActivity extends AppCompatActivity implements
             schoolNameText.setText(schoolName);
         }
     }
+
+    @Override
+    public void onNotifyResponse(Object data) {
+
+    }
 }
