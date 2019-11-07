@@ -91,6 +91,7 @@
     <string name="check">Check</string>
     <string name="no_items_in_bag">No Items in bag</string>
     <string name="no_new_items">No new items</string>
+    <string name="items_matched">All Items are matched</string>
     <string-array name="standard_array">
         <item>I</item>
         <item>II</item>
