@@ -64,8 +64,10 @@ public class ProductAPI {
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
 
-            categoryList.clear();
-            categoryList.addAll(categories);
+            if (categories.size() > 0) {
+                categoryList.clear();
+                categoryList.addAll(categories);
+            }
 
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
@@ -265,15 +267,16 @@ public class ProductAPI {
                     return;
                 }
 
-//                db.stockDao().updateDisplayStock(stock.getDisplay() - subOrder.getQuantity(), productVariant.getId());
-//                db.productVariantDao().updateDisplayStock(stock.getDisplay(), productVariant.getId());
-
-                long outletId = db.outletDao().getAll().get(0).getId();
+                List<Outlet> outletList = db.outletDao().getAll();
+                long outletId = -1;
+                if (outletList != null)
+                    outletId = outletList.get(0).getId();
                 stock.setDisplay(productVariant.getDisplayStock() - subOrder.getQuantity());
 
                 JSONObject stockJson = stock.toJson();
 
-                ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stockJson, db, null);
+                if (outletId != -1)
+                    ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stockJson, db, null);
             }
         }
 
@@ -432,7 +435,9 @@ public class ProductAPI {
 
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-            outletList.add(db.outletDao().getAll().get(0));
+            List<Outlet> outletList1 = db.outletDao().getAll();
+            if (outletList1.size() > 0)
+                outletList.add(outletList1.get(0));
             return;
         }
 

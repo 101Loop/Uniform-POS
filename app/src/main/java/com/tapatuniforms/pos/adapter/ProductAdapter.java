@@ -118,8 +118,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     }
 
                     assert productVariant != null;
-                    Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
-                    if (stock.getDisplay() < 1) {
+                    List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+                    Stock stock = null;
+                    if (stockList.size() > 0)
+                        stock = stockList.get(0);
+
+                    if (stock != null && stock.getDisplay() < 1) {
                         Toast.makeText(context, APIStatic.Constants.OUT_OF_STOCK, Toast.LENGTH_SHORT).show();
                         return;
                     }

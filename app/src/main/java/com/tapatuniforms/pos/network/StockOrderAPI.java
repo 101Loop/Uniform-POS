@@ -35,6 +35,7 @@ public class StockOrderAPI {
     private static final String TAG = "StockOrderAPI";
     private Context context;
     private static StockOrderAPI instance;
+    private ProductVariant productVariant;
 
     private StockOrderAPI(Context context) {
         this.context = context;
@@ -61,7 +62,9 @@ public class StockOrderAPI {
     public void getIndentList(ArrayList<Indent> indentList, ArrayList<Indent> allIndentList,
                               StockIndentAdapter adapter, StockEntryFragment instance, DatabaseSingleton db) {
         if (!Validator.isNetworkConnected(context)) {
-            indentList.addAll(db.indentDao().getAll());
+            List<Indent> indents = db.indentDao().getAll();
+            if (indents.size() > 0)
+                indentList.addAll(indents);
             return;
         }
 
@@ -187,11 +190,13 @@ public class StockOrderAPI {
 
         if (!Validator.isNetworkConnected(context)) {
 
-            for (BoxItem boxItem : db.boxItemDao().getAll()) {
-                if (boxItem.getBoxId() == id) {
-                    boxItemList.add(boxItem);
+            List<BoxItem> boxItems = db.boxItemDao().getAll();
+            if (boxItems.size() > 0)
+                for (BoxItem boxItem : boxItems) {
+                    if (boxItem.getBoxId() == id) {
+                        boxItemList.add(boxItem);
+                    }
                 }
-            }
 
             if (listener != null)
                 listener.onNotify();
@@ -222,16 +227,26 @@ public class StockOrderAPI {
                     for (BoxItem boxItem : boxItemList) {
                         ProductHeader product = db.productHeaderDao().getProductHeaderById(boxItem.getProductId());
 
-                        ProductVariant productVariant = db.productVariantDao().getProductVariantsById(product.getId()).get(0);
-                        Stock stock = db.stockDao().getStocksById(productVariant.getId()).get(0);
+                        List<ProductVariant> productVariants = db.productVariantDao().getProductVariantsById(product.getId());
+                        if (productVariants.size() > 0)
+                            productVariant = productVariants.get(0);
+
+                        List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
+                        Stock stock = null;
+                        if (stockList.size() > 0)
+                            stock = stockList.get(0);
                         if (!productVariant.isSynced()) {
                             db.productVariantDao().setSyncStatus(true, productVariant.getId());
 
-                            int warehouseStock = stock.getWarehouse();
-                            int itemScanned = boxItem.getNumberOfScannedItems();
+                            int warehouseStock;
+                            if (stock != null) {
+                                warehouseStock = stock.getWarehouse();
 
-                            db.stockDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
-                            db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
+                                int itemScanned = boxItem.getNumberOfScannedItems();
+
+                                db.stockDao().updateWarehouseStock(warehouseStock + itemScanned, productVariant.getId());
+                                db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), productVariant.getId());
+                            }
                         }
                     }
 
