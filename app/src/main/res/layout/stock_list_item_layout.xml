@@ -34,16 +34,39 @@
         android:text="120"
         android:textColor="@color/black1" />
 
-    <TextView
-        android:id="@+id/itemScannedView"
+    <LinearLayout
         android:layout_width="126dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:background="@drawable/stroke_rectangle_light"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:text="100"
-        android:textColor="@color/black1" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/decrementScannedItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="-"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/itemScannedView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="100"
+            android:textColor="@color/black1" />
+
+        <TextView
+            android:id="@+id/incrementScannedItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="+"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/itemShelfView"
@@ -62,15 +85,15 @@
         android:background="@drawable/stroke_rectangle_light"
         android:padding="8dp">
 
-        <EditText
+        <TextView
             android:id="@+id/moveText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@drawable/stroke_around_rect"
+            android:clickable="false"
             android:gravity="center"
-            android:inputType="number"
             android:text="0"
             android:textColor="@color/black1"
             android:textSize="17sp" />
@@ -83,19 +106,20 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="@color/denim"
+            android:clickable="false"
             android:gravity="center"
             android:text="Move"
             android:textColor="@color/white1" />
-
     </LinearLayout>
 
     <TextView
+        android:id="@+id/statusText"
         android:layout_width="179dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@drawable/stroke_rectangle_light"
         android:gravity="center"
         android:padding="8dp"
-        android:text="All Items are matched"
+        android:text="@string/items_matched"
         android:textColor="@color/green" />
 </TableRow>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
@@ -76,6 +77,8 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         holder.itemSentView.setText(String.valueOf(currentItem.getNumberOfItems()));
         holder.itemScannedView.setText(String.valueOf(currentItem.getNumberOfScannedItems()));
 
+        checkStatus(holder);
+
         if (stock != null)
             holder.itemShelfView.setText(String.valueOf(stock.getDisplay()));
 
@@ -93,7 +96,8 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             StockOrderAPI.getInstance(context).updateBoxItem(currentItem.getBoxId(), currentItem.getId(), jsonObject, db, this);
         }
 
-        ProductVariant finalProductVariant = productVariant;
+        //TODO: the move logic might be removed completely
+        /*ProductVariant finalProductVariant = productVariant;
         Stock finalStock = stock;
         holder.moveButton.setOnClickListener(view -> {
             int moveCount = Integer.parseInt(holder.itemsToMoveText.getText().toString().trim());
@@ -146,7 +150,21 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             db.boxItemDao().updateScannedItems(finalScannedItems, currentItem.getId());
 
             Toast.makeText(context, "Items transferred successfully", Toast.LENGTH_SHORT).show();
-        });
+        });*/
+    }
+
+    private void checkStatus(ViewHolder holder) {
+        int scannedItems = currentItem.getNumberOfScannedItems();
+        int numberOfItems = currentItem.getNumberOfItems();
+
+        if (scannedItems == numberOfItems) {
+            holder.statusText.setText(context.getString(R.string.items_matched));
+            holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.green));
+        }else {
+            int remainingItems = numberOfItems - scannedItems;
+            holder.statusText.setText(remainingItems + " items are not matched");
+            holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.black1));
+        }
     }
 
     @Override
@@ -190,8 +208,8 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemNameView, itemSentView, itemScannedView, itemShelfView;
-        EditText itemsToMoveText;
+        TextView itemNameView, itemSentView, itemScannedView, itemShelfView, statusText, decrementScannedItem, incrementScannedItem;
+        TextView itemsToMoveText;
         ImageView itemCheckedStatus;
         Button moveButton;
 
@@ -201,9 +219,12 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             itemSentView = itemView.findViewById(R.id.itemSentView);
             itemScannedView = itemView.findViewById(R.id.itemScannedView);
             itemShelfView = itemView.findViewById(R.id.itemShelfView);
+            statusText = itemView.findViewById(R.id.statusText);
             itemsToMoveText = itemView.findViewById(R.id.moveText);
             itemCheckedStatus = itemView.findViewById(R.id.itemCheckedStatus);
             moveButton = itemView.findViewById(R.id.moveButton);
+            decrementScannedItem = itemView.findViewById(R.id.decrementScannedItems);
+            incrementScannedItem = itemView.findViewById(R.id.incrementScannedItems);
         }
     }
 }
