@@ -2,6 +2,7 @@ package com.tapatuniforms.pos.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +30,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.civilmachines.drfapi.UserSharedPreferenceAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.BagItemsAdapter;
@@ -137,9 +139,46 @@ public class PosActivity extends AppCompatActivity implements
         SchoolAPI.getInstance(this).setNotifyListener(this);
 
         outletList = new ArrayList<>();
-        ProductAPI.getInstance(this).getOutletList(outletList, db);
+        ProductAPI.getInstance(this).getOutletList(outletList, db, new NotifyListener() {
+            @Override
+            public void onNotify() {
+                showNoOutletDialog();
+            }
+
+            @Override
+            public void onNotifyResponse(Object data) {
+
+            }
+        });
 
         registerBroadcastReceiver();
+    }
+
+    private void showNoOutletDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        AlertDialog dialog = alertDialog.create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_no_outlet, null);
+        dialog.setView(view);
+        dialog.setCancelable(false);
+
+        final CardView logoutButton = view.findViewById(R.id.logoutButton);
+
+        if (logoutButton != null)
+            logoutButton.setOnClickListener(view1 -> {
+                UserSharedPreferenceAdapter userPrefs = new UserSharedPreferenceAdapter(this);
+                userPrefs.logOut();
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+        dialog.show();
     }
 
     private void showBagItemsDialog() {
