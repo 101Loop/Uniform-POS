@@ -418,10 +418,10 @@ public class ProductAPI {
                     Request.Method.POST, APIStatic.Order.transactionUrl, object,
                     response -> {
 
-                        //setting sync status as false in order to avoid unnecessary update to server
-                        db.orderDao().setSync(orderId, false);
-                        db.subOrderDao().setSync(orderId, false);
-                        db.transactionDao().setSync(orderId, false);
+                        //setting sync status as true in order to avoid unnecessary update to server
+                        db.orderDao().setSync(orderId, true);
+                        db.subOrderDao().setSync(orderId, true);
+                        db.transactionDao().setSync(orderId, true);
                     }, new APIErrorListener(context), context);
 
             request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
