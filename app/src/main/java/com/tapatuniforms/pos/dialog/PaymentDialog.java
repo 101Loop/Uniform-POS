@@ -24,19 +24,15 @@ public class PaymentDialog extends AlertDialog {
     private Transaction paytmTransaction;
     private Transaction cardTransaction;
     private OrderCompleteListener listener;
-
     private double total;
     private double paid = 0;
     private Student studentDetails;
-
     private TextView studentIDText, studentNameText, classSectionText, phoneText, emailText, fatherNameText, totalAmountText, cashAmountText, paytmAmountText, cardAmountText;
     private EditText cashEditText, paytmEditText, cardEditText;
     private Button cashAddButton, paytmAddButton, cardAddButton;
     private ImageView cashCancelButton, paytmCancelButton, cardCancelButton;
     private CardView completeOrderButton, closeButton;
-
     private double cash = 0, payTM = 0, card = 0;
-
     private Activity activity;
 
     public PaymentDialog(Context context, double total, Student studentDetails) {
@@ -98,7 +94,16 @@ public class PaymentDialog extends AlertDialog {
                     transactionList.add(cardTransaction);
                 }
 
-                listener.onOrderCompleted(transactionList);
+                if (transactionList.size() < 1) {
+                    Toast.makeText(activity, "Please make a full payment first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (total == paid) {
+                    listener.onOrderCompleted(transactionList);
+                }else{
+                    Toast.makeText(activity, "Please make a full payment first", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
