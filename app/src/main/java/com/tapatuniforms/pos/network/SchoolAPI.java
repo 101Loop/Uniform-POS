@@ -163,14 +163,16 @@ public class SchoolAPI {
                 APIStatic.School.schoolUrl,
                 null,
                 response -> {
-                    db.schoolDao().deleteAll();
-
                     try {
-                        JSONObject schoolJson = response.getJSONObject(0);
-                        schoolList.clear();
-                        schoolList.add(new School(schoolJson));
-                        db.schoolDao().insertAll(schoolList);
-                        listener.onNotify();
+                        if (response.length() > 0) {
+                            db.schoolDao().deleteAll();
+
+                            JSONObject schoolJson = response.getJSONObject(0);
+                            schoolList.clear();
+                            schoolList.add(new School(schoolJson));
+                            db.schoolDao().insertAll(schoolList);
+                            listener.onNotify();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
