@@ -32,10 +32,14 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<User> userList = (ArrayList<User>) db.userDao().getAll();
 
         if (userList.size() > 0) {
-            startActivity(new Intent(this, PinLoginActivity.class));
+            Intent intent = new Intent(this, PinLoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             finish();
         } else {
-            startActivity(new Intent(this, LoginActivity.class));
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             finish();
         }
 

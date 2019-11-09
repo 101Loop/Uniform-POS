@@ -1,6 +1,7 @@
 package com.tapatuniforms.pos.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -35,4 +36,7 @@ public interface UserDao {
 
     @Query("UPDATE user SET lastLogin = :lastLogin WHERE id = :id")
     void updateLastLogin(long id, String lastLogin);
+
+    @Query("DELETE FROM User WHERE id = :id")
+    void delete(long id);
 }
