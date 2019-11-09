@@ -269,7 +269,7 @@ public class ProductAPI {
 
                 List<Outlet> outletList = db.outletDao().getAll();
                 long outletId = -1;
-                if (outletList != null)
+                if (outletList != null && outletList.size() > 0)
                     outletId = outletList.get(0).getId();
                 stock.setDisplay(productVariant.getDisplayStock() - subOrder.getQuantity());
 
@@ -298,7 +298,7 @@ public class ProductAPI {
 
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-            db.orderDao().setSync(order.getId(), true);
+            db.orderDao().setSync(order.getId(), false);
 
             long apiOrderId = 0;
             db.orderDao().setApiId(order.getId(), apiOrderId);
@@ -418,10 +418,10 @@ public class ProductAPI {
                     Request.Method.POST, APIStatic.Order.transactionUrl, object,
                     response -> {
 
-                        //setting sync status as false in order to avoid unnecessary update to server
-                        db.orderDao().setSync(orderId, false);
-                        db.subOrderDao().setSync(orderId, false);
-                        db.transactionDao().setSync(orderId, false);
+                        //setting sync status as true in order to avoid unnecessary update to server
+                        db.orderDao().setSync(orderId, true);
+                        db.subOrderDao().setSync(orderId, true);
+                        db.transactionDao().setSync(orderId, true);
                     }, new APIErrorListener(context), context);
 
             request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
@@ -430,7 +430,7 @@ public class ProductAPI {
         }
     }
 
-    public void getOutletList(ArrayList<Outlet> outletList, DatabaseSingleton db) {
+    public void getOutletList(ArrayList<Outlet> outletList, DatabaseSingleton db, NotifyListener listener) {
         outletList.clear();
 
         if (!Validator.isNetworkConnected(context)) {
@@ -446,11 +446,15 @@ public class ProductAPI {
                 APIStatic.Outlet.outletUrl,
                 null,
                 response -> {
-                    JSONObject outletJSON = response.optJSONObject(0);
+                    if (response.length() > 0) {
+                        JSONObject outletJSON = response.optJSONObject(0);
 
-                    Outlet outlet = new Outlet(outletJSON);
-                    db.outletDao().insert(outlet);
-                    outletList.add(outlet);
+                        Outlet outlet = new Outlet(outletJSON);
+                        db.outletDao().insert(outlet);
+                        outletList.add(outlet);
+                    } else {
+                        listener.onNotify();
+                    }
                 },
                 new APIErrorListener(context),
                 context);

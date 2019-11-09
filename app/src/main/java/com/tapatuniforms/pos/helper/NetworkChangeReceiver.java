@@ -29,7 +29,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             if (orderList != null && !orderList.isEmpty()) {
                 for (Order order : orderList) {
 
-                    if (order.isSynced()) {
+                    if (!order.isSynced()) {
                         try {
                             ProductAPI.syncOrder(context, db, order);
                         } catch (JSONException e) {
