@@ -748,6 +748,7 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
         updatePriceView();
 
         if (cartList != null && cartList.size() == 0) {
+            this.discount = 0;
             emptyCartView.setVisibility(View.VISIBLE);
             cartRecyclerView.setVisibility(View.GONE);
         }
