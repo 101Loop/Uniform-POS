@@ -745,12 +745,12 @@ public class POSFragment extends BaseFragment implements CategoryAdapter.Categor
      */
     @Override
     public void onItemUpdateListener(CartItem cartItem) {
-        updatePriceView();
-
         if (cartList != null && cartList.size() == 0) {
+            this.discount = 0;
             emptyCartView.setVisibility(View.VISIBLE);
             cartRecyclerView.setVisibility(View.GONE);
         }
+        updatePriceView();
     }
 
     /**
