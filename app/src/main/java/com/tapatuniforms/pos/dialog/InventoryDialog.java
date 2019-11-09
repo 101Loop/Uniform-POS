@@ -193,7 +193,7 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
                         }
 
                         JSONObject stockJson = stock.toJson();
-                        ProductAPI.getInstance(getContext()).updateStock(outletId, currentVariant.getId(), stockJson, db, this);
+                        ProductAPI.getInstance(getContext()).updateStock(outletId, currentVariant.getId(), stockJson, db, null);
 
                         db.productVariantDao().updateTransferOrderCount(0, currentVariant.getId());
                         dismiss();
