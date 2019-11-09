@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -174,22 +173,22 @@ public class PosActivity extends AppCompatActivity implements
                 List<User> users = db.userDao().getAll();
 
                 if (users.size() > 0) {
-                    db.userDao().delete(users.get(users.size() - 1).getId());
+                    int lastIndex = users.size() - 1;
+                    db.userDao().delete(users.get(lastIndex).getId());
+                    users.remove(lastIndex);
                 }
 
-                new Handler().postDelayed(() -> {
-                    if (users.size() > 0) {
-                        Intent intent = new Intent(this, PinLoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Intent intent = new Intent(this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-                    }
-                }, 1000);
+                if (users.size() > 0) {
+                    Intent intent = new Intent(this, PinLoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
             });
 
         dialog.show();
