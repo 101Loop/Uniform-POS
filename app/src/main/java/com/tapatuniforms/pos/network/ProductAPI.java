@@ -477,7 +477,7 @@ public class ProductAPI {
                     db.stockDao().insert(stock);
 
                     if (listener != null) {
-                        listener.onNotifyResponse(stock);
+                        listener.onNotify();
                     }
                 },
                 new APIErrorListener(context),
