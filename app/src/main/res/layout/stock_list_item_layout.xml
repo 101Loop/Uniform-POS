@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
@@ -40,15 +41,13 @@
         android:background="@drawable/stroke_rectangle_light"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <TextView
+        <!--<TextView
             android:id="@+id/decrementScannedItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="-"
-            android:textSize="18sp" />
-
+            android:textSize="18sp" />-->
         <TextView
             android:id="@+id/itemScannedView"
             android:layout_width="wrap_content"
@@ -59,13 +58,19 @@
             android:text="100"
             android:textColor="@color/black1" />
 
-        <TextView
+        <androidx.cardview.widget.CardView
             android:id="@+id/incrementScannedItems"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="+"
-            android:textSize="18sp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:cardElevation="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="+"
+                android:textSize="18sp" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
     <TextView

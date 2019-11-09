@@ -447,6 +447,8 @@ public class ProductAPI {
                 null,
                 response -> {
                     if (response.length() > 0) {
+                        db.outletDao().deleteAll();
+
                         JSONObject outletJSON = response.optJSONObject(0);
 
                         Outlet outlet = new Outlet(outletJSON);
@@ -475,7 +477,7 @@ public class ProductAPI {
                     db.stockDao().insert(stock);
 
                     if (listener != null) {
-                        listener.onNotifyResponse(stock);
+                        listener.onNotify();
                     }
                 },
                 new APIErrorListener(context),

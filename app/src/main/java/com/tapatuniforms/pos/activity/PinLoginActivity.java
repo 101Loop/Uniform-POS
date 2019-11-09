@@ -55,7 +55,10 @@ public class PinLoginActivity extends AppCompatActivity {
         if (user != null) {
             UserSharedPreferenceAdapter usrAdap = new UserSharedPreferenceAdapter(this);
             usrAdap.saveToken(user.getToken());
-            startActivity(new Intent(this, PosActivity.class));
+
+            Intent intent = new Intent(this, PosActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             finish();
         }
     }

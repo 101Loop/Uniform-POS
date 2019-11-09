@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.civilmachines.drfapi.UserSharedPreferenceAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.BagItemsAdapter;
@@ -52,6 +51,7 @@ import com.tapatuniforms.pos.model.NotificationItem;
 import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.School;
+import com.tapatuniforms.pos.model.User;
 import com.tapatuniforms.pos.network.ProductAPI;
 import com.tapatuniforms.pos.network.SchoolAPI;
 
@@ -170,12 +170,25 @@ public class PosActivity extends AppCompatActivity implements
 
         if (logoutButton != null)
             logoutButton.setOnClickListener(view1 -> {
-                UserSharedPreferenceAdapter userPrefs = new UserSharedPreferenceAdapter(this);
-                userPrefs.logOut();
+                List<User> users = db.userDao().getAll();
 
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                if (users.size() > 0) {
+                    int lastIndex = users.size() - 1;
+                    db.userDao().delete(users.get(lastIndex).getId());
+                    users.remove(lastIndex);
+                }
+
+                if (users.size() > 0) {
+                    Intent intent = new Intent(this, PinLoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
             });
 
         dialog.show();
