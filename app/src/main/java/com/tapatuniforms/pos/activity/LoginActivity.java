@@ -83,9 +83,11 @@ public class LoginActivity extends AppCompatActivity {
                             .show();
 
                     Intent intent = new Intent(this, OtpActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(AppStatic.mobile, destination);
                     intent.putExtra(AppStatic.isLogin, true);
                     startActivity(intent);
+                    finish();
                 }, new APIErrorListener(this, dialog), this);
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
@@ -94,7 +96,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signUpClicked(View view) {
-        startActivity(new Intent(this, SignUpActivity.class));
+        Intent intent = new Intent(this, SignUpActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
         finish();
     }
 

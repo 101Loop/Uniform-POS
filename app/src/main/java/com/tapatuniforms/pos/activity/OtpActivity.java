@@ -114,6 +114,7 @@ public class OtpActivity extends AppCompatActivity {
                     }
 
                     Intent intent = new Intent(this, PinLoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
                 }, new APIErrorListener(this), this);

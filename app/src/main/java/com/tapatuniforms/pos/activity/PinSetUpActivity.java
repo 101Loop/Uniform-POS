@@ -49,7 +49,10 @@ public class PinSetUpActivity extends AppCompatActivity {
             confirmPinEditText.setError("Pin didn't match");
         } else {
             db.userDao().setPin(id, pin);
-            startActivity(new Intent(this, PinLoginActivity.class));
+
+            Intent intent = new Intent(this, PinLoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             finish();
         }
     }
