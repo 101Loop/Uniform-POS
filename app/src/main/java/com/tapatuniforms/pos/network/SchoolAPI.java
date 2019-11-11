@@ -175,7 +175,7 @@ public class SchoolAPI {
                             schoolList.add(new School(schoolJson));
                             db.schoolDao().insertAll(schoolList);
 
-                            if (listener != null)
+                            if (listener != null && schoolList.size() > 0)
                                 listener.onNotify();
                         }
                     } catch (JSONException e) {

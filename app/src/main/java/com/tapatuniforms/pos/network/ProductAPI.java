@@ -468,6 +468,9 @@ public class ProductAPI {
 
                                 }
                             });
+                        }else{
+                            db.outletDao().insert(outlet);
+                            outletList.add(outlet);
                         }
                     } else {
                         listener.onNotify();
