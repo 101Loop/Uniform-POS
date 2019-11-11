@@ -25,6 +25,7 @@ import com.tapatuniforms.pos.model.Order;
 import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
+import com.tapatuniforms.pos.model.School;
 import com.tapatuniforms.pos.model.Stock;
 import com.tapatuniforms.pos.model.SubOrder;
 import com.tapatuniforms.pos.model.Transaction;
@@ -452,8 +453,25 @@ public class ProductAPI {
                         JSONObject outletJSON = response.optJSONObject(0);
 
                         Outlet outlet = new Outlet(outletJSON);
-                        db.outletDao().insert(outlet);
-                        outletList.add(outlet);
+
+                        ArrayList<School> schoolList = new ArrayList<>(db.schoolDao().getAll());
+                        if (schoolList.size() < 1) {
+                            SchoolAPI.getInstance(context).getSchool(schoolList, db, new NotifyListener() {
+                                @Override
+                                public void onNotify() {
+                                    db.outletDao().insert(outlet);
+                                    outletList.add(outlet);
+                                }
+
+                                @Override
+                                public void onNotifyResponse(Object data) {
+
+                                }
+                            });
+                        }else{
+                            db.outletDao().insert(outlet);
+                            outletList.add(outlet);
+                        }
                     } else {
                         listener.onNotify();
                     }

@@ -135,8 +135,7 @@ public class PosActivity extends AppCompatActivity implements
 
         db = DatabaseHelper.getDatabase(this);
         schoolList = new ArrayList<>();
-        SchoolAPI.getInstance(this).getSchool(schoolList, db);
-        SchoolAPI.getInstance(this).setNotifyListener(this);
+        SchoolAPI.getInstance(this).getSchool(schoolList, db, this);
 
         outletList = new ArrayList<>();
         ProductAPI.getInstance(this).getOutletList(outletList, db, new NotifyListener() {

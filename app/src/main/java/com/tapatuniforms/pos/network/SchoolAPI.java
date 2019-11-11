@@ -28,7 +28,6 @@ public class SchoolAPI {
     private static final String TAG = "Billing";
     private static SchoolAPI instance;
     private Context context;
-    private NotifyListener listener;
 
     private SchoolAPI(Context context) {
         this.context = context;
@@ -149,12 +148,16 @@ public class SchoolAPI {
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
     }
 
-    public void getSchool(ArrayList<School> schoolList, DatabaseSingleton db) {
+    public void getSchool(ArrayList<School> schoolList, DatabaseSingleton db, NotifyListener listener) {
         List<School> localSchoolList = db.schoolDao().getAll();
 
         if (!Validator.isNetworkConnected(context)) {
             schoolList.clear();
             schoolList.addAll(localSchoolList);
+
+            if (listener != null)
+                listener.onNotify();
+
             return;
         }
 
@@ -171,7 +174,9 @@ public class SchoolAPI {
                             schoolList.clear();
                             schoolList.add(new School(schoolJson));
                             db.schoolDao().insertAll(schoolList);
-                            listener.onNotify();
+
+                            if (listener != null && schoolList.size() > 0)
+                                listener.onNotify();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -183,9 +188,5 @@ public class SchoolAPI {
 
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
-    }
-
-    public void setNotifyListener(NotifyListener listener){
-        this.listener = listener;
     }
 }
