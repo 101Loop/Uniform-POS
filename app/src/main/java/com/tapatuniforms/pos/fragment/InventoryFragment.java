@@ -170,9 +170,7 @@ public class InventoryFragment extends BaseFragment implements InventoryAdapter.
             }
         });
 
-        List<Category> categories = db.categoryDao().getAll();
         if (categoryList.size() < 1) {
-            categoryList.addAll(categories);
             ProductAPI.fetchCategories(getContext(), categoryList, categoryAdapter, db);
         }
         else

@@ -136,6 +136,9 @@ public class APIErrorListener extends DjangoErrorListener {
         } catch (Exception e) {
             Toast.makeText(context, "Can't connect to the server.", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "onErrorResponse: " + error.getMessage());
+
+            if (dialog != null)
+                dialog.dismiss();
         }
     }
 }
