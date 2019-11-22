@@ -92,7 +92,7 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         warehouseStock = currentItem.getWarehouseStock();
 
         holder.incrementScannedItem.setOnClickListener(view -> {
-            if (numberOfItems < numberOfScannedItems) {
+            if (numberOfItems <= numberOfScannedItems) {
                 Toast.makeText(context, "You cannot scan items more than the total number of items", Toast.LENGTH_LONG).show();
                 return;
             }
