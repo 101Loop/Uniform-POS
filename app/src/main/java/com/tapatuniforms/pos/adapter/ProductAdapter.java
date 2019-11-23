@@ -84,6 +84,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Glide.with(context)
                 .load(product.getImage())
                 .centerCrop()
+                .placeholder(R.drawable.ic_no_image)
+                .error(R.drawable.ic_no_image)
                 .into(holder.productImage);
 
         holder.closeButton.setOnClickListener(view -> {

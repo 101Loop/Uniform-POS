@@ -59,6 +59,8 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
             Glide.with(context)
                     .load(image)
                     .centerCrop()
+                    .error(R.drawable.ic_no_image)
+                    .placeholder(R.drawable.ic_no_image)
                     .into(holder.itemImageView);
 
         holder.itemNameView.setText(product.getName());
@@ -67,7 +69,7 @@ public class InventoryOrderAdapter extends RecyclerView.Adapter<InventoryOrderAd
         for (ProductVariant currentVariant : variantList) {
             List<Stock> stockList = db.stockDao().getStocksById(currentVariant.getId());
             if (stockList.size() > 0)
-            stock = stockList.get(0);
+                stock = stockList.get(0);
             totalWarehouseCount += stock.getWarehouse();
         }
 

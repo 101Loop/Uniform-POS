@@ -11,10 +11,9 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:elevation="10dp"
-        android:visibility="gone"
         android:src="@drawable/green"
+        android:visibility="gone"
         tools:targetApi="lollipop" />
-
     <!--main layout-->
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
@@ -22,31 +21,32 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="5dp">
-
         <!--main layout container-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <!--upper layout container-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:padding="10dp">
 
                 <LinearLayout
                     android:id="@+id/name_info_layout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:layout_marginStart="10dp"
+                    android:layout_weight="0.77"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/itemNameView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="Shirt1"
                         android:textColor="@color/blue"
                         android:textSize="20sp"
@@ -59,14 +59,13 @@
                         android:text="Full Sleeves"
                         android:textColor="@color/blue"
                         android:textSize="15sp" />
-
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.3"
                     android:gravity="center">
 
                     <com.tapatuniforms.pos.helper.RoundedCornerLayout
@@ -74,19 +73,18 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="5dp"
-                        android:background="@color/colorPrimary"/>
+                        android:background="@color/colorPrimary" />
 
                     <TextView
                         android:id="@+id/colorName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="Blue"
                         android:textSize="15sp" />
-
                 </LinearLayout>
-
-            </RelativeLayout>
-
+            </LinearLayout>
             <!--attributes layout-->
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -105,15 +103,14 @@
                         android:id="@+id/warehouseQuantityText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/cart_notification"
+                        android:gravity="center"
                         android:minWidth="20dp"
                         android:minHeight="20dp"
-                        android:gravity="center"
-                        android:background="@drawable/cart_notification"
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
                         android:text="06"
                         android:textColor="@android:color/white" />
-
 
                     <TextView
                         android:id="@+id/warehouseText"
@@ -122,7 +119,6 @@
                         android:layout_marginStart="5dp"
                         android:text="Warehouse (9%)"
                         android:textColor="@color/blue" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -136,10 +132,10 @@
                         android:id="@+id/displayItemsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="20dp"
-                        android:minWidth="20dp"
-                        android:gravity="center"
                         android:background="@drawable/rounded_light_blue"
+                        android:gravity="center"
+                        android:minWidth="20dp"
+                        android:minHeight="20dp"
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
                         android:text="04"
@@ -152,11 +148,8 @@
                         android:layout_marginStart="5dp"
                         android:text="@string/display"
                         android:textColor="@color/blue" />
-
                 </LinearLayout>
-
             </LinearLayout>
-
             <!--sizeList layout-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -183,9 +176,8 @@
                         android:id="@+id/sizeRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/item_size"
-                        tools:itemCount="1"/>
-
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_size" />
                 </LinearLayout>
 
                 <TableLayout
@@ -197,22 +189,22 @@
                     <TableRow>
 
                         <TextView
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="Box 1"
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="Box 2"
                             android:textColor="@color/black"
                             android:textSize="15sp"
@@ -220,53 +212,48 @@
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="Box 3"
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
-
                     </TableRow>
 
                     <TableRow android:layout_width="match_parent">
 
                         <TextView
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="03"
                             android:textSize="15sp" />
 
                         <TextView
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="01"
                             android:textSize="15sp" />
 
                         <TextView
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/stroke_rectangle_light"
                             android:gravity="center"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="02"
                             android:textSize="15sp" />
-
                     </TableRow>
-
                 </TableLayout>
-
             </LinearLayout>
-
             <!--end layout(cart)-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -303,13 +290,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_share" />
-
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
 </RelativeLayout>

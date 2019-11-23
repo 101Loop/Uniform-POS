@@ -41,13 +41,7 @@
         android:background="@drawable/stroke_rectangle_light"
         android:gravity="center"
         android:orientation="horizontal">
-        <!--<TextView
-            android:id="@+id/decrementScannedItems"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="-"
-            android:textSize="18sp" />-->
+
         <TextView
             android:id="@+id/itemScannedView"
             android:layout_width="wrap_content"
