@@ -1,7 +1,6 @@
 package com.tapatuniforms.pos.adapter;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,8 +96,8 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
                 return;
             }
 
-            int scannedItems = numberOfScannedItems++;
-            int warehouseItems = warehouseStock++;
+            int scannedItems = ++numberOfScannedItems;
+            int warehouseItems = ++warehouseStock;
 
             JSONObject jsonObject = new JSONObject();
             try {
@@ -216,7 +215,8 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         }
 
         if (stock != null && outlet != null) {
-            stock.setWarehouse(currentItem.getWarehouseStock() + productVariant.getWarehouseStock());
+            int warehouseStock = productVariant.getWarehouseStock();
+            stock.setWarehouse(++warehouseStock);
             ProductAPI.getInstance(context).updateStock(outlet.getId(), productVariant.getId(), stock.toJson(), db, null);
         }
     }

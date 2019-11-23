@@ -15,6 +15,9 @@ import com.tapatuniforms.pos.model.User;
 
 import java.util.ArrayList;
 
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
+
 public class MainActivity extends AppCompatActivity {
     private DatabaseSingleton db;
     // The authority for the sync adapter's content provider
@@ -31,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if (!BuildConfig.DEBUG) {
-//            Sentry.init(new AndroidSentryClientFactory(this));
-//        }
+        if (!BuildConfig.DEBUG) {
+            Sentry.init(new AndroidSentryClientFactory(this));
+        }
+
         mAccount = createSyncAccount(this);
         db = DatabaseHelper.getDatabase(this);
         ArrayList<User> userList = (ArrayList<User>) db.userDao().getAll();
