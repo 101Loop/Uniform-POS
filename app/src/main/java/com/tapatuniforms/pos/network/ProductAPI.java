@@ -122,63 +122,64 @@ public class ProductAPI {
                                      InventoryOrderAdapter inventoryOrderAdapter, InventoryFragment inventoryFragment) {
 
         List<ProductHeader> localProductList = db.productHeaderDao().getAllProductHeader();
-        if (!Validator.isNetworkConnected(context)) {
-            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-            productList.clear();
-            productList.addAll(localProductList);
+//        if (!Validator.isNetworkConnected(context)) {
+//            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+        productList.clear();
+        productList.addAll(localProductList);
 
-            allProducts.clear();
-            allProducts.addAll(localProductList);
+        allProducts.clear();
+        allProducts.addAll(localProductList);
 
-            List<Stock> stockList = db.stockDao().getAll();
-            if (stockList == null || stockList.size() < 1)
-                for (ProductHeader product : allProducts) {
-                    List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
+        List<Stock> stockList = db.stockDao().getAll();
+        if (stockList == null || stockList.size() < 1)
+            for (ProductHeader product : allProducts) {
+                List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
 
-                    for (ProductVariant variant : variantList) {
-                        Stock stock = new Stock(variant.getId(), variant.getDisplayStock(), variant.getWarehouseStock());
-                        db.stockDao().insert(stock);
-                    }
+                for (ProductVariant variant : variantList) {
+                    Stock stock = new Stock(variant.getId(), variant.getDisplayStock(), variant.getWarehouseStock());
+                    db.stockDao().insert(stock);
                 }
-
-            if (inventoryFragment != null) {
-                inventoryFragment.getRecommendedProductList();
             }
 
-            if (inventoryOrderAdapter != null) {
-                inventoryOrderAdapter.notifyDataSetChanged();
-            }
-
-            return;
+        if (inventoryFragment != null) {
+            inventoryFragment.getRecommendedProductList();
         }
+
+        if (inventoryOrderAdapter != null) {
+            inventoryOrderAdapter.notifyDataSetChanged();
+        }
+
+//            return;
+//        }
 
         DjangoJSONArrayResponseRequest request = new DjangoJSONArrayResponseRequest(
                 Request.Method.GET, APIStatic.Outlet.productUrl, null,
                 response -> {
                     // Response Received
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject productJSON = response.optJSONObject(i);
-                        ProductHeader product = new ProductHeader(productJSON);
+                    if (response.length() != localProductList.size()) {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject productJSON = response.optJSONObject(i);
+                            ProductHeader product = new ProductHeader(productJSON);
 
-                        productList.add(product);
-                        allProducts.add(product);
+                            productList.add(product);
+                            allProducts.add(product);
 
-                        //TODO: check sync status, delete the item and insert it again
-                    }
+                            //TODO: check sync status, delete the item and insert it again
+                        }
+                        db.productHeaderDao().deleteAll();
+                        db.productVariantDao().deleteAll();
 
-                    db.productHeaderDao().deleteAll();
-                    db.productVariantDao().deleteAll();
+                        for (int i = 0; i < productList.size(); i++) {
+                            ProductHeader productHeader = new ProductHeader(response.optJSONObject(i));
+                            db.productHeaderDao().insert(productHeader);
 
-                    for (int i = 0; i < productList.size(); i++) {
-                        ProductHeader productHeader = new ProductHeader(response.optJSONObject(i));
-                        db.productHeaderDao().insert(productHeader);
-
-                        for (int j = 0; j < productHeader.getVariantSize(); j++) {
-                            db.productVariantDao().insert(new ProductVariant(response.optJSONObject(i), j));
+                            for (int j = 0; j < productHeader.getVariantSize(); j++) {
+                                db.productVariantDao().insert(new ProductVariant(response.optJSONObject(i), j));
+                            }
                         }
                     }
 
-                    List<Stock> stockList = db.stockDao().getAll();
+                    /*List<Stock> stockList = db.stockDao().getAll();
                     if (stockList == null || stockList.size() < 1)
                         for (ProductHeader product : allProducts) {
                             List<ProductVariant> variantList = db.productVariantDao().getProductVariantsById(product.getId());
@@ -187,19 +188,19 @@ public class ProductAPI {
                                 Stock stock = new Stock(variant.getId(), variant.getDisplayStock(), variant.getWarehouseStock());
                                 db.stockDao().insert(stock);
                             }
-                        }
+                        }*/
 
                     if (inventoryAdapter != null) {
                         inventoryAdapter.notifyDataSetChanged();
                     }
 
-                    if (inventoryFragment != null) {
+                    /*if (inventoryFragment != null) {
                         inventoryFragment.getRecommendedProductList();
                     }
 
                     if (inventoryOrderAdapter != null) {
                         inventoryOrderAdapter.notifyDataSetChanged();
-                    }
+                    }*/
 
                     if (productAdapter != null) {
                         productAdapter.notifyDataSetChanged();
@@ -498,6 +499,9 @@ public class ProductAPI {
                     Stock stock = new Stock(response);
                     db.stockDao().delete(stock.getId());
                     db.stockDao().insert(stock);
+
+                    db.productVariantDao().updateWarehouseStock(stock.getWarehouse(), stock.getVariantId());
+                    db.productVariantDao().updateDisplayStock(stock.getDisplay(), stock.getVariantId());
 
                     if (listener != null) {
                         listener.onNotify();
