@@ -433,13 +433,14 @@ public class ProductAPI {
     }
 
     public void getOutletList(ArrayList<Outlet> outletList, DatabaseSingleton db, NotifyListener listener) {
-        outletList.clear();
 
         if (!Validator.isNetworkConnected(context)) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             List<Outlet> outletList1 = db.outletDao().getAll();
-            if (outletList1.size() > 0)
+            if (outletList1.size() > 0) {
+                outletList.clear();
                 outletList.add(outletList1.get(0));
+            }
             return;
         }
 
@@ -449,7 +450,6 @@ public class ProductAPI {
                 null,
                 response -> {
                     if (response.length() > 0) {
-                        db.outletDao().deleteAll();
 
                         JSONObject outletJSON = response.optJSONObject(0);
 
@@ -460,8 +460,7 @@ public class ProductAPI {
                             SchoolAPI.getInstance(context).getSchool(schoolList, db, new NotifyListener() {
                                 @Override
                                 public void onNotify() {
-                                    db.outletDao().insert(outlet);
-                                    outletList.add(outlet);
+                                    updateOutlet(db, outletList, outlet);
                                 }
 
                                 @Override
@@ -470,8 +469,7 @@ public class ProductAPI {
                                 }
                             });
                         } else {
-                            db.outletDao().insert(outlet);
-                            outletList.add(outlet);
+                            updateOutlet(db, outletList, outlet);
                         }
                     } else {
                         listener.onNotify();
@@ -483,6 +481,13 @@ public class ProductAPI {
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(context).getRequestQueue().add(request);
+    }
+
+    private void updateOutlet(DatabaseSingleton db, ArrayList<Outlet> outletList, Outlet outlet) {
+        db.outletDao().deleteAll();
+        outletList.clear();
+        db.outletDao().insert(outlet);
+        outletList.add(outlet);
     }
 
     public void updateStock(long outletId, long variantId, JSONObject stockJSON, DatabaseSingleton db, NotifyListener listener) {
