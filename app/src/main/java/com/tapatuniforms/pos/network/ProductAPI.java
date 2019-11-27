@@ -434,13 +434,10 @@ public class ProductAPI {
 
     public void getOutletList(ArrayList<Outlet> outletList, DatabaseSingleton db, NotifyListener listener) {
 
-        if (!Validator.isNetworkConnected(context)) {
-            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-            List<Outlet> outletList1 = db.outletDao().getAll();
-            if (outletList1.size() > 0) {
-                outletList.clear();
-                outletList.add(outletList1.get(0));
-            }
+        List<Outlet> outletList1 = db.outletDao().getAll();
+        if (outletList1.size() > 0) {
+            outletList.clear();
+            outletList.add(outletList1.get(0));
             return;
         }
 
