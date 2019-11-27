@@ -17,6 +17,7 @@ public interface APIStatic {
         String endPoint = "outlets/";
         String outletUrl = baseURL + endPoint;
         String productUrl = baseURL + endPoint + "products/";
+        String OUTLET_ID = "outletId";
     }
 
     interface Category {

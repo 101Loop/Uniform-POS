@@ -17,11 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tapatuniforms.pos.R;
 import com.tapatuniforms.pos.adapter.InventoryPopupListAdapter;
+import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NotifyListener;
 import com.tapatuniforms.pos.helper.RoundedCornerLayout;
-import com.tapatuniforms.pos.model.Outlet;
+import com.tapatuniforms.pos.helper.SharedPrefs;
 import com.tapatuniforms.pos.model.ProductHeader;
 import com.tapatuniforms.pos.model.ProductVariant;
 import com.tapatuniforms.pos.model.Stock;
@@ -70,12 +71,10 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
         this.activity = activity;
         this.item = item;
         this.title = title;
+        SharedPrefs.init(context);
         db = DatabaseHelper.getDatabase(context);
 
-        List<Outlet> outletList = db.outletDao().getAll();
-
-        if (outletList.size() > 0)
-            outletId = outletList.get(0).getId();
+        outletId = SharedPrefs.readInt(APIStatic.Outlet.OUTLET_ID, -1);
     }
 
     @Override
@@ -165,10 +164,7 @@ public class InventoryDialog extends AlertDialog implements InventoryPopupListAd
 
                     int productId = item.getId();
 
-                    List<Outlet> outletList = db.outletDao().getAll();
-                    int outletId = -1;
-                    if (outletList.size() > 0)
-                        outletId = outletList.get(0).getId();
+                    int outletId = SharedPrefs.readInt(APIStatic.Outlet.OUTLET_ID, -1);
 
                     if (outletId != -1)
                         StockOrderAPI.getInstance(getContext()).indentRequestDetails(productId, quantity, outletId, this);
