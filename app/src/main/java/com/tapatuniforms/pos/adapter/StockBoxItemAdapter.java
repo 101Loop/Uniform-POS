@@ -43,6 +43,7 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
     private int numberOfItems;
     private int numberOfScannedItems;
     private int warehouseStock;
+    private Outlet outlet;
 
     public StockBoxItemAdapter(Context context, ArrayList<BoxItem> boxItemList) {
         this.context = context;
@@ -91,7 +92,10 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         warehouseStock = currentItem.getWarehouseStock();
 
         holder.incrementScannedItem.setOnClickListener(view -> {
+            holder.incrementScannedItem.setClickable(false);
+
             if (numberOfItems <= numberOfScannedItems) {
+                holder.incrementScannedItem.setClickable(true);
                 Toast.makeText(context, "You cannot scan items more than the total number of items", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -202,10 +206,24 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         if (productVariants.size() > 0)
             productVariant = productVariants.get(0);
 
-        List<Outlet> outletList = db.outletDao().getAll();
-        Outlet outlet = null;
+        ArrayList<Outlet> outletList = new ArrayList<>(db.outletDao().getAll());
         if (outletList.size() > 0)
             outlet = outletList.get(0);
+
+        if (outlet == null) {
+            ProductAPI.getInstance(context).getOutletList(outletList, db, new NotifyListener() {
+                @Override
+                public void onNotify() {
+                    if (outletList.size() > 0)
+                        outlet = outletList.get(0);
+                }
+
+                @Override
+                public void onNotifyResponse(Object data) {
+
+                }
+            });
+        }
 
         List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
         Stock stock = null;
@@ -215,9 +233,19 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         }
 
         if (stock != null && outlet != null) {
-            int warehouseStock = productVariant.getWarehouseStock();
-            stock.setWarehouse(++warehouseStock);
-            ProductAPI.getInstance(context).updateStock(outlet.getId(), productVariant.getId(), stock.toJson(), db, null);
+            productVariant.setWarehouseStock(productVariant.getWarehouseStock() + 1);
+            stock.setWarehouse(productVariant.getWarehouseStock());
+            ProductAPI.getInstance(context).updateStock(outlet.getId(), productVariant.getId(), stock.toJson(), db, new NotifyListener() {
+                @Override
+                public void onNotify() {
+                    holder.incrementScannedItem.setClickable(true);
+                }
+
+                @Override
+                public void onNotifyResponse(Object data) {
+
+                }
+            });
         }
     }
 
