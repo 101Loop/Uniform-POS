@@ -19,6 +19,7 @@ import com.tapatuniforms.pos.helper.APIStatic;
 import com.tapatuniforms.pos.helper.DatabaseHelper;
 import com.tapatuniforms.pos.helper.DatabaseSingleton;
 import com.tapatuniforms.pos.helper.NotifyListener;
+import com.tapatuniforms.pos.helper.SharedPrefs;
 import com.tapatuniforms.pos.model.BoxItem;
 import com.tapatuniforms.pos.model.Outlet;
 import com.tapatuniforms.pos.model.ProductHeader;
@@ -49,6 +50,7 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
         this.context = context;
         this.boxItemList = boxItemList;
 
+        SharedPrefs.init(context);
         db = DatabaseHelper.getDatabase(context);
     }
 
@@ -113,62 +115,6 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
 
             StockOrderAPI.getInstance(context).updateBoxItem(currentItem.getBoxId(), currentItem.getId(), jsonObject, db, this);
         });
-
-        //TODO: the move logic might be removed completely
-        /*ProductVariant finalProductVariant = productVariant;
-        Stock finalStock = stock;
-        holder.moveButton.setOnClickListener(view -> {
-            int moveCount = Integer.parseInt(holder.itemsToMoveText.getText().toString().trim());
-            int scannedCount = Integer.parseInt(holder.itemScannedView.getText().toString().trim());
-
-            if (moveCount == 0) {
-                Toast.makeText(context, "Items to be moved should be greater than 0", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (moveCount > scannedCount) {
-                Toast.makeText(context, "Items can't be greater than scanned items", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            assert finalStock != null;
-            int displayCount = finalStock.getDisplay();
-            int warehouseCount = finalStock.getWarehouse();
-            int shelfCount = displayCount + moveCount;
-            int finalScannedItems = scannedCount - moveCount;
-
-            if (moveCount > warehouseCount) {
-                Toast.makeText(context, "Not enough items in warehouse", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            holder.itemsToMoveText.setText(null);
-            holder.itemShelfView.setText(String.valueOf(shelfCount));
-            holder.itemScannedView.setText(String.valueOf(finalScannedItems));
-
-            List<Outlet> outletList = db.outletDao().getAll();
-            long outletId = -1;
-            if (outletList.size() > 0)
-                outletId = outletList.get(0).getId();
-
-            finalStock.setWarehouse(warehouseCount - moveCount);
-            finalStock.setDisplay(displayCount + moveCount);
-
-            JSONObject json = finalStock.toJson();
-            try {
-                json.put(APIStatic.Key.numberOfScannedItems, finalScannedItems);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            StockOrderAPI.getInstance(context).updateBoxItem(currentItem.getBoxId(), currentItem.getId(), json, db, this);
-
-            if (outletId != -1)
-                ProductAPI.getInstance(context).updateStock(outletId, Objects.requireNonNull(finalProductVariant).getId(), finalStock.toJson(), db, null);
-
-            db.boxItemDao().updateScannedItems(finalScannedItems, currentItem.getId());
-
-            Toast.makeText(context, "Items transferred successfully", Toast.LENGTH_SHORT).show();
-        });*/
     }
 
     private void checkStatus() {
@@ -180,7 +126,13 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.green));
         } else {
             int remainingItems = numberOfItems - scannedItems;
-            holder.statusText.setText(remainingItems + " item(s) are not matched");
+            String status = remainingItems + " item(s)";
+            if (remainingItems == 1) {
+                status += " is ";
+            }else{
+                status += " are ";
+            }
+            holder.statusText.setText(status + "not matched");
             holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.black1));
         }
     }
@@ -224,6 +176,7 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
                 }
             });
         }
+        int outletId = SharedPrefs.readInt(APIStatic.Outlet.OUTLET_ID, -1);
 
         List<Stock> stockList = db.stockDao().getStocksById(productVariant.getId());
         Stock stock = null;
@@ -232,10 +185,10 @@ public class StockBoxItemAdapter extends RecyclerView.Adapter<StockBoxItemAdapte
             stock = stockList.get(0);
         }
 
-        if (stock != null && outlet != null) {
+        if (stock != null && outletId != -1) {
             productVariant.setWarehouseStock(productVariant.getWarehouseStock() + 1);
             stock.setWarehouse(productVariant.getWarehouseStock());
-            ProductAPI.getInstance(context).updateStock(outlet.getId(), productVariant.getId(), stock.toJson(), db, new NotifyListener() {
+            ProductAPI.getInstance(context).updateStock(outletId, productVariant.getId(), stock.toJson(), db, new NotifyListener() {
                 @Override
                 public void onNotify() {
                     holder.incrementScannedItem.setClickable(true);
